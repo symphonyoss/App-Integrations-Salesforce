@@ -16,7 +16,6 @@
 
 package org.symphonyoss.integration.webhook.salesforce;
 
-import static java.util.Collections.EMPTY_MAP;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -39,6 +38,7 @@ import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
@@ -73,14 +73,14 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
   @Test(expected = SalesforceParseException.class)
   public void testInvalidPayload(){
-    WebHookPayload payload = new WebHookPayload(EMPTY_MAP, EMPTY_MAP, "invalid_payload");
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
     salesforceWebHookIntegration.parse(payload);
   }
 
   @Test
   public void testUnregistredParser() throws IOException{
     String xml = readFile("executiveReport.xml");
-    WebHookPayload payload = new WebHookPayload(EMPTY_MAP, EMPTY_MAP, xml);
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
     String result = salesforceWebHookIntegration.parse(payload);
     Assert.assertEquals(xml, result);
   }
@@ -88,7 +88,7 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   @Test
   public void testRegistredParser() throws IOException, JAXBException {
     String xml = readFile("accountStatus.xml");
-    WebHookPayload payload = new WebHookPayload(EMPTY_MAP, EMPTY_MAP, xml);
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
 
     String expected = readFile("parser/accountStatus_withMentionTags_expected.xml");
     when(accountStatusParser.parse(any(Entity.class))).thenReturn(expected);
