@@ -6,13 +6,13 @@ The Salesforce WebHook Integration will allow you to receive notifications in Sy
 ## How it works
 Salesforce does not provide out-of-the-box WebHook support but one can use [this tool](https://salesforce-webhook-creator.herokuapp.com/) to get WebHook-like functionality via *Apex triggers*, automatically created when using the mentioned tool, also known as "Salesforce WebHook Creator".
 
-After the tool is authorized, you can configure a WebHook by choosing a name for it, which "SObject" will it notify, which action to trigger and then paste in the URL you generated in the Salesforce WebHook Application available on Symphony Market. After this, you should be able to start receiving notifications n Symphony platform.
+After the tool is authorized, you can configure a WebHook by choosing a name for it, which "SObject" will it notify, which action to trigger and then paste in the URL you generated in the Salesforce WebHook Application available on Symphony Market. After this, you should be able to start receiving notifications in Symphony platform.
 
 ## What formats and events it support and what it produces
 Every integration will get a message sent in a specific format (depending on what system is it dealing with) and it will usually convert it into an "entity" before it reaches the Symphony platform.
 It will also, usually, identify the kind of message it will deal with based on an "event" identifier, that varies based on which system is it integrating with.
 
-Salesforce supports WebHooks via the tool [Salesforce WebHook Creator](https://salesforce-webhook-creator.herokuapp.com/) and currently there's the possibility to configure up to tree events:
+Salesforce supports WebHooks via the tool [Salesforce WebHook Creator](https://salesforce-webhook-creator.herokuapp.com/) and currently there's the possibility to configure up to tree events, which are identified by their payloads. The only post-processing that Integration Bridge does before resending the payload is to check if the users mentioned in the payload do have identifiable accounts on the target Symphony platform. If they do, a "mention" tag will be added to the payload. 
 
 ### Opportunity Notification
 
