@@ -4,7 +4,7 @@ _Note that this project depends on internal Symphony infrastructure (repository.
 The Salesforce WebHook Integration will allow you to receive notifications in Symphony when a Salesforce opportunity, account or an executive dashboard changes state.
 
 ## How it works
-Salesforce does not provide out-of-the-box WebHook support but one can create Apex applications to get WebHook-like functionality. Symphony will provide later on managed packages to support all events handled by this integration.
+Salesforce does not provide out-of-the-box WebHook support but one can create Apex applications to get WebHook-like functionality. Symphony will provide later on managed packages to support all events handled by this integration on [Symphony developers site](https://developers.symphony.com).
 
 ## What formats and events it support and what it produces
 Every integration will get a message sent in a specific format (depending on what system is it dealing with) and it will usually convert it into an "entity" before it reaches the Symphony platform.
