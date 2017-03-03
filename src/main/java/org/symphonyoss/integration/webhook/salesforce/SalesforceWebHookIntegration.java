@@ -16,13 +16,12 @@
 
 package org.symphonyoss.integration.webhook.salesforce;
 
-import com.symphony.api.pod.model.V1Configuration;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageML;
 import org.symphonyoss.integration.entity.MessageMLParser;
+import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
@@ -41,9 +40,6 @@ import javax.xml.bind.JAXBException;
 @Component
 public class SalesforceWebHookIntegration extends WebHookIntegration {
 
-  @Autowired
-  private MessageMLParser messageMLParser;
-
   private Map<String, SalesforceParser> parsers = new HashMap<>();
 
   @Autowired
@@ -60,11 +56,11 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
   }
 
   @Override
-  public void onConfigChange(V1Configuration conf) {
-    super.onConfigChange(conf);
+  public void onConfigChange(IntegrationSettings settings) {
+    super.onConfigChange(settings);
 
     for (SalesforceParser parsers : salesforceParserBeans) {
-      parsers.setSalesforceUser(conf.getType());
+      parsers.setSalesforceUser(settings.getType());
     }
   }
 
@@ -76,14 +72,14 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
     SalesforceParser parser = getParser(type);
 
-    if(parser == null){
-      return messageMLParser.validate(input.getBody());
+    if (parser == null) {
+      return input.getBody();
     }
 
     String messageML = parser.parse(mainEntity);
     messageML = super.buildMessageML(messageML, type);
 
-    return messageMLParser.validate(messageML);
+    return messageML;
   }
 
   private SalesforceParser getParser(String type) {

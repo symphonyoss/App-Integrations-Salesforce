@@ -20,17 +20,15 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.symphony.api.pod.client.ApiException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.entity.model.User;
+import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 
@@ -52,7 +50,7 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
   private SalesforceParser salesforceParser = new AccountStatusParser();
 
   @Before
-  public void setup() throws ApiException {
+  public void setup() {
     User returnedUser =
         createUser("amysak", "amysak@company.com", "Alexandra Mysak", 7627861918843L);
     when(userService.getUserByEmail(anyString(), anyString())).thenReturn(returnedUser);

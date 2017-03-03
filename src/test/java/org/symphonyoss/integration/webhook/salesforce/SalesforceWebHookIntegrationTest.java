@@ -28,7 +28,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.webhook.WebHookPayload;
@@ -66,9 +65,6 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
     salesforceParserBeans.add(accountStatusParser);
 
     salesforceWebHookIntegration.init();
-
-    this.messageMLParser.init();
-    ReflectionTestUtils.setField(salesforceWebHookIntegration, "messageMLParser", messageMLParser);
   }
 
   @Test(expected = SalesforceParseException.class)
