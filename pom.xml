@@ -11,6 +11,11 @@
 
     <artifactId>integration-salesforce</artifactId>
 
+    <properties>
+        <webapp.directory>salesforce</webapp.directory>
+        <rpm.name>salesforce-symphony-integration</rpm.name>
+    </properties>
+
     <description>Salesforce WebHook Integration</description>
     <url>https://github.com/symphonyoss/App-Integrations-Salesforce</url>
 

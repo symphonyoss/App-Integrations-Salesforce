@@ -1,0 +1,14 @@
+{
+  "applications": [
+    {
+      "type": "sandbox",
+      "id": "devSalesForceWebHookIntegration",
+      "name": "SalesForce",
+      "blurb": "SalesForce development mode",
+      "publisher": "Symphony",
+      "url": "https://localhost.symphony.com/apps/salesforce/controller.html?configurationId=57c6ee6ae4b0b0aec7e89812&botUserId=7627861922164&id=devSalesForceWebHookIntegration&context=apps/salesforce",
+      "icon": "https://localhost.symphony.com/apps/salesforce/img/appstore-logo.png",
+      "domain": ".symphony.com"
+    }
+  ]
+}
