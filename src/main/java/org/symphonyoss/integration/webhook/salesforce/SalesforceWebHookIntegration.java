@@ -40,6 +40,10 @@ import javax.xml.bind.JAXBException;
 @Component
 public class SalesforceWebHookIntegration extends WebHookIntegration {
 
+  private static final String typeXML = "application/xml";
+
+  private static final String typeJSON = "application/json";
+
   private Map<String, SalesforceParser> parsers = new HashMap<>();
 
   @Autowired
@@ -88,12 +92,21 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
   private Entity parsePayloadToEntity(WebHookPayload payload) {
     try {
+      if (getContentType(payload).equals(typeXML)) {
+        MessageML messageML = MessageMLParser.parse(payload.getBody());
+        return messageML.getEntity();
+      }
+
       MessageML messageML = MessageMLParser.parse(payload.getBody());
       return messageML.getEntity();
     } catch (JAXBException e) {
       throw new SalesforceParseException(
           "Something went wrong when trying to validate the MessageML received to object.", e);
     }
+  }
+
+  private String getContentType(WebHookPayload payload) {
+    return payload.getHeaders().get("content-type").toString();
   }
 
 }
