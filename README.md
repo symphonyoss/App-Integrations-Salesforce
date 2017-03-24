@@ -1,3 +1,7 @@
+[![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating)
+
+[![Build Status](https://travis-ci.org/symphonyoss/App-Integrations-Salesforce.svg?branch=dev)](https://travis-ci.org/symphonyoss/App-Integrations-Salesforce)
+
 # Salesforce WebHook Integration
 The Salesforce WebHook Integration will allow you to receive notifications in Symphony when a Salesforce opportunity, account or an executive dashboard changes state.
 
