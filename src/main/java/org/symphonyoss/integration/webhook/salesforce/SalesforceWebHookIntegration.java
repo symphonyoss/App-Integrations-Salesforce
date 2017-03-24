@@ -92,7 +92,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
   private Entity parsePayloadToEntity(WebHookPayload payload) {
     try {
-      if (getContentType(payload).equals(typeXML)) {
+      if (isContentTypeXML(payload)) {
         MessageML messageML = MessageMLParser.parse(payload.getBody());
         return messageML.getEntity();
       }
@@ -103,6 +103,10 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
       throw new SalesforceParseException(
           "Something went wrong when trying to validate the MessageML received to object.", e);
     }
+  }
+
+  private boolean isContentTypeXML(WebHookPayload payload) {
+    return getContentType(payload).equals(typeXML);
   }
 
   private String getContentType(WebHookPayload payload) {
