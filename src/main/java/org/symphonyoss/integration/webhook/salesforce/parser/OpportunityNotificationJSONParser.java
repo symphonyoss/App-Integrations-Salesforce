@@ -26,9 +26,6 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
 
   protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT = "%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
 
-  @Autowired
-  private UserService userService;
-
   @Override
   public List<String> getEvents() {
     return Arrays.asList("opportunityNotificationJSON");
@@ -66,7 +63,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     SafeString accountName = getAccountNameFormatted(fields);
     SafeString accountEmail = getAccountLinkFormatted(fields);
 
-    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, link, stage, accountName, accountEmail, ownerName, ownerEmail, type, closeDate );
+    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, link, stage, accountName, accountEmail, ownerName, ownerEmail, type, closeDate);
   }
 
 }
