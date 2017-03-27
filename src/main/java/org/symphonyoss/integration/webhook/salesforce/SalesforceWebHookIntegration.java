@@ -16,17 +16,21 @@
 
 package org.symphonyoss.integration.webhook.salesforce;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageML;
 import org.symphonyoss.integration.entity.MessageMLParser;
+import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +44,9 @@ import javax.xml.bind.JAXBException;
 @Component
 public class SalesforceWebHookIntegration extends WebHookIntegration {
 
-  private static final String typeXML = "application/xml";
-
   private static final String typeJSON = "application/json";
+
+  public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 
   private Map<String, SalesforceParser> parsers = new HashMap<>();
 
@@ -70,6 +74,18 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
   @Override
   public String parse(WebHookPayload input) throws WebHookParseException {
+    String messageML;
+
+    if (isContentTypeJSON(input)) {
+      try {
+        messageML = processIntegrationWithJSON(input);
+      } catch (IOException e) {
+        throw new SalesforceParseException(
+            "Something went wrong when trying to validate the MessageML received to object.", e);
+      }
+      return messageML;
+    }
+
     Entity mainEntity = parsePayloadToEntity(input);
 
     String type = mainEntity.getType();
@@ -80,7 +96,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
       return input.getBody();
     }
 
-    String messageML = parser.parse(mainEntity);
+    messageML = parser.parse(mainEntity);
     messageML = super.buildMessageML(messageML, type);
 
     return messageML;
@@ -92,11 +108,6 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
   private Entity parsePayloadToEntity(WebHookPayload payload) {
     try {
-      if (isContentTypeXML(payload)) {
-        MessageML messageML = MessageMLParser.parse(payload.getBody());
-        return messageML.getEntity();
-      }
-
       MessageML messageML = MessageMLParser.parse(payload.getBody());
       return messageML.getEntity();
     } catch (JAXBException e) {
@@ -105,12 +116,31 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     }
   }
 
-  private boolean isContentTypeXML(WebHookPayload payload) {
-    return getContentType(payload).equals(typeXML);
+  private boolean isContentTypeJSON(WebHookPayload payload) {
+    return getContentType(payload).equals(typeJSON);
   }
 
   private String getContentType(WebHookPayload payload) {
     return payload.getHeaders().get("content-type").toString();
+  }
+
+  private String processIntegrationWithJSON(WebHookPayload input) throws IOException {
+    JsonNode rootNode = JsonUtils.readTree(input.getBody());
+
+    String webHookEvent = rootNode.path(SalesforceConstants.WEBHOOK_EVENT).asText();
+
+    String type = OPPORTUNITY_NOTIFICATION_JSON;
+
+    SalesforceParser parser = getParser(type);
+
+    if (parser == null) {
+      return input.getBody();
+    }
+
+    String messageML = parser.parse(input.getHeaders(), rootNode);
+    messageML = super.buildMessageML(messageML, type);
+
+    return messageML;
   }
 
 }

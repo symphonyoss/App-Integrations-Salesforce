@@ -22,6 +22,7 @@ import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.OPPORTUNITIES;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.OWNER;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
@@ -30,6 +31,7 @@ import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class responsible to handle the Account Status event of Salesforce
@@ -56,5 +58,10 @@ public class AccountStatusParser extends BaseSalesforceParser {
   @Override
   public List<String> getEvents() {
     return Arrays.asList("com.symphony.integration.sfdc.event.accountStatus");
+  }
+
+  @Override
+  public String parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
+    return null;
   }
 }

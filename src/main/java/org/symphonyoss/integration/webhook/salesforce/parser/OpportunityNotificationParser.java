@@ -19,6 +19,7 @@ package org.symphonyoss.integration.webhook.salesforce.parser;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.OPPORTUNITY;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.OWNER;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
@@ -27,6 +28,7 @@ import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class responsable to handle the Opportunity Notification event of Salesforce
@@ -50,5 +52,10 @@ public class OpportunityNotificationParser extends BaseSalesforceParser {
     } catch (EntityXMLGeneratorException e) {
       throw new SalesforceParseException("Something went wrong while building the message for Salesforce Opportunity Notification event.", e);
     }
+  }
+
+  @Override
+  public String parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
+    return null;
   }
 }

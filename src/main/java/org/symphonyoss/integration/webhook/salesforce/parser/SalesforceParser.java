@@ -16,10 +16,12 @@
 
 package org.symphonyoss.integration.webhook.salesforce.parser;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface that defines methods to validate Salesforce messages
@@ -32,4 +34,6 @@ public interface SalesforceParser {
   void setSalesforceUser(String user);
 
   List<String> getEvents();
+
+  String parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException;
 }
