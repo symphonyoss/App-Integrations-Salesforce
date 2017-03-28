@@ -148,10 +148,6 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
     SalesforceParser parser = getParser(type);
 
-    if (parser == null) {
-      return input.getBody();
-    }
-
     String messageML = parser.parse(input.getHeaders(), rootNode);
     messageML = super.buildMessageML(messageML, type);
 

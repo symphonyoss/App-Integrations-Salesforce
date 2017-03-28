@@ -24,7 +24,7 @@ import java.util.Map;
 public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     implements SalesforceParser {
 
-  protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT = "%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
+  protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT = "%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
 
   @Override
   public List<String> getEvents() {
@@ -53,17 +53,18 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
   private SafeString getPresentationML(JsonNode node) throws SalesforceParseException {
     JsonNode fields = node.path(SalesforceConstants.OPPORTUNITY_PATH).path(SalesforceConstants.FIELDS_PATH);
 
-    SafeString name = getNameFormatted(fields);
-    SafeString ownerName = getOwnerNameFormatted(fields);
-    SafeString ownerEmail = getOwnerEmailFormatted(fields);
-    SafeString type = getTypeFormatted(fields);
-    SafeString link = getLinkFormatted(fields);
-    SafeString stage = getStageNameFormatted(fields);
-    SafeString closeDate = getCloseDateFormatted(fields);
     SafeString accountName = getAccountNameFormatted(fields);
     SafeString accountEmail = getAccountLinkFormatted(fields);
+    SafeString ownerName = getOwnerNameFormatted(fields);
+    SafeString ownerEmail = getOwnerEmailFormatted(fields);
+    SafeString amount = getAmountFormatted(fields);
+    SafeString closeDate = getCloseDateFormatted(fields);
+    SafeString nextStep = getNextStepFormatted(fields);
+    SafeString type = getTypeFormatted(fields);
+    SafeString stageName = getStageNameFormatted(fields);
+    SafeString probability = getProbabilityFormatted(fields);
 
-    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, link, stage, accountName, accountEmail, ownerName, ownerEmail, type, closeDate);
+    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, accountName, accountEmail, ownerName, ownerEmail, amount, closeDate, nextStep, type, stageName, probability);
   }
 
 }

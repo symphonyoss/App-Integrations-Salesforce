@@ -254,6 +254,51 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return presentationFormat("Opportunity: %s", name);
   }
 
+  /**
+   * Return the Amount from Salesforce json
+   * @param node type JsonNode
+   * @return The Amount if it exists formatted, null otherwise.
+   */
+  protected SafeString getAmountFormatted(JsonNode node) {
+    String amount = node.path("Amount").asText();
+
+    if (StringUtils.isEmpty(amount)) {
+      return null;
+    }
+
+    return presentationFormat("Amount: %s", amount);
+  }
+
+  /**
+   * Return the Next Step from Salesforce json
+   * @param node type JsonNode
+   * @return The Next Step if it exists formatted, null otherwise.
+   */
+  protected SafeString getNextStepFormatted(JsonNode node) {
+    String nextStep = node.path("NextStep").asText();
+
+    if (StringUtils.isEmpty(nextStep)) {
+      return null;
+    }
+
+    return presentationFormat("NextStep: %s", nextStep);
+  }
+
+  /**
+   * Return the Probability from Salesforce json
+   * @param node type JsonNode
+   * @return The Probability if it exists formatted, null otherwise.
+   */
+  protected SafeString getProbabilityFormatted(JsonNode node) {
+    String probability = node.path("Probability").asText();
+
+    if (StringUtils.isEmpty(probability)) {
+      return null;
+    }
+
+    return presentationFormat("Probability: %s", probability);
+  }
+
   private String getOptionalField(JsonNode node, String path, String key, String defaultValue) {
     String value = node.asText();
 
