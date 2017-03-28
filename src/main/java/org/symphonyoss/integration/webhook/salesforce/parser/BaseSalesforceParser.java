@@ -128,7 +128,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String ownerName = node.path("Owner").path("Name").asText();
 
     if (StringUtils.isEmpty(ownerName)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Owner Name: %s", ownerName);
@@ -143,7 +143,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String ownerEmail = getOptionalField(node, "Owner", "Email", "").trim();
 
     if (StringUtils.isEmpty(ownerEmail)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Owner Email: %s", ownerEmail);
@@ -158,7 +158,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String type = node.path("Type").asText();
 
     if (StringUtils.isEmpty(type)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Type: %s", type);
@@ -173,7 +173,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String link = node.path("Link").asText();
 
     if (StringUtils.isEmpty(link)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Link: %s", link);
@@ -188,7 +188,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String stageName = node.path("StageName").asText();
 
     if (StringUtils.isEmpty(stageName)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Stage Name: %s", stageName);
@@ -203,7 +203,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String closeDate = node.path("CloseDate").asText();
 
     if (StringUtils.isEmpty(closeDate)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Close Date: %s", closeDate);
@@ -218,7 +218,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String accountName = node.path("Account").path("Name").asText();
 
     if (StringUtils.isEmpty(accountName)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Account Name: %s", accountName);
@@ -233,7 +233,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String accountLink = node.path("Account").path("Link").asText();
 
     if (StringUtils.isEmpty(accountLink)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Account Link: %s", accountLink);
@@ -248,7 +248,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String name = node.path("Name").asText();
 
     if (StringUtils.isEmpty(name)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Opportunity: %s", name);
@@ -263,7 +263,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String amount = node.path("Amount").asText();
 
     if (StringUtils.isEmpty(amount)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Amount: %s", amount);
@@ -278,7 +278,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String nextStep = node.path("NextStep").asText();
 
     if (StringUtils.isEmpty(nextStep)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("NextStep: %s", nextStep);
@@ -293,7 +293,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     String probability = node.path("Probability").asText();
 
     if (StringUtils.isEmpty(probability)) {
-      return null;
+      return SafeString.EMPTY_SAFE_STRING;
     }
 
     return presentationFormat("Probability: %s", probability);
