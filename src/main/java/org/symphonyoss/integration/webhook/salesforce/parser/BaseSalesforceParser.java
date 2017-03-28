@@ -32,10 +32,8 @@ import org.symphonyoss.integration.messageml.MessageMLFormatConstants;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Utility methods for Salesforce Parsers
@@ -177,21 +175,6 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   /**
-   * Return the Link to Opportunity from Salesforce json
-   * @param node type JsonNode
-   * @return The Link if it exists formatted, null otherwise.
-   */
-  protected SafeString getLinkFormatted(JsonNode node) {
-    String link = node.path("Link").asText();
-
-    if (StringUtils.isEmpty(link)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
-
-    return presentationFormat("Link: %s", link);
-  }
-
-  /**
    * Return the Stage Name from Salesforce json
    * @param node type JsonNode
    * @return The Stage Name if it exists formatted, null otherwise.
@@ -259,21 +242,6 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     SafeString finalUrl = presentationFormat(MessageMLFormatConstants.MESSAGEML_LINK_HREF_FORMAT, accountLink.toString());
 
     return presentationFormat(LINKED_FORMATTED_TEXT, finalUrl);
-  }
-
-  /**
-   * Return the Name from Salesforce json
-   * @param node type JsonNode
-   * @return The Name if it exists formatted, null otherwise.
-   */
-  protected SafeString getNameFormatted(JsonNode node) {
-    String name = node.path("Name").asText();
-
-    if (StringUtils.isEmpty(name)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
-
-    return presentationFormat("Opportunity: %s", name);
   }
 
   /**
