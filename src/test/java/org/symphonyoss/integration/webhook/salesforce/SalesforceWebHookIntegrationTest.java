@@ -35,7 +35,10 @@ import org.symphonyoss.integration.webhook.salesforce.parser.AccountStatusParser
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -46,7 +49,8 @@ import javax.xml.bind.JAXBException;
 public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
-  private static final String TYPE_XML = "application/xml";
+  private static final String TYPE_JSON = "application/json";
+  private static final String OPPORTUNITY_NOTIFICATION = "SFDCCallbackSampleOpportunity.json";
 
   @Spy
   private List<SalesforceParser> salesforceParserBeans = new ArrayList<>();
@@ -62,25 +66,23 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   @Before
   public void setup() {
     when(accountStatusParser.getEvents()).thenReturn(Arrays.asList("com.symphony.integration.sfdc.event.accountStatus"));
+
     salesforceParserBeans.add(accountStatusParser);
+
 
     salesforceWebHookIntegration.init();
   }
 
   @Test(expected = SalesforceParseException.class)
   public void testInvalidPayload(){
-    Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, TYPE_XML);
-    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, "invalid_payload");
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
     salesforceWebHookIntegration.parse(payload);
   }
 
   @Test
   public void testUnregistredParser() throws IOException{
     String xml = readFile("executiveReport.xml");
-    Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, TYPE_XML);
-    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, xml);
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
     String result = salesforceWebHookIntegration.parse(payload);
     Assert.assertEquals(xml, result);
   }
@@ -88,9 +90,7 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   @Test
   public void testRegistredParser() throws IOException, JAXBException {
     String xml = readFile("accountStatus.xml");
-    Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, TYPE_XML);
-    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, xml);
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
 
     String expected = readFile("parser/accountStatus_withMentionTags_expected.xml");
     when(accountStatusParser.parse(any(Entity.class))).thenReturn(expected);

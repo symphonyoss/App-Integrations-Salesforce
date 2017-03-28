@@ -32,7 +32,7 @@
       },
       "TotalOpportunityQuantity": null,
       "Probability": "90%",
-      "NextStep": null,
+      "NextStep": "teste",
       "StageName": "Negotiation/Review",
       "Type": "Existing Customer - Downgrade",
       "Amount": 312321.00,

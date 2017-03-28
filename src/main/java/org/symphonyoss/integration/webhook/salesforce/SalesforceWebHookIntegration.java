@@ -117,11 +117,15 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
   }
 
   /**
-   * Return true when Type is JSON
+   * Return true when Type is JSON, is not tag ContentType when return false
    * @param payload type WebHookPayload
    * @return the true when Type is JSON
    */
   private boolean isContentTypeJSON(WebHookPayload payload) {
+    if(!hasContentType(payload)) {
+      return false;
+    }
+
     return getContentType(payload).equals(typeJSON);
   }
 
@@ -135,14 +139,21 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
   }
 
   /**
+   * Return if exists header ContentType
+   * @param payload type WebHookPayload
+   * @return  if exists the Content-Type with Header payload
+   */
+  private boolean hasContentType(WebHookPayload payload) {
+    return payload.getHeaders().get("content-type") != null;
+  }
+
+  /**
    * Return the MessageML parser with JSON integration about Opportunity Notification
    * @param input type WebHookPayload
    * @return MessageML formatted
    */
   private String processIntegrationWithJSON(WebHookPayload input) throws IOException {
     JsonNode rootNode = JsonUtils.readTree(input.getBody());
-
-    String webHookEvent = rootNode.path(SalesforceConstants.WEBHOOK_EVENT).asText();
 
     String type = OPPORTUNITY_NOTIFICATION_JSON;
 
