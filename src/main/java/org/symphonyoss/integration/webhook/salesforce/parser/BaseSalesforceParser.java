@@ -32,6 +32,11 @@ import org.symphonyoss.integration.messageml.MessageMLFormatConstants;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Utility methods for Salesforce Parsers
  * Created by cmarcondes on 11/3/16.
@@ -40,6 +45,8 @@ import org.symphonyoss.integration.service.UserService;
 public abstract class BaseSalesforceParser implements SalesforceParser{
 
   public static final String LINKED_FORMATTED_TEXT = "(%s)";
+
+  private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
 
   @Autowired
   private UserService userService;
@@ -149,7 +156,9 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Owner Email: %s", ownerEmail);
+    SafeString finalEmail = presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail.toString());
+
+    return presentationFormat(LINKED_FORMATTED_TEXT, finalEmail);
   }
 
   /**
@@ -209,7 +218,15 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Close Date: %s", closeDate);
+    SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
+    String closeDateFormat;
+    try {
+      closeDateFormat = formatter.format(formatter.parse(closeDate));
+    } catch (ParseException e) {
+      return SafeString.EMPTY_SAFE_STRING;
+    }
+
+    return presentationFormat("Close Date: %s", closeDateFormat);
   }
 
   /**
@@ -304,8 +321,23 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return presentationFormat("Probability: %s", probability);
   }
 
+  /**
+   * Return the CurrencyIsoCode from Salesforce json
+   * @param node type JsonNode
+   * @return The CurrencyIsoCode if it exists formatted, null otherwise.
+   */
+  protected SafeString getCurrencyIsoCode(JsonNode node) {
+    String currencyIsoCode = node.path("CurrencyIsoCode").asText();
+
+    if (StringUtils.isEmpty(currencyIsoCode)) {
+      return SafeString.EMPTY_SAFE_STRING;
+    }
+
+    return presentationFormat("%s", currencyIsoCode);
+  }
+
   private String getOptionalField(JsonNode node, String path, String key, String defaultValue) {
-    String value = node.asText();
+    String value = node.path(path).path(key).asText();
 
     if (value.isEmpty()) {
       return defaultValue;
