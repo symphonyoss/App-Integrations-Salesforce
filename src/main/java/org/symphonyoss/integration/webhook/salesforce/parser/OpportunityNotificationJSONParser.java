@@ -24,7 +24,7 @@ import java.util.Map;
 public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     implements SalesforceParser {
 
-  protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT = "%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
+  protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT = "%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
 
   @Override
   public List<String> getEvents() {
@@ -54,7 +54,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     JsonNode fields = node.path(SalesforceConstants.OPPORTUNITY_PATH).path(SalesforceConstants.FIELDS_PATH);
 
     SafeString accountName = getAccountNameFormatted(fields);
-    SafeString accountEmail = getAccountLinkFormatted(fields);
+    SafeString accountEmail = getAccountLinkedFormatted(fields);
     SafeString ownerName = getOwnerNameFormatted(fields);
     SafeString ownerEmail = getOwnerEmailFormatted(fields);
     SafeString amount = getAmountFormatted(fields);

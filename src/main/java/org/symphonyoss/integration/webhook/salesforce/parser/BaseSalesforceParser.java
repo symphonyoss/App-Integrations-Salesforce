@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.entity.model.User;
+import org.symphonyoss.integration.messageml.MessageMLFormatConstants;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 
@@ -37,6 +38,8 @@ import org.symphonyoss.integration.service.UserService;
  */
 @Component
 public abstract class BaseSalesforceParser implements SalesforceParser{
+
+  public static final String LINKED_FORMATTED_TEXT = "(%s)";
 
   @Autowired
   private UserService userService;
@@ -131,7 +134,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Owner Name: %s", ownerName);
+    return presentationFormat("Opportunity Owner: %s", ownerName);
   }
 
   /**
@@ -191,7 +194,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Stage Name: %s", stageName);
+    return presentationFormat("Stage: %s", stageName);
   }
 
   /**
@@ -225,18 +228,20 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   /**
-   * Return the Account Link from Salesforce json
+   * Return the URL from Account json formated.
    * @param node type JsonNode
-   * @return The Account Link if it exists formatted, null otherwise.
+   * @return (<a href="https://symdev1-dev-ed.my.salesforce.com/00146000004oPCcAAM"/>)
    */
-  protected SafeString getAccountLinkFormatted(JsonNode node) {
+  protected SafeString getAccountLinkedFormatted(JsonNode node) {
     String accountLink = node.path("Account").path("Link").asText();
 
-    if (StringUtils.isEmpty(accountLink)) {
+    if (accountLink.isEmpty()) {
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Account Link: %s", accountLink);
+    SafeString finalUrl = presentationFormat(MessageMLFormatConstants.MESSAGEML_LINK_HREF_FORMAT, accountLink.toString());
+
+    return presentationFormat(LINKED_FORMATTED_TEXT, finalUrl);
   }
 
   /**
@@ -275,13 +280,13 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
    * @return The Next Step if it exists formatted, null otherwise.
    */
   protected SafeString getNextStepFormatted(JsonNode node) {
-    String nextStep = node.path("NextStep").asText();
+    String nextStep = getOptionalField(node,  "NextStep", "-").trim();
 
     if (StringUtils.isEmpty(nextStep)) {
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("NextStep: %s", nextStep);
+    return presentationFormat("Next Step: %s", nextStep);
   }
 
   /**
@@ -301,6 +306,16 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private String getOptionalField(JsonNode node, String path, String key, String defaultValue) {
     String value = node.asText();
+
+    if (value.isEmpty()) {
+      return defaultValue;
+    }
+
+    return value;
+  }
+
+  private String getOptionalField(JsonNode node, String key, String defaultValue) {
+    String value = node.path(key).asText();
 
     if (value.isEmpty()) {
       return defaultValue;
