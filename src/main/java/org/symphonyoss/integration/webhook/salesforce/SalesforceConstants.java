@@ -38,5 +38,4 @@ public class SalesforceConstants {
   public static final String ASSIGNEE = "assignee";
   public static final String OPPORTUNITY_PATH = "current";
   public static final String FIELDS_PATH = "opportunity";
-  public static final String WEBHOOK_EVENT = "webhookEvent";
 }

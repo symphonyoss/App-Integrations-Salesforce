@@ -44,6 +44,8 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   public static final String LINKED_FORMATTED_TEXT = "(%s)";
 
+  public static final String LINKED_FORMATTED = "%s";
+
   private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
 
   @Autowired
@@ -154,9 +156,11 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    SafeString finalEmail = presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail.toString());
+    if (emailExistsInSimphony(ownerEmail.toString())) {
+      return presentationFormat(LINKED_FORMATTED, presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail));
+    }
 
-    return presentationFormat(LINKED_FORMATTED_TEXT, finalEmail);
+    return presentationFormat(LINKED_FORMATTED_TEXT, ownerEmail);
   }
 
   /**
@@ -322,6 +326,24 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     }
 
     return value;
+  }
+
+  /**
+   * Verified if already exists email address
+   * @param emailAddress
+   * @return
+   */
+  private boolean emailExistsInSimphony(String emailAddress) {
+    if ((emailAddress == null) || (emailAddress.isEmpty())) {
+      return false;
+    }
+
+    User user = userService.getUserByEmail(salesforceUser, emailAddress);
+    if (user.getId() == null) {
+      return false;
+    }
+
+    return true;
   }
 
 }
