@@ -1,12 +1,10 @@
 package org.symphonyoss.integration.webhook.salesforce.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.parser.ParserUtils;
 import org.symphonyoss.integration.parser.SafeString;
-import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
