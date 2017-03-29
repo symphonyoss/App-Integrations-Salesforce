@@ -22,7 +22,6 @@ import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
@@ -43,10 +42,8 @@ import java.text.SimpleDateFormat;
 public abstract class BaseSalesforceParser implements SalesforceParser{
 
   public static final String LINKED_FORMATTED_TEXT = "(%s)";
-
-  public static final String LINKED_FORMATTED = "%s";
-
-  private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
+  public static final String FORMATTED = "%s";
+  public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
   public static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
   public static final String TYPE_FORMATTED = "Type: %s";
   public static final String STAGE_FORMATTED = "Stage: %s";
@@ -106,81 +103,82 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return entity.getAttributeValue(EMAIL_ADDRESS);
   }
 
+  private String getOwnerName(JsonNode node) {
+    return node.path("Owner").path("Name").asText();
+  }
+
   /**
-   * Return the Owner Name from Salesforce json
+   * Return the Owner Name Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Owner Name if it exists formatted, null otherwise.
    */
   protected SafeString getOwnerNameFormatted(JsonNode node) {
-    String ownerName = node.path("Owner").path("Name").asText();
-
-    if (StringUtils.isEmpty(ownerName)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String ownerName = getOptionalField(getOwnerName(node), "-");
 
     return presentationFormat(OPPORTUNITY_OWNER, ownerName);
   }
 
+  private String getOwnerEmail(JsonNode node) {
+    return node.path("Owner").path("Email").asText();
+  }
+
   /**
-   * Return the Owner Email from Salesforce json
+   * Return the Owner Email Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Owner Email if it exists formatted, null otherwise.
    */
   protected SafeString getOwnerEmailFormatted(JsonNode node) {
-    String ownerEmail = getOptionalField(node, "Owner", "Email", "").trim();
-
-    if (StringUtils.isEmpty(ownerEmail)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String ownerEmail = getOptionalField(getOwnerEmail(node), "-");
 
     if (emailExistsInSimphony(ownerEmail.toString())) {
-      return presentationFormat(LINKED_FORMATTED, presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail));
+      return presentationFormat(FORMATTED, presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail));
     }
 
     return presentationFormat(LINKED_FORMATTED_TEXT, ownerEmail);
   }
 
+  private String getType(JsonNode node) {
+    return node.path("Type").asText();
+  }
+
   /**
-   * Return the Type from Salesforce json
+   * Return the Type Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Type if it exists formatted, null otherwise.
    */
   protected SafeString getTypeFormatted(JsonNode node) {
-    String type = node.path("Type").asText();
-
-    if (StringUtils.isEmpty(type)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String type = getOptionalField(getType(node), "-");
 
     return presentationFormat(TYPE_FORMATTED, type);
   }
 
+  private String getStageName(JsonNode node) {
+    return node.path("StageName").asText();
+  }
+
   /**
-   * Return the Stage Name from Salesforce json
+   * Return the Stage Name Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Stage Name if it exists formatted, null otherwise.
    */
   protected SafeString getStageNameFormatted(JsonNode node) {
-    String stageName = node.path("StageName").asText();
-
-    if (StringUtils.isEmpty(stageName)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String stageName = getOptionalField(getStageName(node), "-");
 
     return presentationFormat(STAGE_FORMATTED, stageName);
   }
 
+
+  private String getCloseDate(JsonNode node) {
+    return node.path("CloseDate").asText();
+  }
+
   /**
-   * Return the Close Date from Salesforce json
+   * Return the Close Date Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Close Date if it exists formatted, null otherwise.
    */
   protected SafeString getCloseDateFormatted(JsonNode node) {
-    String closeDate = node.path("CloseDate").asText();
-
-    if (StringUtils.isEmpty(closeDate)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String closeDate = getOptionalField(getCloseDate(node), "-");
 
     SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
     String closeDateFormat;
@@ -193,60 +191,64 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return presentationFormat(CLOSE_DATE_FORMATTED, closeDateFormat);
   }
 
+  private String getAccountName(JsonNode node) {
+    return node.path("Account").path("Name").asText();
+  }
+
   /**
-   * Return the Account Name from Salesforce json
+   * Return the Account Name Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Account Name if it exists formatted, null otherwise.
    */
   protected SafeString getAccountNameFormatted(JsonNode node) {
-    String accountName = node.path("Account").path("Name").asText();
-
-    if (StringUtils.isEmpty(accountName)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String accountName = getOptionalField(getAccountName(node), "-");
 
     return presentationFormat(ACCOUNT_NAME_FORMATTED, accountName);
   }
 
+  private String getAccountLink(JsonNode node) {
+    return node.path("Account").path("Link").asText();
+  }
+
   /**
-   * Return the URL from Account json formated.
+   * Return the URL from Account Formattedjson formated.
    * @param node type JsonNode
    * @return (<a href="https://symdev1-dev-ed.my.salesforce.com/00146000004oPCcAAM"/>)
    */
   protected SafeString getAccountLinkedFormatted(JsonNode node) {
-    String accountLink = node.path("Account").path("Link").asText();
-
-    if (accountLink.isEmpty()) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String accountLink = getOptionalField(getAccountLink(node), "-");
 
     SafeString finalUrl = presentationFormat(MessageMLFormatConstants.MESSAGEML_LINK_HREF_FORMAT, accountLink.toString());
 
     return presentationFormat(LINKED_FORMATTED_TEXT, finalUrl);
   }
 
+  private String getAmount(JsonNode node) {
+    return node.path("Amount").asText();
+  }
+
   /**
-   * Return the Amount from Salesforce json
+   * Return the Amount Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Amount if it exists formatted, null otherwise.
    */
   protected SafeString getAmountFormatted(JsonNode node) {
-    String amount = node.path("Amount").asText();
-
-    if (StringUtils.isEmpty(amount)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String amount = getOptionalField(getAmount(node), "-");
 
     return presentationFormat(AMOUNT_FORMATTED, amount);
   }
 
+  private String getNextStep(JsonNode node) {
+    return node.path("NextStep").asText();
+  }
+
   /**
-   * Return the Next Step from Salesforce json
+   * Return the Next Step Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Next Step if it exists formatted, null otherwise.
    */
   protected SafeString getNextStepFormatted(JsonNode node) {
-    String nextStep = getOptionalField(node,  "NextStep", "-").trim();
+    String nextStep = getOptionalField(getNextStep(node), "-");
 
     if (StringUtils.isEmpty(nextStep)) {
       return SafeString.EMPTY_SAFE_STRING;
@@ -255,49 +257,36 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return presentationFormat(NEXT_STEP_FORMATTED, nextStep);
   }
 
+  private String getProbability(JsonNode node) {
+    return node.path("Probability").asText();
+  }
+
   /**
-   * Return the Probability from Salesforce json
+   * Return the Probability Formatted from Salesforce json
    * @param node type JsonNode
    * @return The Probability if it exists formatted, null otherwise.
    */
   protected SafeString getProbabilityFormatted(JsonNode node) {
-    String probability = node.path("Probability").asText();
-
-    if (StringUtils.isEmpty(probability)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
+    String probability = getOptionalField(getProbability(node), "-");
 
     return presentationFormat(PROBABILITY_FORMATTED, probability);
   }
 
+  private String getCurrencyIsoCode(JsonNode node) {
+    return node.path("CurrencyIsoCode").asText();
+  }
   /**
-   * Return the CurrencyIsoCode from Salesforce json
+   * Return the CurrencyIsoCode Formatted from Salesforce json
    * @param node type JsonNode
    * @return The CurrencyIsoCode if it exists formatted, null otherwise.
    */
-  protected SafeString getCurrencyIsoCode(JsonNode node) {
-    String currencyIsoCode = node.path("CurrencyIsoCode").asText();
+  protected SafeString getCurrencyIsoCodeFormatted(JsonNode node) {
+    String currencyIsoCode = getOptionalField(getCurrencyIsoCode(node), "-");
 
-    if (StringUtils.isEmpty(currencyIsoCode)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
-
-    return presentationFormat("%s", currencyIsoCode);
+    return presentationFormat(FORMATTED, currencyIsoCode);
   }
 
-  private String getOptionalField(JsonNode node, String path, String key, String defaultValue) {
-    String value = node.path(path).path(key).asText();
-
-    if (value.isEmpty()) {
-      return defaultValue;
-    }
-
-    return value;
-  }
-
-  private String getOptionalField(JsonNode node, String key, String defaultValue) {
-    String value = node.path(key).asText();
-
+  private String getOptionalField(String value, String defaultValue) {
     if (value.isEmpty()) {
       return defaultValue;
     }

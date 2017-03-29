@@ -56,7 +56,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     SafeString ownerName = getOwnerNameFormatted(fields);
     SafeString ownerEmail = getOwnerEmailFormatted(fields);
     SafeString amount = getAmountFormatted(fields);
-    SafeString currencyIsoCode = getCurrencyIsoCode(fields);
+    SafeString currencyIsoCode = getCurrencyIsoCodeFormatted(fields);
     SafeString closeDate = getCloseDateFormatted(fields);
     SafeString nextStep = getNextStepFormatted(fields);
     SafeString type = getTypeFormatted(fields);
