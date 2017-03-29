@@ -182,10 +182,11 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
     SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
     String closeDateFormat;
+
     try {
       closeDateFormat = formatter.format(formatter.parse(closeDate));
     } catch (ParseException e) {
-      return SafeString.EMPTY_SAFE_STRING;
+      return presentationFormat(CLOSE_DATE_FORMATTED, new SafeString("-"));
     }
 
     return presentationFormat(CLOSE_DATE_FORMATTED, closeDateFormat);

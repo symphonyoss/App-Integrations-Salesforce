@@ -33,7 +33,8 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
   private static final String OPPORTUNITY_NOTIFICATION = "SFDCCallbackSampleOpportunity.json";
-  private static final String OPPORTUNITY_NOTIFICATION_withoutNextStep = "SFDCCallbackSampleOpportunity_withoutNextStep.json";
+  private static final String OPPORTUNITY_NOTIFICATION_WITHOUTNEXTSTEPS = "SFDCCallbackSampleOpportunity_WithoutNextStep.json";
+  private static final String OPPORTUNITY_NOTIFICATION_WITHALLFIELDSNULL = "SFDCCallbackSampleOpportunity_WithAllFieldsNull.json";
 
   @Mock
   private UserService userService;
@@ -63,7 +64,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
   @Test
   public void testOpportunityNotification_withoutNextStep() throws JAXBException, IOException {
-    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_withoutNextStep);
+    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITHOUTNEXTSTEPS);
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
@@ -71,6 +72,19 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
     assertNotNull(result);
     String expected = readFile("parser/opportunityNotificationJSON_withoutNextStep");
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void testOpportunityNotification_withAllFieldsNull() throws JAXBException, IOException {
+    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITHALLFIELDSNULL);
+    Map<String, String> headerParams = new HashMap<>();
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
+
+    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+
+    assertNotNull(result);
+    String expected = readFile("parser/opportunityNotificationJSON_WithoutAllFieldsNull");
     assertEquals(expected, result);
   }
 
