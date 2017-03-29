@@ -47,6 +47,14 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   public static final String LINKED_FORMATTED = "%s";
 
   private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
+  public static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
+  public static final String TYPE_FORMATTED = "Type: %s";
+  public static final String STAGE_FORMATTED = "Stage: %s";
+  public static final String CLOSE_DATE_FORMATTED = "Close Date: %s";
+  public static final String ACCOUNT_NAME_FORMATTED = "Account Name: %s";
+  public static final String AMOUNT_FORMATTED = "Amount: %s";
+  public static final String NEXT_STEP_FORMATTED = "Next Step: %s";
+  public static final String PROBABILITY_FORMATTED = "Probability: %s";
 
   @Autowired
   private UserService userService;
@@ -97,7 +105,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   private String getEmail(Entity entity) {
     return entity.getAttributeValue(EMAIL_ADDRESS);
   }
-  
+
   /**
    * Return the Owner Name from Salesforce json
    * @param node type JsonNode
@@ -110,7 +118,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Opportunity Owner: %s", ownerName);
+    return presentationFormat(OPPORTUNITY_OWNER, ownerName);
   }
 
   /**
@@ -144,7 +152,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Type: %s", type);
+    return presentationFormat(TYPE_FORMATTED, type);
   }
 
   /**
@@ -159,7 +167,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Stage: %s", stageName);
+    return presentationFormat(STAGE_FORMATTED, stageName);
   }
 
   /**
@@ -182,7 +190,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Close Date: %s", closeDateFormat);
+    return presentationFormat(CLOSE_DATE_FORMATTED, closeDateFormat);
   }
 
   /**
@@ -197,7 +205,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Account Name: %s", accountName);
+    return presentationFormat(ACCOUNT_NAME_FORMATTED, accountName);
   }
 
   /**
@@ -229,7 +237,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Amount: %s", amount);
+    return presentationFormat(AMOUNT_FORMATTED, amount);
   }
 
   /**
@@ -244,7 +252,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Next Step: %s", nextStep);
+    return presentationFormat(NEXT_STEP_FORMATTED, nextStep);
   }
 
   /**
@@ -259,7 +267,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
       return SafeString.EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat("Probability: %s", probability);
+    return presentationFormat(PROBABILITY_FORMATTED, probability);
   }
 
   /**
