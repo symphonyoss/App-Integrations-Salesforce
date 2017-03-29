@@ -12,6 +12,7 @@ import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 import java.io.IOException;
@@ -31,7 +32,6 @@ import static org.mockito.Mockito.when;
 public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
-  private static final String TYPE_JSON = "application/json";
   private static final String OPPORTUNITY_NOTIFICATION = "SFDCCallbackSampleOpportunity.json";
   private static final String OPPORTUNITY_NOTIFICATION_withoutNextStep = "SFDCCallbackSampleOpportunity_withoutNextStep.json";
 
@@ -52,7 +52,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
   public void LINKED_FORMATTED() throws JAXBException, IOException {
     JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION);
     Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, TYPE_JSON);
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
     String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
@@ -65,7 +65,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
   public void testOpportunityNotification_withoutNextStep() throws JAXBException, IOException {
     JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_withoutNextStep);
     Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, TYPE_JSON);
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
     String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 

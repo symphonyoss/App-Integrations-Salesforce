@@ -49,7 +49,6 @@ import javax.xml.bind.JAXBException;
 public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
-  private static final String TYPE_JSON = "application/json";
   private static final String OPPORTUNITY_NOTIFICATION = "SFDCCallbackSampleOpportunity.json";
 
   @Spy

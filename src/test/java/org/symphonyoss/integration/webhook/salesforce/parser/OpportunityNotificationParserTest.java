@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 /**
@@ -47,7 +48,6 @@ import javax.xml.bind.JAXBException;
 public class OpportunityNotificationParserTest extends BaseSalesforceTest {
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
-  private static final String TYPE_XML = "application/xml";
 
   @Mock
   private UserService userService;
@@ -68,7 +68,7 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
     String messageML = readFile("parser/opportunityNotification.xml");
 
     Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, TYPE_XML);
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
 
     String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());
@@ -84,7 +84,7 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
     String messageML = readFile("parser/opportunityNotification_without_OpportunityOwner.xml");
 
     Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, TYPE_XML);
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
 
     String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());

@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 /**
@@ -43,8 +44,6 @@ import javax.xml.bind.JAXBException;
  */
 @Component
 public class SalesforceWebHookIntegration extends WebHookIntegration {
-
-  private static final String typeJSON = "application/json";
 
   public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 
@@ -77,13 +76,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     String messageML;
 
     if (isContentTypeJSON(input)) {
-      try {
-        messageML = processIntegrationWithJSON(input);
-      } catch (IOException e) {
-        throw new SalesforceParseException(
-            "Something went wrong when trying to validate the MessageML received to object.", e);
-      }
-      return messageML;
+      return processIntegrationWithJSON(input);
     }
 
     Entity mainEntity = parsePayloadToEntity(input);
@@ -126,7 +119,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
       return false;
     }
 
-    return getContentType(payload).equals(typeJSON);
+    return MediaType.APPLICATION_JSON.equals(getContentType(payload));
   }
 
   /**
@@ -135,7 +128,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
    * @return the Content-Type with Header payload
    */
   private String getContentType(WebHookPayload payload) {
-    return payload.getHeaders().get("content-type").toString();
+    return payload.getHeaders().get("content-type");
   }
 
   /**
@@ -152,15 +145,20 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
    * @param input type WebHookPayload
    * @return MessageML formatted
    */
-  private String processIntegrationWithJSON(WebHookPayload input) throws IOException {
-    JsonNode rootNode = JsonUtils.readTree(input.getBody());
+  private String processIntegrationWithJSON(WebHookPayload input) {
+    JsonNode rootNode = null;
 
-    String type = OPPORTUNITY_NOTIFICATION_JSON;
+    try {
+      rootNode = JsonUtils.readTree(input.getBody());
+    } catch (IOException e) {
+      throw new SalesforceParseException(
+          "Something went wrong when trying to validate the MessageML received to object.", e);
+    }
 
-    SalesforceParser parser = getParser(type);
+    SalesforceParser parser = getParser(OPPORTUNITY_NOTIFICATION_JSON);
 
     String messageML = parser.parse(input.getHeaders(), rootNode);
-    messageML = super.buildMessageML(messageML, type);
+    messageML = super.buildMessageML(messageML, OPPORTUNITY_NOTIFICATION_JSON);
 
     return messageML;
   }
