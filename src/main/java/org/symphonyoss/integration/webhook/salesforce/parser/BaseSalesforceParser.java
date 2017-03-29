@@ -97,38 +97,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   private String getEmail(Entity entity) {
     return entity.getAttributeValue(EMAIL_ADDRESS);
   }
-
-  /**
-   * Receives an array of object to format for the presentationML.
-   * It's going to set an <br/> after each object.
-   * @param args Array of object to be showed on presentationML
-   * @return SafeString to be showed on presentationML
-   */
-  protected SafeString getPresentationMLBody(Object... args) {
-    StrBuilder format = new StrBuilder("%s");
-    SafeString body = null;
-
-    for (Object obj : args) {
-      if (obj != null) {
-        body = formatPresentationML(format, obj);
-      }
-    }
-
-    return body;
-  }
-
-  /**
-   * Formats an object returning an SafeString
-   * @param format format expected
-   * @param obj Object to be formatted
-   * @return SafeString
-   */
-  private SafeString formatPresentationML(StrBuilder format, Object obj) {
-    SafeString safeString = presentationFormat(format.toString(), obj);
-    format = format.clear().append(safeString.toString()).append("<br/>%s");
-    return safeString;
-  }
-
+  
   /**
    * Return the Owner Name from Salesforce json
    * @param node type JsonNode
