@@ -49,7 +49,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
   }
 
   @Test
-  public void LINKED_FORMATTED() throws JAXBException, IOException {
+  public void testOpportunityNotification() throws JAXBException, IOException {
     JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION);
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);

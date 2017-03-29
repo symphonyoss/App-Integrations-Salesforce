@@ -115,10 +115,6 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
    * @return the true when Type is JSON
    */
   private boolean isContentTypeJSON(WebHookPayload payload) {
-    if(!hasContentType(payload)) {
-      return false;
-    }
-
     return MediaType.APPLICATION_JSON.equals(getContentType(payload));
   }
 
@@ -129,15 +125,6 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
    */
   private String getContentType(WebHookPayload payload) {
     return payload.getHeaders().get("content-type");
-  }
-
-  /**
-   * Return if exists header ContentType
-   * @param payload type WebHookPayload
-   * @return  if exists the Content-Type with Header payload
-   */
-  private boolean hasContentType(WebHookPayload payload) {
-    return payload.getHeaders().get("content-type") != null;
   }
 
   /**
