@@ -105,7 +105,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
       return messageML.getEntity();
     } catch (JAXBException e) {
       throw new SalesforceParseException(
-          "Something went wrong when trying to validate the MessageML received to object.", e);
+          "Something went wrong when trying parse the JSON payload received by the webhook.", e);
     }
   }
 
