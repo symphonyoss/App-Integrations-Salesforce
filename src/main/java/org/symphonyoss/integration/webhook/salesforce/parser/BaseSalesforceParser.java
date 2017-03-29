@@ -128,7 +128,11 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
    * @return The Owner Email if it exists formatted, null otherwise.
    */
   protected SafeString getOwnerEmailFormatted(JsonNode node) {
-    String ownerEmail = getOptionalField(getOwnerEmail(node), "-");
+    String ownerEmail = getOptionalField(getOwnerEmail(node), "");
+
+    if (StringUtils.isEmpty(ownerEmail)) {
+      return presentationFormat(FORMATTED, ownerEmail);
+    }
 
     if (emailExistsInSimphony(ownerEmail.toString())) {
       return presentationFormat(FORMATTED, presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail));
@@ -217,7 +221,11 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
    * @return (<a href="https://symdev1-dev-ed.my.salesforce.com/00146000004oPCcAAM"/>)
    */
   protected SafeString getAccountLinkedFormatted(JsonNode node) {
-    String accountLink = getOptionalField(getAccountLink(node), "-");
+    String accountLink = getOptionalField(getAccountLink(node), "");
+
+    if (StringUtils.isEmpty(accountLink)) {
+      return presentationFormat(FORMATTED, accountLink);
+    }
 
     SafeString finalUrl = presentationFormat(MessageMLFormatConstants.MESSAGEML_LINK_HREF_FORMAT, accountLink.toString());
 
@@ -250,10 +258,6 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
    */
   protected SafeString getNextStepFormatted(JsonNode node) {
     String nextStep = getOptionalField(getNextStep(node), "-");
-
-    if (StringUtils.isEmpty(nextStep)) {
-      return SafeString.EMPTY_SAFE_STRING;
-    }
 
     return presentationFormat(NEXT_STEP_FORMATTED, nextStep);
   }
