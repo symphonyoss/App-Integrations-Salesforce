@@ -33,8 +33,18 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
   private static final String OPPORTUNITY_NOTIFICATION = "SFDCCallbackSampleOpportunity.json";
-  private static final String OPPORTUNITY_NOTIFICATION_WITHOUTNEXTSTEPS = "SFDCCallbackSampleOpportunity_WithoutNextStep.json";
-  private static final String OPPORTUNITY_NOTIFICATION_WITHALLFIELDSNULL = "SFDCCallbackSampleOpportunity_WithAllFieldsNull.json";
+  private static final String OPPORTUNITY_NOTIFICATION_WITHOUT_NEXT_STEPS = "SFDCCallbackSampleOpportunity_WithoutNextStep.json";
+  private static final String OPPORTUNITY_NOTIFICATION_WITH_ALL_FIELDS_NULL = "SFDCCallbackSampleOpportunity_WithAllFieldsNull.json";
+  private static final String OPPORTUNITY_NOTIFICATION_WITHOUT_AMOUNT = "SFDCCallbackSampleOpportunity_WhitoutAmount.json";
+
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT =
+      "parser/opportunityNotificationJSON_WithoutAmount";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL =
+      "parser/opportunityNotificationJSON_WithoutAllFieldsNull";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP =
+      "parser/opportunityNotificationJSON_withoutNextStep";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON =
+      "parser/opportunityNotificationJSON";
 
   @Mock
   private UserService userService;
@@ -58,33 +68,46 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
-    String expected = readFile("parser/opportunityNotificationJSON");
+    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON);
     assertEquals(expected, result);
   }
 
   @Test
-  public void testOpportunityNotification_withoutNextStep() throws JAXBException, IOException {
-    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITHOUTNEXTSTEPS);
+  public void testOpportunityNotificationWithoutNextStep() throws JAXBException, IOException {
+    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITHOUT_NEXT_STEPS);
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
     String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
-    String expected = readFile("parser/opportunityNotificationJSON_withoutNextStep");
+    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP);
     assertEquals(expected, result);
   }
 
   @Test
-  public void testOpportunityNotification_withAllFieldsNull() throws JAXBException, IOException {
-    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITHALLFIELDSNULL);
+  public void testOpportunityNotificationWithAllFieldsNull() throws JAXBException, IOException {
+    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITH_ALL_FIELDS_NULL);
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
     String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
-    String expected = readFile("parser/opportunityNotificationJSON_WithoutAllFieldsNull");
+    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void testOpportunityNotificationWithoutAmount() throws JAXBException, IOException {
+    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITHOUT_AMOUNT);
+    Map<String, String> headerParams = new HashMap<>();
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
+
+    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+
+    assertNotNull(result);
+    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT);
     assertEquals(expected, result);
   }
 

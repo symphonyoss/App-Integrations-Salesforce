@@ -282,6 +282,10 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
    * @return The CurrencyIsoCode if it exists formatted, null otherwise.
    */
   protected SafeString getCurrencyIsoCodeFormatted(JsonNode node) {
+    if (StringUtils.isEmpty(getAmount(node))) {
+      return presentationFormat(FORMATTED, new SafeString(""));
+    }
+
     String currencyIsoCode = getOptionalField(getCurrencyIsoCode(node), "-");
 
     return presentationFormat(FORMATTED, currencyIsoCode);
