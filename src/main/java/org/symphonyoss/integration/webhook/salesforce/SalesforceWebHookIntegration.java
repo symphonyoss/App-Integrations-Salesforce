@@ -22,6 +22,7 @@ import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageML;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 /**
@@ -65,7 +67,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
   }
 
   @Override
-  public String parse(WebHookPayload input) throws WebHookParseException {
+  public Message parse(WebHookPayload input) throws WebHookParseException {
     Entity mainEntity = parsePayloadToEntity(input);
 
     String type = mainEntity.getType();
@@ -73,13 +75,15 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     SalesforceParser parser = getParser(type);
 
     if (parser == null) {
-      return input.getBody();
+      Message message = new Message();
+      message.setMessage(input.getBody());
+      message.setFormat(Message.FormatEnum.MESSAGEML);
+
+      return message;
     }
 
     String messageML = parser.parse(mainEntity);
-    messageML = super.buildMessageML(messageML, type);
-
-    return messageML;
+    return super.buildMessageML(messageML, type);
   }
 
   private SalesforceParser getParser(String type) {

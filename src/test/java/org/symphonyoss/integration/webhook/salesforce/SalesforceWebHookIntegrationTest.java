@@ -30,6 +30,7 @@ import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageMLParser;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.parser.AccountStatusParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
@@ -77,8 +78,8 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   public void testUnregistredParser() throws IOException{
     String xml = readFile("executiveReport.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
-    String result = salesforceWebHookIntegration.parse(payload);
-    Assert.assertEquals(xml, result);
+    Message result = salesforceWebHookIntegration.parse(payload);
+    Assert.assertEquals(xml, result.getMessage());
   }
 
   @Test
@@ -89,8 +90,8 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
     String expected = readFile("parser/accountStatus_withMentionTags_expected.xml");
     when(accountStatusParser.parse(any(Entity.class))).thenReturn(expected);
 
-    String result = salesforceWebHookIntegration.parse(payload);
-    assertEquals("<messageML>" + expected + "</messageML>", result);
+    Message result = salesforceWebHookIntegration.parse(payload);
+    assertEquals("<messageML>" + expected + "</messageML>", result.getMessage());
   }
 
 }
