@@ -24,15 +24,24 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.NumberUtils;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.messageml.MessageMLFormatConstants;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
+import org.symphonyoss.integration.utils.NumberFormatUtils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import javax.management.openmbean.SimpleType;
 
 /**
  * Utility methods for Salesforce Parsers
@@ -52,6 +61,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   public static final String AMOUNT_FORMATTED = "Amount: %s";
   public static final String NEXT_STEP_FORMATTED = "Next Step: %s";
   public static final String PROBABILITY_FORMATTED = "Probability: %s";
+  public static final String VALUE_DEFAULT_WITH_NULL_FIELD = "-";
 
   @Autowired
   private UserService userService;
@@ -190,7 +200,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     try {
       closeDateFormat = formatter.format(formatter.parse(closeDate));
     } catch (ParseException e) {
-      return presentationFormat(CLOSE_DATE_FORMATTED, new SafeString("-"));
+      return presentationFormat(CLOSE_DATE_FORMATTED, new SafeString(VALUE_DEFAULT_WITH_NULL_FIELD));
     }
 
     return presentationFormat(CLOSE_DATE_FORMATTED, closeDateFormat);
@@ -243,6 +253,10 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
    */
   protected SafeString getAmountFormatted(JsonNode node) {
     String amount = getOptionalField(getAmount(node), "-");
+
+    if (!amount.equals(VALUE_DEFAULT_WITH_NULL_FIELD)) {
+      amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
+    }
 
     return presentationFormat(AMOUNT_FORMATTED, amount);
   }
