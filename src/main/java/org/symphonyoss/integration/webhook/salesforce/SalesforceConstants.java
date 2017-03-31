@@ -36,6 +36,22 @@ public class SalesforceConstants {
   public static final String OPPORTUNITIES = "opportunities";
   public static final String ACTIVITIES = "activities";
   public static final String ASSIGNEE = "assignee";
-  public static final String OPPORTUNITY_PATH = "current";
-  public static final String FIELDS_PATH = "opportunity";
+
+  public static final String PATH = "current";
+  public static final String OPPORTUNITY_OWNER = "Owner";
+  public static final String NAME = "Name";
+  public static final String EMAIL = "Email";
+  public static final String STAGE_NAME = "StageName";
+  public static final String CLOSE_DATE = "CloseDate";
+  public static final String OPPORTUNITY_ACCOUNT = "Account";
+  public static final String LINK = "Link";
+  public static final String AMOUNT = "Amount";
+  public static final String NEXT_STEP = "NextStep";
+  public static final String PROBABILITY = "Probability";
+  public static final String CURRENCY_ISO_CODE = "CurrencyIsoCode";
+  public static final String TYPE = "Type";
+  public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
+
+
+
 }

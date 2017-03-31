@@ -32,6 +32,7 @@ import org.symphonyoss.integration.messageml.MessageMLFormatConstants;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,6 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private static final String FORMATTED_STRING_WITH_PARENTHESIS = "(%s)";
   private static final String FORMATTED_STRING = "%s";
-  private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
   private static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
   private static final String OPPORTUNITY_TYPE = "Type: %s";
   private static final String OPPORTUNITY_STAGE = "Stage: %s";
@@ -102,7 +102,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getOwnerName(JsonNode node) {
-    return node.path("Owner").path("Name").asText();
+    return node.path(SalesforceConstants.OPPORTUNITY_OWNER).path(SalesforceConstants.NAME).asText();
   }
 
   protected SafeString getOwnerNameFormatted(JsonNode node) {
@@ -110,7 +110,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getOwnerEmail(JsonNode node) {
-    return node.path("Owner").path("Email").asText();
+    return node.path(SalesforceConstants.OPPORTUNITY_OWNER).path(SalesforceConstants.EMAIL).asText();
   }
 
   protected SafeString getOwnerEmailFormatted(JsonNode node) {
@@ -128,7 +128,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getType(JsonNode node) {
-    return node.path("Type").asText();
+    return node.path(SalesforceConstants.TYPE).asText();
   }
 
   protected SafeString getTypeFormatted(JsonNode node) {
@@ -136,7 +136,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getStageName(JsonNode node) {
-    return node.path("StageName").asText();
+    return node.path(SalesforceConstants.STAGE_NAME).asText();
   }
 
   protected SafeString getStageNameFormatted(JsonNode node) {
@@ -145,13 +145,13 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
 
   private String getCloseDate(JsonNode node) {
-    return node.path("CloseDate").asText();
+    return node.path(SalesforceConstants.CLOSE_DATE).asText();
   }
 
   protected SafeString getCloseDateFormatted(JsonNode node) {
     String closeDate = getCloseDate(node);
 
-    SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
+    SimpleDateFormat formatter = new SimpleDateFormat(SalesforceConstants.TIMESTAMP_FORMAT);
     String closeDateFormat;
 
     try {
@@ -164,7 +164,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getAccountName(JsonNode node) {
-    return node.path("Account").path("Name").asText();
+    return node.path(SalesforceConstants.OPPORTUNITY_ACCOUNT).path(SalesforceConstants.NAME).asText();
   }
 
   protected SafeString getAccountNameFormatted(JsonNode node) {
@@ -172,7 +172,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getAccountLink(JsonNode node) {
-    return node.path("Account").path("Link").asText();
+    return node.path(SalesforceConstants.OPPORTUNITY_ACCOUNT).path(SalesforceConstants.LINK).asText();
   }
 
   protected SafeString getAccountLinkedFormatted(JsonNode node) {
@@ -188,7 +188,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getAmount(JsonNode node) {
-    return node.path("Amount").asText();
+    return node.path(SalesforceConstants.AMOUNT).asText();
   }
 
   protected SafeString getAmountFormatted(JsonNode node) {
@@ -202,7 +202,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getNextStep(JsonNode node) {
-    return node.path("NextStep").asText();
+    return node.path(SalesforceConstants.NEXT_STEP).asText();
   }
 
   protected SafeString getNextStepFormatted(JsonNode node) {
@@ -210,7 +210,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getProbability(JsonNode node) {
-    return node.path("Probability").asText();
+    return node.path(SalesforceConstants.PROBABILITY).asText();
   }
 
   protected SafeString getProbabilityFormatted(JsonNode node) {
@@ -218,7 +218,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private String getCurrencyIsoCode(JsonNode node) {
-    return node.path("CurrencyIsoCode").asText();
+    return node.path(SalesforceConstants.CURRENCY_ISO_CODE).asText();
   }
 
   protected SafeString getCurrencyIsoCodeFormatted(JsonNode node) {
