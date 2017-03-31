@@ -17,6 +17,7 @@
 package org.symphonyoss.integration.webhook.salesforce.parser;
 
 import static org.symphonyoss.integration.parser.ParserUtils.presentationFormat;
+import static org.symphonyoss.integration.parser.SafeString.EMPTY_SAFE_STRING;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.EMAIL_ADDRESS;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.INTEGRATION_NAME;
 
@@ -24,7 +25,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.NumberUtils;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.entity.model.User;
@@ -33,15 +33,9 @@ import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
-import javax.management.openmbean.SimpleType;
 
 /**
  * Utility methods for Salesforce Parsers
@@ -50,18 +44,18 @@ import javax.management.openmbean.SimpleType;
 @Component
 public abstract class BaseSalesforceParser implements SalesforceParser{
 
-  public static final String LINKED_FORMATTED_TEXT = "(%s)";
-  public static final String FORMATTED = "%s";
-  public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
-  public static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
-  public static final String TYPE_FORMATTED = "Type: %s";
-  public static final String STAGE_FORMATTED = "Stage: %s";
-  public static final String CLOSE_DATE_FORMATTED = "Close Date: %s";
-  public static final String ACCOUNT_NAME_FORMATTED = "Account Name: %s";
-  public static final String AMOUNT_FORMATTED = "Amount: %s";
-  public static final String NEXT_STEP_FORMATTED = "Next Step: %s";
-  public static final String PROBABILITY_FORMATTED = "Probability: %s";
-  public static final String VALUE_DEFAULT_WITH_NULL_FIELD = "-";
+  private static final String FORMATTED_STRING_WITH_PARENTHESIS = "(%s)";
+  private static final String FORMATTED_STRING = "%s";
+  private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
+  private static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
+  private static final String OPPORTUNITY_TYPE = "Type: %s";
+  private static final String OPPORTUNITY_STAGE = "Stage: %s";
+  private static final String OPPORTUNITY_CLOSE_DATE = "Close Date: %s";
+  private static final String ACCOUNT_NAME = "Account Name: %s";
+  private static final String OPPORTUNITY_AMOUNT = "Amount: %s";
+  private static final String OPPORTUNITY_NEXT_STEP = "Next Step: %s";
+  private static final String OPPORTUNITY_PROBABILITY = "Probability: %s";
+  private static final String DEFAULT_CONTENT_FOR_MISSING_FIELD = "-";
 
   @Autowired
   private UserService userService;
@@ -74,9 +68,9 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   /**
-   * Search the user at Symphony API.
+   * Searches a matching Symphony user for the given Salesforce user email.
    * @param email email to be found
-   * @return User
+   * @return user information, including a matching Symphony ID (if any)
    */
   private User getUser(String email) {
     return userService.getUserByEmail(salesforceUser, email);
@@ -94,12 +88,6 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     }
   }
 
-  /**
-   * Creates the mention tag for the entity received.
-   * @param mainEntity Main entity to find the nested entity
-   * @param nestedEntityName Entity to find in the main entity
-   * @param userEntityName Entity name for set the mention tag
-   */
   protected void createListOfMentionsFor(Entity mainEntity, String nestedEntityName, String userEntityName){
     Entity entity = mainEntity.getEntityByType(nestedEntityName);
     if (entity != null) {
@@ -117,68 +105,42 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return node.path("Owner").path("Name").asText();
   }
 
-  /**
-   * Return the Owner Name Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Owner Name if it exists formatted, null otherwise.
-   */
   protected SafeString getOwnerNameFormatted(JsonNode node) {
-    String ownerName = getOptionalField(getOwnerName(node), "-");
-
-    return presentationFormat(OPPORTUNITY_OWNER, ownerName);
+    return formatOptionalField(OPPORTUNITY_OWNER, getOwnerName(node));
   }
 
   private String getOwnerEmail(JsonNode node) {
     return node.path("Owner").path("Email").asText();
   }
 
-  /**
-   * Return the Owner Email Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Owner Email if it exists formatted, null otherwise.
-   */
   protected SafeString getOwnerEmailFormatted(JsonNode node) {
-    String ownerEmail = getOptionalField(getOwnerEmail(node), "");
+    String ownerEmail = getOwnerEmail(node);
 
-    if (StringUtils.isEmpty(ownerEmail)) {
-      return presentationFormat(FORMATTED, ownerEmail);
+    if (StringUtils.isBlank(ownerEmail)) {
+      return EMPTY_SAFE_STRING;
     }
 
-    if (emailExistsInSimphony(ownerEmail.toString())) {
-      return presentationFormat(FORMATTED, presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail));
+    if (emailExistsAtSymphony(ownerEmail)) {
+      return presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, ownerEmail);
     }
 
-    return presentationFormat(LINKED_FORMATTED_TEXT, ownerEmail);
+    return presentationFormat(FORMATTED_STRING_WITH_PARENTHESIS, ownerEmail);
   }
 
   private String getType(JsonNode node) {
     return node.path("Type").asText();
   }
 
-  /**
-   * Return the Type Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Type if it exists formatted, null otherwise.
-   */
   protected SafeString getTypeFormatted(JsonNode node) {
-    String type = getOptionalField(getType(node), "-");
-
-    return presentationFormat(TYPE_FORMATTED, type);
+    return formatOptionalField(OPPORTUNITY_TYPE, getType(node));
   }
 
   private String getStageName(JsonNode node) {
     return node.path("StageName").asText();
   }
 
-  /**
-   * Return the Stage Name Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Stage Name if it exists formatted, null otherwise.
-   */
   protected SafeString getStageNameFormatted(JsonNode node) {
-    String stageName = getOptionalField(getStageName(node), "-");
-
-    return presentationFormat(STAGE_FORMATTED, stageName);
+    return formatOptionalField(OPPORTUNITY_STAGE, getStageName(node));
   }
 
 
@@ -186,13 +148,8 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return node.path("CloseDate").asText();
   }
 
-  /**
-   * Return the Close Date Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Close Date if it exists formatted, null otherwise.
-   */
   protected SafeString getCloseDateFormatted(JsonNode node) {
-    String closeDate = getOptionalField(getCloseDate(node), "-");
+    String closeDate = getCloseDate(node);
 
     SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
     String closeDateFormat;
@@ -200,139 +157,95 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     try {
       closeDateFormat = formatter.format(formatter.parse(closeDate));
     } catch (ParseException e) {
-      return presentationFormat(CLOSE_DATE_FORMATTED, new SafeString(VALUE_DEFAULT_WITH_NULL_FIELD));
+      closeDateFormat = DEFAULT_CONTENT_FOR_MISSING_FIELD;
     }
 
-    return presentationFormat(CLOSE_DATE_FORMATTED, closeDateFormat);
+    return presentationFormat(OPPORTUNITY_CLOSE_DATE, closeDateFormat);
   }
 
   private String getAccountName(JsonNode node) {
     return node.path("Account").path("Name").asText();
   }
 
-  /**
-   * Return the Account Name Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Account Name if it exists formatted, null otherwise.
-   */
   protected SafeString getAccountNameFormatted(JsonNode node) {
-    String accountName = getOptionalField(getAccountName(node), "-");
-
-    return presentationFormat(ACCOUNT_NAME_FORMATTED, accountName);
+    return formatOptionalField(ACCOUNT_NAME, getAccountName(node));
   }
 
   private String getAccountLink(JsonNode node) {
     return node.path("Account").path("Link").asText();
   }
 
-  /**
-   * Return the URL from Account Formattedjson formated.
-   * @param node type JsonNode
-   * @return (<a href="https://symdev1-dev-ed.my.salesforce.com/00146000004oPCcAAM"/>)
-   */
   protected SafeString getAccountLinkedFormatted(JsonNode node) {
-    String accountLink = getOptionalField(getAccountLink(node), "");
+    String accountLink = getAccountLink(node);
 
     if (StringUtils.isEmpty(accountLink)) {
-      return presentationFormat(FORMATTED, accountLink);
+      return EMPTY_SAFE_STRING;
     }
 
-    SafeString finalUrl = presentationFormat(MessageMLFormatConstants.MESSAGEML_LINK_HREF_FORMAT, accountLink.toString());
+    SafeString finalUrl = presentationFormat(MessageMLFormatConstants.MESSAGEML_LINK_HREF_FORMAT, accountLink);
 
-    return presentationFormat(LINKED_FORMATTED_TEXT, finalUrl);
+    return presentationFormat(FORMATTED_STRING_WITH_PARENTHESIS, finalUrl);
   }
 
   private String getAmount(JsonNode node) {
     return node.path("Amount").asText();
   }
 
-  /**
-   * Return the Amount Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Amount if it exists formatted, null otherwise.
-   */
   protected SafeString getAmountFormatted(JsonNode node) {
-    String amount = getOptionalField(getAmount(node), "-");
+    String amount = getAmount(node);
 
-    if (!amount.equals(VALUE_DEFAULT_WITH_NULL_FIELD)) {
+    if (StringUtils.isNotBlank(amount)) {
       amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
     }
 
-    return presentationFormat(AMOUNT_FORMATTED, amount);
+    return formatOptionalField(OPPORTUNITY_AMOUNT, amount);
   }
 
   private String getNextStep(JsonNode node) {
     return node.path("NextStep").asText();
   }
 
-  /**
-   * Return the Next Step Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Next Step if it exists formatted, null otherwise.
-   */
   protected SafeString getNextStepFormatted(JsonNode node) {
-    String nextStep = getOptionalField(getNextStep(node), "-");
-
-    return presentationFormat(NEXT_STEP_FORMATTED, nextStep);
+    return formatOptionalField(OPPORTUNITY_NEXT_STEP, getNextStep(node));
   }
 
   private String getProbability(JsonNode node) {
     return node.path("Probability").asText();
   }
 
-  /**
-   * Return the Probability Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The Probability if it exists formatted, null otherwise.
-   */
   protected SafeString getProbabilityFormatted(JsonNode node) {
-    String probability = getOptionalField(getProbability(node), "-");
-
-    return presentationFormat(PROBABILITY_FORMATTED, probability);
+    return formatOptionalField(OPPORTUNITY_PROBABILITY, getProbability(node));
   }
 
   private String getCurrencyIsoCode(JsonNode node) {
     return node.path("CurrencyIsoCode").asText();
   }
-  /**
-   * Return the CurrencyIsoCode Formatted from Salesforce json
-   * @param node type JsonNode
-   * @return The CurrencyIsoCode if it exists formatted, null otherwise.
-   */
+
   protected SafeString getCurrencyIsoCodeFormatted(JsonNode node) {
+    String currencyIsoCode =getCurrencyIsoCode(node);
+
     if (StringUtils.isEmpty(getAmount(node))) {
-      return presentationFormat(FORMATTED, new SafeString(""));
+      currencyIsoCode = StringUtils.EMPTY;
     }
 
-    String currencyIsoCode = getOptionalField(getCurrencyIsoCode(node), "-");
-
-    return presentationFormat(FORMATTED, currencyIsoCode);
+    return presentationFormat(FORMATTED_STRING, currencyIsoCode);
   }
 
-  private String getOptionalField(String value, String defaultValue) {
+  private SafeString formatOptionalField(String format, String value) {
     if (value.isEmpty()) {
-      return defaultValue;
+      value = DEFAULT_CONTENT_FOR_MISSING_FIELD;
     }
 
-    return value;
+    return presentationFormat(format, value);
   }
 
-  /**
-   * Verified if already exists email address
-   * @param emailAddress
-   * @return
-   */
-  private boolean emailExistsInSimphony(String emailAddress) {
-    if ((emailAddress == null) || (emailAddress.isEmpty())) {
+  private boolean emailExistsAtSymphony(String emailAddress) {
+    if (StringUtils.isBlank(emailAddress)) {
       return false;
     }
 
     User user = userService.getUserByEmail(salesforceUser, emailAddress);
-    if (user.getId() == null) {
-      return false;
-    }
-
-    return true;
+    return user.getId() != null;
   }
 
 }

@@ -24,7 +24,6 @@ import org.symphonyoss.integration.entity.MessageML;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
-import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
@@ -76,7 +75,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     String messageML;
 
     if (isContentTypeJSON(input)) {
-      return processIntegrationWithJSON(input);
+      return parseJSONPayload(input);
     }
 
     Entity mainEntity = parsePayloadToEntity(input);
@@ -105,41 +104,41 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
       return messageML.getEntity();
     } catch (JAXBException e) {
       throw new SalesforceParseException(
-          "Something went wrong when trying parse the JSON payload received by the webhook.", e);
+          "Something went wrong when trying parse the MessageML payload received by the webhook.", e);
     }
   }
 
   /**
-   * Return true when Type is JSON, is not tag ContentType when return false
-   * @param payload type WebHookPayload
-   * @return the true when Type is JSON
+   * Returns true when the payload content is JSON
+   * @param payload the webhook payload
+   * @return true when payload is JSON
    */
   private boolean isContentTypeJSON(WebHookPayload payload) {
     return MediaType.APPLICATION_JSON.equals(getContentType(payload));
   }
 
   /**
-   * Return the type of integration JSON/XML
-   * @param payload type WebHookPayload
-   * @return the Content-Type with Header payload
+   * Rerieves the Content-Type header from the webhook payload.
+   * @param payload the webhook payload
+   * @return value of Content-Type header
    */
   private String getContentType(WebHookPayload payload) {
     return payload.getHeaders().get("content-type");
   }
 
   /**
-   * Return the MessageML parser with JSON integration about Opportunity Notification
-   * @param input type WebHookPayload
-   * @return MessageML formatted
+   * Parses the webhook payload (received in JSON format)
+   * @param input the webhook payload
+   * @return parsed content formatted as MessageML
    */
-  private String processIntegrationWithJSON(WebHookPayload input) {
+  private String parseJSONPayload(WebHookPayload input) {
     JsonNode rootNode = null;
 
     try {
       rootNode = JsonUtils.readTree(input.getBody());
     } catch (IOException e) {
       throw new SalesforceParseException(
-          "Something went wrong when trying to validate the MessageML received to object.", e);
+          "Something went wrong when trying parse the JSON payload received by the webhook.", e);
     }
 
     SalesforceParser parser = getParser(OPPORTUNITY_NOTIFICATION_JSON);

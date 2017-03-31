@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class responsable to handle the Opportunity Notification event of Salesforce
- * with format JSON
+ * Class responsible to handle the Opportunity Notification event from Salesforce (in JSON format)
  *
  * Created by crepache on 3/24/17.
  */
@@ -22,7 +21,8 @@ import java.util.Map;
 public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     implements SalesforceParser {
 
-  protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT = "%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
+  protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT =
+      "%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
 
   @Override
   public List<String> getEvents() {
@@ -43,10 +43,10 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
   }
 
   /**
-   * Returns the presentationML for created OpportunityNotification with integration JSON.
-   * @param node
-   * @return presentationML
-   * @throws SalesforceParseException
+   * Returns the presentationML for an opportunity notification payload.
+   * @param node the opportunity notification payload
+   * @return presentationML for the notification
+   * @throws SalesforceParseException in case an error occurs while parsing the payload
    */
   private SafeString getPresentationML(JsonNode node) throws SalesforceParseException {
     JsonNode fields = node.path(SalesforceConstants.OPPORTUNITY_PATH).path(SalesforceConstants.FIELDS_PATH);
@@ -63,7 +63,8 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     SafeString stageName = getStageNameFormatted(fields);
     SafeString probability = getProbabilityFormatted(fields);
 
-    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, accountName, accountEmail, ownerName, ownerEmail, amount, currencyIsoCode, closeDate, nextStep, type, stageName, probability);
+    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, accountName, accountEmail,
+        ownerName, ownerEmail, amount, currencyIsoCode, closeDate, nextStep, type, stageName, probability);
   }
 
 }
