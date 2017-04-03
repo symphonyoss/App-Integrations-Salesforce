@@ -49,7 +49,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
    * @throws SalesforceParseException in case an error occurs while parsing the payload
    */
   private SafeString getPresentationML(JsonNode node) throws SalesforceParseException {
-    JsonNode fields = node.path(SalesforceConstants.PATH).path(SalesforceConstants.OPPORTUNITY);
+    JsonNode fields = node.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
     SafeString name = getNameFormatted(fields);
     SafeString accountName = getAccountNameFormatted(fields);
