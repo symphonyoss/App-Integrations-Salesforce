@@ -62,6 +62,6 @@ public class AccountStatusParser extends BaseSalesforceParser {
 
   @Override
   public String parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
-    return null;
+    throw new SalesforceParseException("Parser used for JSON format but not used for XML.");
   }
 }

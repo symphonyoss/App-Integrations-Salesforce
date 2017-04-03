@@ -31,7 +31,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
 
   @Override
   public String parse(Entity entity) throws SalesforceParseException {
-    return null;
+    throw new SalesforceParseException("Parser used for XML format but not used for JSON.");
   }
 
   @Override
