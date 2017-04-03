@@ -89,6 +89,12 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     }
   }
 
+  /**
+   * Creates the mention tag for the entity received.
+   * @param mainEntity Main entity to find the nested entity
+   * @param nestedEntityName Entity to find in the main entity
+   * @param userEntityName Entity name for set the mention tag
+   */
   protected void createListOfMentionsFor(Entity mainEntity, String nestedEntityName, String userEntityName){
     Entity entity = mainEntity.getEntityByType(nestedEntityName);
     if (entity != null) {
