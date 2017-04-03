@@ -47,6 +47,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private static final String FORMATTED_STRING_WITH_PARENTHESIS = "(%s)";
   private static final String FORMATTED_STRING = "%s";
+  private static final String OPPORTUNITY_NAME = "Opportunity Name: %s";
   private static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
   private static final String OPPORTUNITY_TYPE = "Type: %s";
   private static final String OPPORTUNITY_STAGE = "Stage: %s";
@@ -99,6 +100,14 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private String getEmail(Entity entity) {
     return entity.getAttributeValue(EMAIL_ADDRESS);
+  }
+
+  private String getName(JsonNode node) {
+    return node.path(SalesforceConstants.NAME).asText();
+  }
+
+  protected SafeString getNameFormatted(JsonNode node) {
+    return formatOptionalField(OPPORTUNITY_NAME, getName(node));
   }
 
   private String getOwnerName(JsonNode node) {
@@ -222,7 +231,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   protected SafeString getCurrencyIsoCodeFormatted(JsonNode node) {
-    String currencyIsoCode =getCurrencyIsoCode(node);
+    String currencyIsoCode = getCurrencyIsoCode(node);
 
     if (StringUtils.isEmpty(getAmount(node))) {
       currencyIsoCode = StringUtils.EMPTY;
