@@ -72,8 +72,6 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
   @Override
   public String parse(WebHookPayload input) throws WebHookParseException {
-    String messageML;
-
     if (isContentTypeJSON(input)) {
       return parseJSONPayload(input);
     }
@@ -88,7 +86,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
       return input.getBody();
     }
 
-    messageML = parser.parse(mainEntity);
+    String messageML = parser.parse(mainEntity);
     messageML = super.buildMessageML(messageML, type);
 
     return messageML;
