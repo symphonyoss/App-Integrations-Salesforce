@@ -47,7 +47,8 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private static final String FORMATTED_STRING_WITH_PARENTHESIS = "(%s)";
   private static final String FORMATTED_STRING = "%s";
-  private static final String OPPORTUNITY_NAME = "Opportunity Name: %s";
+  private static final String FORMATTED_STRING_WITH_SECOND_INFORMATION = "- %s";
+  private static final String OPPORTUNITY_NAME = "Opportunity: %s";
   private static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
   private static final String OPPORTUNITY_TYPE = "Type: %s";
   private static final String OPPORTUNITY_STAGE = "Stage: %s";
@@ -263,4 +264,17 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return user.getId() != null;
   }
 
+  private String getNameLastModifyBy(JsonNode node) {
+    return node.path(SalesforceConstants.LAST_MODIFY_BY).path(SalesforceConstants.NAME).asText();
+  }
+
+  protected SafeString getNameOfLastModifyByFormatted(JsonNode node) {
+    String nameLastModifyBy = getNameLastModifyBy(node);
+
+    if (StringUtils.isEmpty(nameLastModifyBy)) {
+      return formatOptionalField(FORMATTED_STRING, nameLastModifyBy);
+    }
+
+    return formatOptionalField(FORMATTED_STRING_WITH_SECOND_INFORMATION, nameLastModifyBy);
+  }
 }

@@ -39,6 +39,7 @@ public class SalesforceConstants {
 
   public static final String PATH = "current";
   public static final String OPPORTUNITY_OWNER = "Owner";
+  public static final String LAST_MODIFY_BY = "LastModifiedBy";
   public static final String NAME = "Name";
   public static final String EMAIL = "Email";
   public static final String STAGE_NAME = "StageName";
