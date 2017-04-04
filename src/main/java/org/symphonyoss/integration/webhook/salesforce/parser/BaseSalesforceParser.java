@@ -264,17 +264,17 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return user.getId() != null;
   }
 
-  private String getNameLastModifyBy(JsonNode node) {
-    return node.path(SalesforceConstants.LAST_MODIFY_BY).path(SalesforceConstants.NAME).asText();
+  private String getEmailLastModifyBy(JsonNode node) {
+    return node.path(SalesforceConstants.LAST_MODIFY_BY).path(SalesforceConstants.EMAIL).asText();
   }
 
-  protected SafeString getNameOfLastModifyByFormatted(JsonNode node) {
-    String nameLastModifyBy = getNameLastModifyBy(node);
+  protected SafeString getEmailOfLastModifyByFormatted(JsonNode node) {
+    String emailLastModify = getEmailLastModifyBy(node);
 
-    if (StringUtils.isEmpty(nameLastModifyBy)) {
-      return formatOptionalField(FORMATTED_STRING, nameLastModifyBy);
+    if (!emailExistsAtSymphony(emailLastModify)) {
+      return EMPTY_SAFE_STRING;
     }
 
-    return formatOptionalField(FORMATTED_STRING_WITH_SECOND_INFORMATION, nameLastModifyBy);
+    return presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, emailLastModify);
   }
 }
