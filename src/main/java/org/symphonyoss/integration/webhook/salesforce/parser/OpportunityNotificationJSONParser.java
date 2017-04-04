@@ -22,7 +22,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     implements SalesforceParser {
 
   protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT =
-      "%s - %s<br/>%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
+      "%s - %s %s %s<br/>%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
 
   @Override
   public List<String> getEvents() {
@@ -49,23 +49,33 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
    * @throws SalesforceParseException in case an error occurs while parsing the payload
    */
   private SafeString getPresentationML(JsonNode node) throws SalesforceParseException {
-    JsonNode fields = node.path(SalesforceConstants.PATH).path(SalesforceConstants.OPPORTUNITY);
+    String typeEvent = SalesforceConstants.CREATED;
+    JsonNode fieldsCurrent = node.path(SalesforceConstants.CURRENT).path(SalesforceConstants.OPPORTUNITY);
 
-    SafeString name = getNameFormatted(fields);
-    SafeString emailLastModifyBy = getEmailOfLastModifyByFormatted(fields);
-    SafeString accountName = getAccountNameFormatted(fields);
-    SafeString accountEmail = getAccountLinkedFormatted(fields);
-    SafeString ownerName = getOwnerNameFormatted(fields);
-    SafeString ownerEmail = getOwnerEmailFormatted(fields);
-    SafeString amount = getAmountFormatted(fields);
-    SafeString currencyIsoCode = getCurrencyIsoCodeFormatted(fields);
-    SafeString closeDate = getCloseDateFormatted(fields);
-    SafeString nextStep = getNextStepFormatted(fields);
-    SafeString type = getTypeFormatted(fields);
-    SafeString stageName = getStageNameFormatted(fields);
-    SafeString probability = getProbabilityFormatted(fields);
+    SafeString name = getNameFormatted(fieldsCurrent);
+    SafeString emailLastModifyBy = getEmailOfLastModifyByFormatted(fieldsCurrent);
+    SafeString accountName = getAccountNameFormatted(fieldsCurrent);
+    SafeString accountEmail = getAccountLinkedFormatted(fieldsCurrent);
+    SafeString ownerName = getOwnerNameFormatted(fieldsCurrent);
+    SafeString ownerEmail = getOwnerEmailFormatted(fieldsCurrent);
+    SafeString amount = getAmountFormatted(fieldsCurrent);
+    SafeString currencyIsoCode = getCurrencyIsoCodeFormatted(fieldsCurrent);
+    SafeString closeDate = getCloseDateFormatted(fieldsCurrent);
+    SafeString nextStep = getNextStepFormatted(fieldsCurrent);
+    SafeString type = getTypeFormatted(fieldsCurrent);
+    SafeString stageName = getStageNameFormatted(fieldsCurrent);
+    SafeString probability = getProbabilityFormatted(fieldsCurrent);
 
-    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, emailLastModifyBy, accountName, accountEmail,
+    JsonNode fieldsPrevious = node.path(SalesforceConstants.PREVIOUS).path(SalesforceConstants.OPPORTUNITY);
+
+    SafeString fieldsUpdated = null;
+    if (fieldsPrevious.size() > 0) {
+      typeEvent = SalesforceConstants.UPDATED;
+
+      fieldsUpdated = getFieldsUpdated(fieldsPrevious);
+    }
+
+    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, emailLastModifyBy, typeEvent, fieldsUpdated, accountName, accountEmail,
         ownerName, ownerEmail, amount, currencyIsoCode, closeDate, nextStep, type, stageName, probability);
   }
 

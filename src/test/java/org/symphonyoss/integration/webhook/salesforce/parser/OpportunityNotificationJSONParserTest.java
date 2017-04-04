@@ -32,13 +32,15 @@ import static org.mockito.Mockito.when;
 public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
-  private static final String OPPORTUNITY_NOTIFICATION = "SFDCCallbackSampleOpportunity.json";
+  private static final String OPPORTUNITY_NOTIFICATION_CREATED = "SFDCCallbackSampleOpportunityCreated.json";
+  private static final String OPPORTUNITY_NOTIFICATION_UPDATED = "SFDCCallbackSampleOpportunityUpdated.json";
   private static final String OPPORTUNITY_NOTIFICATION_WITHOUT_NEXT_STEPS = "SFDCCallbackSampleOpportunity_WithoutNextStep.json";
   private static final String OPPORTUNITY_NOTIFICATION_WITHOUT_AMOUNT = "SFDCCallbackSampleOpportunity_WhitoutAmount.json";
   private static final String OPPORTUNITY_NOTIFICATION_WITH_ALL_FIELDS_NULL = "SFDCCallbackSampleOpportunity_WithAllFieldsNull.json";
   private static final String OPPORTUNITY_NOTIFICATION_WITHOUT_TAGS_ACCOUNT_AND_OWNER = "SFDCCallbackSampleOpportunity_WithoutTagsAccountAndOwner.json";
 
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON = "parser/opportunityNotificationJSON";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED = "parser/opportunityNotificationJSONCreated";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED = "parser/opportunityNotificationJSONUpdated";
   public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP = "parser/opportunityNotificationJSON_WithoutNextStep";
   public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT = "parser/opportunityNotificationJSON_WithoutAmount";
   public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL = "parser/opportunityNotificationJSON_WithoutAllFieldsNull";
@@ -58,15 +60,28 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
   }
 
   @Test
-  public void testOpportunityNotification() throws JAXBException, IOException {
-    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION);
+  public void testOpportunityNotificationCreated() throws JAXBException, IOException {
+    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_CREATED);
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
     String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
-    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON);
+    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void testOpportunityNotificationUpdated() throws JAXBException, IOException {
+    JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_UPDATED);
+    Map<String, String> headerParams = new HashMap<>();
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
+
+    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+
+    assertNotNull(result);
+    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED);
     assertEquals(expected, result);
   }
 

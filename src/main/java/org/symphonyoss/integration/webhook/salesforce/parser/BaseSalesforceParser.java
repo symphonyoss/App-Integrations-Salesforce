@@ -36,7 +36,9 @@ import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Utility methods for Salesforce Parsers
@@ -47,7 +49,6 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private static final String FORMATTED_STRING_WITH_PARENTHESIS = "(%s)";
   private static final String FORMATTED_STRING = "%s";
-  private static final String FORMATTED_STRING_WITH_SECOND_INFORMATION = "- %s";
   private static final String OPPORTUNITY_NAME = "Opportunity: %s";
   private static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
   private static final String OPPORTUNITY_TYPE = "Type: %s";
@@ -277,4 +278,21 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
     return presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, emailLastModify);
   }
+
+  protected SafeString getFieldsUpdated(JsonNode node) {
+    String fieldsUpdated = null;
+
+    Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+    while (fields.hasNext()) {
+
+      if (StringUtils.isEmpty(fieldsUpdated)) {
+        fieldsUpdated = fields.next().getKey();
+      } else {
+        fieldsUpdated = fieldsUpdated + ", " + fields.next().getKey();
+      }
+    }
+
+    return presentationFormat(FORMATTED_STRING, fieldsUpdated);
+  }
+
 }

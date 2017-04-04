@@ -37,7 +37,8 @@ public class SalesforceConstants {
   public static final String ACTIVITIES = "activities";
   public static final String ASSIGNEE = "assignee";
 
-  public static final String PATH = "current";
+  public static final String CURRENT = "current";
+  public static final String PREVIOUS = "previous";
   public static final String OPPORTUNITY_OWNER = "Owner";
   public static final String LAST_MODIFY_BY = "LastModifiedBy";
   public static final String NAME = "Name";
@@ -52,6 +53,8 @@ public class SalesforceConstants {
   public static final String CURRENCY_ISO_CODE = "CurrencyIsoCode";
   public static final String TYPE = "Type";
   public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
+  public static final String UPDATED = "updated";
+  public static final String CREATED = "created";
 
 
 
