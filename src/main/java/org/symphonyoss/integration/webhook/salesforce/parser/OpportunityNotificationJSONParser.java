@@ -50,7 +50,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
    */
   private SafeString getPresentationML(JsonNode node) throws SalesforceParseException {
     String typeEvent = SalesforceConstants.CREATED;
-    JsonNode fieldsCurrent = node.path(SalesforceConstants.CURRENT).path(SalesforceConstants.OPPORTUNITY);
+    JsonNode fieldsCurrent = node.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
     SafeString name = getNameFormatted(fieldsCurrent);
     SafeString link = getLinkFormatted(fieldsCurrent);
@@ -67,7 +67,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     SafeString stageName = getStageNameFormatted(fieldsCurrent);
     SafeString probability = getProbabilityFormatted(fieldsCurrent);
 
-    JsonNode fieldsPrevious = node.path(SalesforceConstants.PREVIOUS).path(SalesforceConstants.OPPORTUNITY);
+    JsonNode fieldsPrevious = node.path(SalesforceConstants.PREVIOUS_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
     SafeString fieldsUpdated = null;
     if (fieldsPrevious.size() > 0) {

@@ -37,8 +37,8 @@ public class SalesforceConstants {
   public static final String ACTIVITIES = "activities";
   public static final String ASSIGNEE = "assignee";
 
-  public static final String CURRENT = "current";
-  public static final String PREVIOUS = "previous";
+  public static final String PREVIOUS_DATA_PATH = "previous";
+  public static final String CURRENT_DATA_PATH = "current";
   public static final String OPPORTUNITY_OWNER = "Owner";
   public static final String LAST_MODIFY_BY = "LastModifiedBy";
   public static final String NAME = "Name";
