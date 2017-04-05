@@ -33,7 +33,6 @@ import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
-import org.symphonyoss.integration.webhook.salesforce.SalesforceOpportunityNotificationConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -303,9 +302,9 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     while (fields.hasNext()) {
 
       if (StringUtils.isEmpty(fieldsUpdated)) {
-        fieldsUpdated = SalesforceOpportunityNotificationConstants.getValue(fields.next().getKey());
+        fieldsUpdated = SalesforceConstants.getValueOfMapFieldsName(fields.next().getKey());
       } else {
-        fieldsUpdated = fieldsUpdated + ", " + SalesforceOpportunityNotificationConstants.getValue(fields.next().getKey());
+        fieldsUpdated = fieldsUpdated + ", " + SalesforceConstants.getValueOfMapFieldsName(fields.next().getKey());
       }
     }
 
