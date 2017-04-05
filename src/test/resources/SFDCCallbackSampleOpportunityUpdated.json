@@ -10,7 +10,15 @@
         "Link": "https://symdev1-dev-ed.my.salesforce.com/00146000004oPCeAAM",
         "Name": "Dickenson plc",
         "Id": "00146000004oPCeAAM"
-      }
+      },
+      "LastModifiedBy": {
+        "Email": "stanley@appiphony.com",
+        "Name": "Stanley Symph Dev",
+        "Id": "00546000000ZJrdAAG"
+      },
+      "TotalOpportunityQuantity": null,
+      "CurrencyIsoCode": "EUR",
+      "NextStep": "teste"
     }
   },
   "current": {

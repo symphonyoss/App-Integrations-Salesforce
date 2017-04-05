@@ -3,14 +3,7 @@
     "opportunity": {
       "Type": "New Customer",
       "StageName": "Proposal/Price Quote",
-      "Probability": "75%",
-      "Name": "Burlington Textiles Weaving Plant Generator45",
-      "CloseDate": "2015-02-12T00:00:00.000Z",
-      "Account": {
-        "Link": "https://symdev1-dev-ed.my.salesforce.com/00146000004oPCeAAM",
-        "Name": "Dickenson plc",
-        "Id": "00146000004oPCeAAM"
-      }
+      "CloseDate": "2015-02-12T00:00:00.000Z"
     }
   },
   "current": {

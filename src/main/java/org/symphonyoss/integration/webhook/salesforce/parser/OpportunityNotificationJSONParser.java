@@ -22,7 +22,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     implements SalesforceParser {
 
   protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT =
-      "%s - %s %s %s<br/>%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
+      "%s %s - %s %s %s<br/>%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
 
   @Override
   public List<String> getEvents() {
@@ -53,7 +53,8 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     JsonNode fieldsCurrent = node.path(SalesforceConstants.CURRENT).path(SalesforceConstants.OPPORTUNITY);
 
     SafeString name = getNameFormatted(fieldsCurrent);
-    SafeString emailLastModifyBy = getEmailOfLastModifyByFormatted(fieldsCurrent);
+    SafeString link = getLinkFormatted(fieldsCurrent);
+    SafeString emailLastModifyBy = getEmailLastModifiedByFormatted(fieldsCurrent);
     SafeString accountName = getAccountNameFormatted(fieldsCurrent);
     SafeString accountEmail = getAccountLinkedFormatted(fieldsCurrent);
     SafeString ownerName = getOwnerNameFormatted(fieldsCurrent);
@@ -75,7 +76,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
       fieldsUpdated = getFieldsUpdated(fieldsPrevious);
     }
 
-    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, emailLastModifyBy, typeEvent, fieldsUpdated, accountName, accountEmail,
+    return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, link, emailLastModifyBy, typeEvent, fieldsUpdated, accountName, accountEmail,
         ownerName, ownerEmail, amount, currencyIsoCode, closeDate, nextStep, type, stageName, probability);
   }
 

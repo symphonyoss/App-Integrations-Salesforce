@@ -33,6 +33,7 @@ import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceOpportunityNotificationConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -116,6 +117,22 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   protected SafeString getNameFormatted(JsonNode node) {
     return formatOptionalField(OPPORTUNITY_NAME, getName(node));
+  }
+
+  private String getLink(JsonNode node) {
+    return node.path(SalesforceConstants.LINK).asText();
+  }
+
+  protected SafeString getLinkFormatted(JsonNode node) {
+    String link = getLink(node);
+
+    if (StringUtils.isEmpty(link)) {
+      return EMPTY_SAFE_STRING;
+    }
+
+    SafeString finalUrl = presentationFormat(MessageMLFormatConstants.MESSAGEML_LINK_HREF_FORMAT, link);
+
+    return presentationFormat(FORMATTED_STRING_WITH_PARENTHESIS, finalUrl);
   }
 
   private String getOwnerName(JsonNode node) {
@@ -265,18 +282,18 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return user.getId() != null;
   }
 
-  private String getEmailLastModifyBy(JsonNode node) {
+  private String getEmailLastModifiedBy(JsonNode node) {
     return node.path(SalesforceConstants.LAST_MODIFY_BY).path(SalesforceConstants.EMAIL).asText();
   }
 
-  protected SafeString getEmailOfLastModifyByFormatted(JsonNode node) {
-    String emailLastModify = getEmailLastModifyBy(node);
+  protected SafeString getEmailLastModifiedByFormatted(JsonNode node) {
+    String emailLastModifiedBy = getEmailLastModifiedBy(node);
 
-    if (!emailExistsAtSymphony(emailLastModify)) {
+    if (!emailExistsAtSymphony(emailLastModifiedBy)) {
       return EMPTY_SAFE_STRING;
     }
 
-    return presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, emailLastModify);
+    return presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, emailLastModifiedBy);
   }
 
   protected SafeString getFieldsUpdated(JsonNode node) {
@@ -286,9 +303,9 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     while (fields.hasNext()) {
 
       if (StringUtils.isEmpty(fieldsUpdated)) {
-        fieldsUpdated = fields.next().getKey();
+        fieldsUpdated = SalesforceOpportunityNotificationConstants.getValue(fields.next().getKey());
       } else {
-        fieldsUpdated = fieldsUpdated + ", " + fields.next().getKey();
+        fieldsUpdated = fieldsUpdated + ", " + SalesforceOpportunityNotificationConstants.getValue(fields.next().getKey());
       }
     }
 
