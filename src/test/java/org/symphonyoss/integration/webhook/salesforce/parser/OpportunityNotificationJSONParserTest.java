@@ -6,12 +6,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.test.context.ContextConfiguration;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.json.JsonUtils;
+import org.symphonyoss.integration.logging.LogMessageSource;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 
+import javax.annotation.Resource;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
@@ -52,11 +60,28 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
   @InjectMocks
   private SalesforceParser salesforceParser = new OpportunityNotificationJSONParser();
 
+  @Mock
+  private LogMessageSource logMessageSource;
+
   @Before
   public void setup() {
     User returnedUser =
         createUser("amysak", "amysak@company.com", "Alexandra Mysak", 7627861918843L);
     when(userService.getUserByEmail(anyString(), anyString())).thenReturn(returnedUser);
+
+    when(logMessageSource.getMessage("Type")).thenReturn("Type");
+    when(logMessageSource.getMessage("StageName")).thenReturn("Stage");
+    when(logMessageSource.getMessage("LastModifiedBy")).thenReturn("Last Modified By");
+    when(logMessageSource.getMessage("TotalOpportunityQuantity")).thenReturn("Total Opportunity Quantity");
+    when(logMessageSource.getMessage("NextStep")).thenReturn("Next Step");
+    when(logMessageSource.getMessage("CurrencyIsoCode")).thenReturn("Currency Iso Code");
+    when(logMessageSource.getMessage("CloseDate")).thenReturn("Close Date");
+    when(logMessageSource.getMessage("Id")).thenReturn("Id");
+    when(logMessageSource.getMessage("Name")).thenReturn("Name");
+    when(logMessageSource.getMessage("Link")).thenReturn("Link");
+    when(logMessageSource.getMessage("Probability")).thenReturn("Probability");
+    when(logMessageSource.getMessage("Owner")).thenReturn("Owner");
+    when(logMessageSource.getMessage("Account")).thenReturn("Account");
   }
 
   @Test

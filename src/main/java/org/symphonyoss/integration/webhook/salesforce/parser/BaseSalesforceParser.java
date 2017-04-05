@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.entity.model.User;
+import org.symphonyoss.integration.logging.LogMessageSource;
 import org.symphonyoss.integration.messageml.MessageMLFormatConstants;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
@@ -64,6 +65,9 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   private UserService userService;
 
   private String salesforceUser;
+
+  @Autowired
+  private LogMessageSource logMessageSource;
 
   @Override
   public void setSalesforceUser(String user) {
@@ -302,9 +306,9 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     while (fields.hasNext()) {
 
       if (StringUtils.isEmpty(fieldsUpdated)) {
-        fieldsUpdated = SalesforceConstants.getValueOfMapFieldsName(fields.next().getKey());
+        fieldsUpdated = logMessageSource.getMessage(fields.next().getKey());
       } else {
-        fieldsUpdated = fieldsUpdated + ", " + SalesforceConstants.getValueOfMapFieldsName(fields.next().getKey());
+        fieldsUpdated = fieldsUpdated + ", " + logMessageSource.getMessage(fields.next().getKey());
       }
     }
 
