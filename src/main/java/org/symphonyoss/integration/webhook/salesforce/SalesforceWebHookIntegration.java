@@ -23,6 +23,7 @@ import org.symphonyoss.integration.entity.MessageML;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
@@ -78,6 +79,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
       Message message = new Message();
       message.setMessage(input.getBody());
       message.setFormat(Message.FormatEnum.MESSAGEML);
+      message.setVersion(MessageMLVersion.V1);
 
       return message;
     }
