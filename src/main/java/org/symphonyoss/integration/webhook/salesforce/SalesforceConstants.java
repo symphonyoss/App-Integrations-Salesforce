@@ -16,7 +16,7 @@
 
 package org.symphonyoss.integration.webhook.salesforce;
 
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,32 +66,33 @@ public class SalesforceConstants {
 
   private static Map<String, String> createMap() {
     Map<String, String> result = new HashMap<String, String>();
-    result.put("StageName", "Stage");
-    result.put("LastModifiedBy", "Last Modified By");
-    result.put("TotalOpportunityQuantity", "Total Opportunity Quantity");
-    result.put("NextStep", "Next Step");
-    result.put("CurrencyIsoCode", "Currency Iso Code");
-    result.put("CloseDate", "Close Date");
+    result.put("Id", "id");
+    result.put("Type", "type");
+    result.put("Name", "name");
+    result.put("Link", "link");
+    result.put("Owner", "owner");
+    result.put("Account", "account");
+    result.put("NextStep", "next step");
+    result.put("StageName", "stage");
+    result.put("CloseDate", "close date");
+    result.put("Probability", "probability");
+    result.put("CurrencyIsoCode", "currency");
+    result.put("TotalOpportunityQuantity", "amount");
 
     return Collections.unmodifiableMap(result);
   }
 
   /**
-   * Returns the value of map FieldsName
-   * @param String key
-   * @return Value if exists, but not return key
-   * @throws SalesforceParseException in case this key not informed
+   * Returns a readable field name for Opportunity fields.
+   * @param key The opportunity field key for which the name should be retrieved.
+   * @return readable field name, or null when the field does not have a corresponding name
    */
-  public static String getValueOfMapFieldsName(String key) {
-    if (StringUtils.isEmpty(key)) {
-      throw new SalesforceParseException("Key null");
-    }
-
-    if (FIELDS_NAME.containsKey(key)) {
+  public static String getOpportunityFieldName(String key) {
+    if (StringUtils.isNotBlank(key) && FIELDS_NAME.containsKey(key)) {
       return FIELDS_NAME.get(key);
     }
 
-    return key;
+    return StringUtils.EMPTY;
   }
 
 }
