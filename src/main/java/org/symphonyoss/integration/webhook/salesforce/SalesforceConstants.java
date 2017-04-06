@@ -34,6 +34,8 @@ public class SalesforceConstants {
    */
   private SalesforceConstants(){}
 
+  private static final Map<String, String> FIELDS_NAME = createMap();
+
   public static final String OPPORTUNITY = "opportunity";
   public static final String OWNER = "owner";
   public static final String EMAIL_ADDRESS = "emailAddress";
@@ -61,5 +63,35 @@ public class SalesforceConstants {
   public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
   public static final String UPDATED = "updated";
   public static final String CREATED = "created";
+
+  private static Map<String, String> createMap() {
+    Map<String, String> result = new HashMap<String, String>();
+    result.put("StageName", "Stage");
+    result.put("LastModifiedBy", "Last Modified By");
+    result.put("TotalOpportunityQuantity", "Total Opportunity Quantity");
+    result.put("NextStep", "Next Step");
+    result.put("CurrencyIsoCode", "Currency Iso Code");
+    result.put("CloseDate", "Close Date");
+
+    return Collections.unmodifiableMap(result);
+  }
+
+  /**
+   * Returns the value of map FieldsName
+   * @param String key
+   * @return Value if exists, but not return key
+   * @throws SalesforceParseException in case this key not informed
+   */
+  public static String getValueOfMapFieldsName(String key) {
+    if (StringUtils.isEmpty(key)) {
+      throw new SalesforceParseException("Key null");
+    }
+
+    if (FIELDS_NAME.containsKey(key)) {
+      return FIELDS_NAME.get(key);
+    }
+
+    return key;
+  }
 
 }
