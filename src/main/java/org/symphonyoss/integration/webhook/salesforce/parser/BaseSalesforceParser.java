@@ -302,9 +302,9 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     while (fields.hasNext()) {
 
       if (StringUtils.isEmpty(fieldsUpdated)) {
-        fieldsUpdated = SalesforceConstants.getValueOfMapFieldsName(fields.next().getKey());
+        fieldsUpdated = SalesforceConstants.getOpportunityFieldName(fields.next().getKey());
       } else {
-        fieldsUpdated = fieldsUpdated + ", " + SalesforceConstants.getValueOfMapFieldsName(fields.next().getKey());
+        fieldsUpdated = fieldsUpdated + ", " + SalesforceConstants.getOpportunityFieldName(fields.next().getKey());
       }
     }
 
