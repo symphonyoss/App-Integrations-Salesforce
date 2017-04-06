@@ -66,12 +66,18 @@ public class SalesforceConstants {
 
   private static Map<String, String> createMap() {
     Map<String, String> result = new HashMap<String, String>();
-    result.put("StageName", "stage");
-    result.put("TotalOpportunityQuantity", "amount");
-    result.put("NextStep", "next step");
-    result.put("CurrencyIsoCode", "currency");
-    result.put("CloseDate", "close date");
+    result.put("Id", "id");
     result.put("Type", "type");
+    result.put("Name", "name");
+    result.put("Link", "link");
+    result.put("Owner", "owner");
+    result.put("Account", "account");
+    result.put("NextStep", "next step");
+    result.put("StageName", "stage");
+    result.put("CloseDate", "close date");
+    result.put("Probability", "probability");
+    result.put("CurrencyIsoCode", "currency");
+    result.put("TotalOpportunityQuantity", "amount");
 
     return Collections.unmodifiableMap(result);
   }

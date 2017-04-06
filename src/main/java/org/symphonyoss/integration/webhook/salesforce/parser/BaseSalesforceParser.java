@@ -295,20 +295,24 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
     return presentationFormat(MessageMLFormatConstants.MESSAGEML_MENTION_EMAIL_FORMAT, emailLastModifiedBy);
   }
 
-  protected SafeString getFieldsUpdated(JsonNode node) {
-    String fieldsUpdated = null;
+  protected SafeString getUpdatedFields(JsonNode node) {
+    String updatedFields = null;
 
     Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
     while (fields.hasNext()) {
 
-      if (StringUtils.isEmpty(fieldsUpdated)) {
-        fieldsUpdated = SalesforceConstants.getOpportunityFieldName(fields.next().getKey());
-      } else {
-        fieldsUpdated = fieldsUpdated + ", " + SalesforceConstants.getOpportunityFieldName(fields.next().getKey());
+      String fieldKey = fields.next().getKey();
+
+      if (!StringUtils.isBlank(SalesforceConstants.getOpportunityFieldName(fieldKey))) {
+        if (StringUtils.isEmpty(updatedFields)) {
+          updatedFields = SalesforceConstants.getOpportunityFieldName(fieldKey);
+        } else {
+          updatedFields = updatedFields + ", " + SalesforceConstants.getOpportunityFieldName(fieldKey);
+        }
       }
     }
 
-    return presentationFormat(FORMATTED_STRING, fieldsUpdated);
+    return presentationFormat(FORMATTED_STRING, updatedFields);
   }
 
 }

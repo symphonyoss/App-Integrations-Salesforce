@@ -73,7 +73,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     if (fieldsPrevious.size() > 0) {
       typeEvent = SalesforceConstants.UPDATED;
 
-      fieldsUpdated = getFieldsUpdated(fieldsPrevious);
+      fieldsUpdated = getUpdatedFields(fieldsPrevious);
     }
 
     return ParserUtils.presentationFormat(OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT, name, link, emailLastModifyBy, typeEvent, fieldsUpdated, accountName, accountEmail,
