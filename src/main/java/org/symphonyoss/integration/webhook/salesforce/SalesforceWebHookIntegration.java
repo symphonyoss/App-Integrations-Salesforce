@@ -24,6 +24,8 @@ import org.symphonyoss.integration.entity.MessageML;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
+import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
@@ -71,7 +73,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
   }
 
   @Override
-  public String parse(WebHookPayload input) throws WebHookParseException {
+  public Message parse(WebHookPayload input) throws WebHookParseException {
     if (isContentTypeJSON(input)) {
       return parseJSONPayload(input);
     }
@@ -83,13 +85,16 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     SalesforceParser parser = getParser(type);
 
     if (parser == null) {
-      return input.getBody();
+      Message message = new Message();
+      message.setMessage(input.getBody());
+      message.setFormat(Message.FormatEnum.MESSAGEML);
+      message.setVersion(MessageMLVersion.V1);
+
+      return message;
     }
 
     String messageML = parser.parse(mainEntity);
-    messageML = super.buildMessageML(messageML, type);
-
-    return messageML;
+    return super.buildMessageML(messageML, type);
   }
 
   private SalesforceParser getParser(String type) {
@@ -129,7 +134,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
    * @param input the webhook payload
    * @return parsed content formatted as MessageML
    */
-  private String parseJSONPayload(WebHookPayload input) {
+  private Message parseJSONPayload(WebHookPayload input) {
     JsonNode rootNode = null;
 
     try {
@@ -142,9 +147,8 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     SalesforceParser parser = getParser(OPPORTUNITY_NOTIFICATION_JSON);
 
     String messageML = parser.parse(input.getHeaders(), rootNode);
-    messageML = super.buildMessageML(messageML, OPPORTUNITY_NOTIFICATION_JSON);
 
-    return messageML;
+    return super.buildMessageML(messageML, OPPORTUNITY_NOTIFICATION_JSON);
   }
 
 }
