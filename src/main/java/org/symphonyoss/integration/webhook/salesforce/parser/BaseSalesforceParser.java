@@ -49,16 +49,18 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private static final String FORMATTED_STRING_WITH_PARENTHESIS = "(%s)";
   private static final String FORMATTED_STRING = "%s";
-  private static final String OPPORTUNITY_NAME = "Opportunity: %s";
-  private static final String OPPORTUNITY_OWNER = "Opportunity Owner: %s";
-  private static final String OPPORTUNITY_TYPE = "Type: %s";
-  private static final String OPPORTUNITY_STAGE = "Stage: %s";
-  private static final String OPPORTUNITY_CLOSE_DATE = "Close Date: %s";
-  private static final String ACCOUNT_NAME = "Account Name: %s";
-  private static final String OPPORTUNITY_AMOUNT = "Amount: %s";
-  private static final String OPPORTUNITY_NEXT_STEP = "Next Step: %s";
-  private static final String OPPORTUNITY_PROBABILITY = "Probability: %s";
+  private static final String OPPORTUNITY_NAME = "<b>Opportunity:</b> %s";
+  private static final String OPPORTUNITY_OWNER = "<b>Opportunity Owner:</b> %s";
+  private static final String OPPORTUNITY_TYPE = "<b>Type:</b> %s";
+  private static final String OPPORTUNITY_STAGE = "<b>Stage:</b> %s";
+  private static final String OPPORTUNITY_CLOSE_DATE = "<b>Close Date:</b> %s";
+  private static final String ACCOUNT_NAME = "<b>Account Name:</b> %s";
+  private static final String OPPORTUNITY_AMOUNT = "<b>Amount:</b> %s";
+  private static final String OPPORTUNITY_NEXT_STEP = "<b>Next Step:</b> %s";
+  private static final String OPPORTUNITY_PROBABILITY = "<b>Probability:</b> %s";
   private static final String DEFAULT_CONTENT_FOR_MISSING_FIELD = "-";
+  private static final String DEFAULT_VALUE_NULL = "";
+  public static final String STRING_NULL = "null";
 
   @Autowired
   private UserService userService;
@@ -139,6 +141,10 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   protected SafeString getOwnerNameFormatted(JsonNode node) {
+    if (emailExistsAtSymphony(getOwnerEmail(node))) {
+      return presentationFormat(OPPORTUNITY_OWNER, DEFAULT_VALUE_NULL);
+    }
+
     return formatOptionalField(OPPORTUNITY_OWNER, getOwnerName(node));
   }
 
@@ -265,7 +271,7 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   }
 
   private SafeString formatOptionalField(String format, String value) {
-    if (value.isEmpty()) {
+    if (value.isEmpty() || value.equals(STRING_NULL)) {
       value = DEFAULT_CONTENT_FOR_MISSING_FIELD;
     }
 
