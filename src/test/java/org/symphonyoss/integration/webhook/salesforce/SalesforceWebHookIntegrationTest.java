@@ -49,6 +49,10 @@ import javax.xml.bind.JAXBException;
 @RunWith(MockitoJUnitRunner.class)
 public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
+  private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
+  private static final String OPPORTUNITY_NOTIFICATION =
+      "SFDCCallbackSampleOpportunityCreated.json";
+
   @Spy
   private List<SalesforceParser> salesforceParserBeans = new ArrayList<>();
 
@@ -63,7 +67,9 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   @Before
   public void setup() {
     when(accountStatusParser.getEvents()).thenReturn(Arrays.asList("com.symphony.integration.sfdc.event.accountStatus"));
+
     salesforceParserBeans.add(accountStatusParser);
+
 
     salesforceWebHookIntegration.init();
   }

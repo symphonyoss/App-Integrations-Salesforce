@@ -1,0 +1,46 @@
+{
+  "previous": {
+    "opportunity": {
+      "Type": "",
+      "StageName": "",
+      "Probability": "%",
+      "Name": "",
+      "CloseDate": "",
+      "Account": {
+        "Link": "",
+        "Name": "",
+        "Id": ""
+      }
+    }
+  },
+  "current": {
+    "opportunity": {
+      "LastModifiedBy": {
+        "Email": "",
+        "Name": "",
+        "Id": ""
+      },
+      "Account": {
+        "Link": "",
+        "Name": "",
+        "Id": ""
+      },
+      "Owner": {
+        "Email": "",
+        "Name": "",
+        "Id": ""
+      },
+      "TotalOpportunityQuantity": null,
+      "Probability": "",
+      "NextStep": "",
+      "StageName": "",
+      "Type": "",
+      "Amount": "",
+      "CurrencyIsoCode": "",
+      "CloseDate": "",
+      "Link": "",
+      "Name": "",
+      "Id": ""
+    }
+  }
+}

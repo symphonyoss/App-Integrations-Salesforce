@@ -25,6 +25,10 @@ public class SalesforceParseException extends WebHookParseException {
 
   private static final String COMPONENT = "Salesforce Webhook Dispatcher";
 
+  public SalesforceParseException(String message) {
+    super(COMPONENT, message);
+  }
+
   public SalesforceParseException(String message, Exception cause){
     super(COMPONENT, message, cause);
   }

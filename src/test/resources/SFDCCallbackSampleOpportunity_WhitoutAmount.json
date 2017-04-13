@@ -1,0 +1,32 @@
+{
+  "current": {
+    "opportunity": {
+      "LastModifiedBy": {
+        "Email": "stanley@appiphony.com",
+        "Name": "Stanley Symph Dev",
+        "Id": "00546000000ZJrdAAG"
+      },
+      "Account": {
+        "Link": "https://symdev1-dev-ed.my.salesforce.com/00146000004oPCcAAM",
+        "Name": "Burlington Textiles Corp of America",
+        "Id": "00146000004oPCcAAM"
+      },
+      "Owner": {
+        "Email": "stanley@appiphony.com",
+        "Name": "Stanley Symph Dev",
+        "Id": "00546000000ZJrdAAG"
+      },
+      "TotalOpportunityQuantity": null,
+      "Probability": "90%",
+      "NextStep": "teste",
+      "StageName": "Negotiation/Review",
+      "Type": "Existing Customer - Downgrade",
+      "Amount": "",
+      "CurrencyIsoCode": "EUR",
+      "CloseDate": "2015-02-05 08:00:00T00:00:00.000Z",
+      "Link": "https://symdev1-dev-ed.my.salesforce.com/00646000003IyLaAAK",
+      "Name": "Burlington Textiles Weaving Plant Generator456",
+      "Id": "00646000003IyLaAAK"
+    }
+  }
+}

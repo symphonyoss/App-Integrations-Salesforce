@@ -29,11 +29,16 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.service.UserService;
+import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 /**
@@ -41,6 +46,8 @@ import javax.xml.bind.JAXBException;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class OpportunityNotificationParserTest extends BaseSalesforceTest {
+
+  private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
 
   @Mock
   private UserService userService;
@@ -59,7 +66,12 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
   public void testAddingMentionTag() throws WebHookParseException, IOException,
       JAXBException {
     String messageML = readFile("parser/opportunityNotification.xml");
-    String result = salesforceParser.parse(MessageMLParser.parse(messageML).getEntity());
+
+    Map<String, String> headerParams = new HashMap<>();
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
+
+    String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());
 
     String expected = readFile("parser/opportunityNotification_withMentionTags_expected.xml");
 
@@ -70,7 +82,12 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
   public void testWithoutOpportunityOwner() throws WebHookParseException, IOException,
       JAXBException {
     String messageML = readFile("parser/opportunityNotification_without_OpportunityOwner.xml");
-    String result = salesforceParser.parse(MessageMLParser.parse(messageML).getEntity());
+
+    Map<String, String> headerParams = new HashMap<>();
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
+
+    String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());
 
     String expected = readFile(
         "parser/opportunityNotification_without_OpportunityOwner_expected.xml");
