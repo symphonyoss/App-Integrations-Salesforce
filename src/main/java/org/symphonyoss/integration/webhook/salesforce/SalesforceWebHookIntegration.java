@@ -147,9 +147,8 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     SalesforceParser parser = getParser(OPPORTUNITY_NOTIFICATION_JSON);
 
     String messageML = parser.parse(input.getHeaders(), rootNode);
-    Message message = super.buildMessageML(messageML, OPPORTUNITY_NOTIFICATION_JSON);
 
-    return message;
+    return super.buildMessageML(messageML, OPPORTUNITY_NOTIFICATION_JSON);
   }
 
 }

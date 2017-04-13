@@ -22,7 +22,7 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
     implements SalesforceParser {
 
   protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT =
-      "%s %s - %s %s %s<br/>%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
+      "%s %s - %s <b>%s</b> %s<br/>%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
 
   @Override
   public List<String> getEvents() {
