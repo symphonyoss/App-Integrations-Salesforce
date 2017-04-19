@@ -10,9 +10,9 @@ import org.symphonyoss.integration.webhook.parser.metadata.MetadataParser;
  */
 public class OpportunityNotificationJSONParser extends MetadataParser {
 
-  private static final String METADATA_FILE = "metadataIssueCreated.xml";
+  private static final String METADATA_FILE = "metadataOpportunityNotificationJSON.xml";
 
-  private static final String TEMPLATE_FILE = "templateIssueCreated.xml";
+  private static final String TEMPLATE_FILE = "templateOpportunityNotificationJSON.xml";
 
   @Override
   protected void preProcessInputData(JsonNode input) {
