@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<metadata name="OpportunityNotification" type="" version="1.0">
+    <object id="previous" type="previous" version="1.0">
+        <object id="opportunity" type="opportunity" version="1.0">
+
+        </object>
+    </object>
+
+    <object id="current" type="current" version="1.0">
+        <object id="opportunity" type="opportunity" version="1.0">
+            <field key="Id" value="curret.opportunity.Id" />
+            <field key="Name" value="curret.opportunity." />
+            <field key="Type" value="curret.opportunity." />
+            <field key="Link" value="curret.opportunity." />
+            <field key="NextStep" value="curret.opportunity." />
+            <field key="StageName" value="curret.opportunity." />
+            <field key="CloseDate" value="curret.opportunity." />
+            <field key="Probability" value="curret.opportunity." />
+            <field key="Amount" value="curret.opportunity." />
+            <field key="CurrencyIsoCode" value="curret.opportunity." />
+            <field key="TotalOpportunityQuantity" value="curret.opportunity." />
+
+            <object id="LastModifiedBy" type="LastModifiedBy" version="1.0">
+                <field key="Id" value="curret.opportunity." />
+                <field key="Name" value="curret.opportunity." />
+                <field key="Email" value="curret.opportunity." />
+            </object>
+
+            <object id="Account" type="Account" version="1.0">
+                <field key="Id" value="curret.opportunity." />
+                <field key="Name" value="curret.opportunity." />
+                <field key="Email" value="curret.opportunity." />
+            </object>
+
+            <object id="Owner" type="Owner" version="1.0">
+                <field key="Id" value="curret.opportunity." />
+                <field key="Name" value="curret.opportunity." />
+                <field key="Email" value="curret.opportunity." />
+            </object>
+        </object>
+    </object>
+</metadata>
