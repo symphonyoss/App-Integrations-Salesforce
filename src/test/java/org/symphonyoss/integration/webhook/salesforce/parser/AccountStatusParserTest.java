@@ -31,6 +31,7 @@ import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
 
 import java.io.IOException;
 

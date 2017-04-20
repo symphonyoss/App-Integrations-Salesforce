@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package org.symphonyoss.integration.webhook.salesforce.parser;
+package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
-import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.OPPORTUNITY;
+import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.ACCOUNT;
+import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.ACTIVITIES;
+import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.ASSIGNEE;
+import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.OPPORTUNITIES;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.OWNER;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,33 +28,37 @@ import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.exception.EntityXMLGeneratorException;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
+import org.symphonyoss.integration.webhook.salesforce.parser.BaseSalesforceParser;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Class responsable to handle the Opportunity Notification event of Salesforce
+ * Class responsible to handle the Account Status event of Salesforce
  *
- * Created by cmarcondes on 11/2/16.
+ * Created by cmarcondes on 11/3/16.
  */
 @Component
-public class OpportunityNotificationParser extends BaseSalesforceParser {
-
-  @Override
-  public List<String> getEvents() {
-    return Arrays.asList("com.symphony.integration.sfdc.event.opportunityNotification");
-  }
+public class AccountStatusParser extends BaseSalesforceParser {
 
   @Override
   public String parse(Entity entity) throws SalesforceParseException {
-    createMentionTagFor(entity.getEntityByType(OPPORTUNITY), OWNER);
+
+    createMentionTagFor(entity.getEntityByType(ACCOUNT), OWNER);
+    createListOfMentionsFor(entity, OPPORTUNITIES, OWNER);
+    createListOfMentionsFor(entity, ACTIVITIES, ASSIGNEE);
 
     try {
       return EntityBuilder.forEntity(entity).generateXML();
     } catch (EntityXMLGeneratorException e) {
-      throw new SalesforceParseException("Something went wrong while building the message for Salesforce Opportunity Notification event.", e);
+      throw new SalesforceParseException("Something went wrong while building the message for Salesforce Account Status event.", e);
     }
+  }
+
+  @Override
+  public List<String> getEvents() {
+    return Arrays.asList("com.symphony.integration.sfdc.event.accountStatus");
   }
 
   @Override

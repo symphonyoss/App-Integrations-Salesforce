@@ -30,6 +30,7 @@ import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceResolver;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,6 +53,9 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 
   @Autowired
   private List<SalesforceParser> salesforceParserBeans;
+
+  @Autowired
+  private SalesforceResolver salesforceResolver;
 
   @PostConstruct
   public void init() {

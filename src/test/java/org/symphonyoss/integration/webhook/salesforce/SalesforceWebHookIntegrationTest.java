@@ -32,7 +32,7 @@ import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookPayload;
-import org.symphonyoss.integration.webhook.salesforce.parser.AccountStatusParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
