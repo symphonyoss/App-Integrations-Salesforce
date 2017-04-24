@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.exception.EntityXMLGeneratorException;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.BaseSalesforceParser;
 
@@ -62,7 +63,7 @@ public class AccountStatusParser extends BaseSalesforceParser {
   }
 
   @Override
-  public String parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
+  public Message parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
     throw new SalesforceParseException("XML payload expected by received a JSON Payload.");
   }
 }

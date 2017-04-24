@@ -18,6 +18,7 @@ package org.symphonyoss.integration.webhook.salesforce.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.symphonyoss.integration.entity.Entity;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.util.List;
@@ -35,5 +36,5 @@ public interface SalesforceParser {
 
   List<String> getEvents();
 
-  String parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException;
+  Message parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException;
 }

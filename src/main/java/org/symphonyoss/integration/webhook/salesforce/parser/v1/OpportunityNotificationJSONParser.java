@@ -3,6 +3,7 @@ package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.parser.ParserUtils;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
@@ -20,8 +21,7 @@ import java.util.Map;
  * Created by crepache on 3/24/17.
  */
 @Component
-public class OpportunityNotificationJSONParser extends BaseSalesforceParser
-    implements SalesforceParser {
+public class OpportunityNotificationJSONParser extends CommonSalesforceParser {
 
   protected static final String OPPORTUNITY_NOTIFICATION_FORMATTED_TEXT =
       "%s %s - %s <b>%s</b> %s<br/>%s %s<br/>%s %s<br/>%s %s<br/>%s<br/>%s<br/>%s<br/>%s<br/>%s";
@@ -32,17 +32,25 @@ public class OpportunityNotificationJSONParser extends BaseSalesforceParser
   }
 
   @Override
+  public Message parse(Map<String, String> parameters, JsonNode node)
+      throws SalesforceParseException {
+    return null;
+  }
+
+  @Override
   public String parse(Entity entity) throws SalesforceParseException {
     throw new SalesforceParseException("Parser used for XML format but not used for JSON.");
   }
 
-  @Override
-  public String parse(Map<String, String> parameters, JsonNode node)
-      throws SalesforceParseException {
-    SafeString presentationML = getPresentationML(node);
+//  @Override
+//  public String parse(Map<String, String> parameters, JsonNode node)
+//      throws SalesforceParseException {
+//    SafeString presentationML = getPresentationML(node);
+//
+//    return presentationML;
+//  }
 
-    return presentationML.toString();
-  }
+
 
   /**
    * Returns the presentationML for an opportunity notification payload.
