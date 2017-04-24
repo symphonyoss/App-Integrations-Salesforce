@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +15,13 @@ import java.util.List;
  *
  * Created by crepache on 19/04/17.
  */
-public class ParserFactory extends SalesforceFactory  {
+public class V2ParserFactory extends SalesforceFactory  {
 
   @Autowired
   private List<SalesforceMetadataParser> beans;
 
   @Autowired
-  private org.symphonyoss.integration.webhook.salesforce.parser.v1.ParserFactory fallbackFactory;
+  private V1ParserFactory fallbackFactory;
 
   @Override
   public boolean accept(MessageMLVersion version) {

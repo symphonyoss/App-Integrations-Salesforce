@@ -14,7 +14,7 @@ import java.util.List;
  * Created by crepache on 19/04/17.
  */
 @Component
-public class ParserFactory extends SalesforceFactory {
+public class V1ParserFactory extends SalesforceFactory {
 
   @Autowired
   private List<BaseSalesforceParser> beans;
