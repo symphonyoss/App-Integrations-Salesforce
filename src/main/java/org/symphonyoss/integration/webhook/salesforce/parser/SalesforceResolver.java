@@ -1,6 +1,7 @@
 package org.symphonyoss.integration.webhook.salesforce.parser;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.webhook.parser.WebHookParserFactory;
 import org.symphonyoss.integration.webhook.parser.WebHookParserResolver;
 
@@ -12,6 +13,7 @@ import java.util.List;
  *
  * Created by crepache on 19/04/17.
  */
+@Component
 public class SalesforceResolver extends WebHookParserResolver {
 
   @Autowired
