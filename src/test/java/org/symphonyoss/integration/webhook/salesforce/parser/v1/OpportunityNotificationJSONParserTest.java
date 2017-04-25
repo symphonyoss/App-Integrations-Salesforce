@@ -90,7 +90,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -103,7 +103,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -116,7 +116,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -129,7 +129,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -142,7 +142,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -155,7 +155,7 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_TAGS_ACCOUNT_AND_OWNER);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   protected JsonNode readJsonFromFile(String filename) throws IOException {

@@ -69,9 +69,6 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
     when(accountStatusParser.getEvents()).thenReturn(Arrays.asList("com.symphony.integration.sfdc.event.accountStatus"));
 
     salesforceParserBeans.add(accountStatusParser);
-
-
-    salesforceWebHookIntegration.init();
   }
 
   @Test(expected = SalesforceParseException.class)
