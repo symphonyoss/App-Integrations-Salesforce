@@ -1,4 +1,4 @@
-package org.symphonyoss.integration.webhook.salesforce.parser;
+package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
@@ -13,6 +13,7 @@ import org.symphonyoss.integration.logging.LogMessageSource;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.OpportunityNotificationJSONParser;
 
 import javax.ws.rs.core.MediaType;

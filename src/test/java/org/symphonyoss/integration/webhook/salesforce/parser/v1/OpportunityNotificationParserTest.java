@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.symphonyoss.integration.webhook.salesforce.parser;
+package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
@@ -32,6 +32,7 @@ import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.OpportunityNotificationParser;
 
 import java.io.IOException;
