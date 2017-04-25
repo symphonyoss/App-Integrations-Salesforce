@@ -26,7 +26,6 @@ import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.exception.EntityXMLGeneratorException;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
-import org.symphonyoss.integration.webhook.salesforce.parser.BaseSalesforceParser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +37,7 @@ import java.util.Map;
  * Created by cmarcondes on 11/2/16.
  */
 @Component
-public class OpportunityNotificationParser extends BaseSalesforceParser {
+public class OpportunityNotificationParser extends CommonSalesforceParser {
 
   @Override
   public List<String> getEvents() {

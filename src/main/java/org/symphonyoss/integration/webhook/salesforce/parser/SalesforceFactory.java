@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
@@ -29,6 +30,20 @@ public abstract class SalesforceFactory implements WebHookParserFactory {
   public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 
   private Map<String, SalesforceParser> parsers = new HashMap<>();
+
+  /**
+   * Map the event type to the parser.
+   */
+  @PostConstruct
+  public void init() {
+    for (SalesforceParser parser : getBeans()) {
+      List<String> events = parser.getEvents();
+      for (String eventType : events) {
+        this.parsers.put(eventType, parser);
+      }
+    }
+  }
+
   /**
    * Update the integration username on each parser class. This process is required to know which user
    * must be used to query the Symphony API's.
@@ -46,7 +61,7 @@ public abstract class SalesforceFactory implements WebHookParserFactory {
   @Override
   public WebHookParser getParser(WebHookPayload payload)  throws WebHookParseException {
     if (isContentTypeJSON(payload)) {
-      return new SalesforceWebHookParserAdapter(getParserJSON(payload));
+      return new SalesforceWebHookParserAdapter(getParserJSON());
     }
 
     Entity mainEntity = parsePayloadToEntity(payload);
@@ -93,16 +108,7 @@ public abstract class SalesforceFactory implements WebHookParserFactory {
     }
   }
 
-  private SalesforceParser getParserJSON(WebHookPayload input) {
-    JsonNode rootNode = null;
-
-    try {
-      rootNode = JsonUtils.readTree(input.getBody());
-    } catch (IOException e) {
-      throw new SalesforceParseException(
-          "Something went wrong when trying parse the JSON payload received by the webhook.", e);
-    }
-
+  private SalesforceParser getParserJSON() {
     return parsers.get(OPPORTUNITY_NOTIFICATION_JSON);
   }
 

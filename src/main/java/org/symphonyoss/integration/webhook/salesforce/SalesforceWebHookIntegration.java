@@ -29,6 +29,7 @@ import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
+import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceResolver;
@@ -63,31 +64,30 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     }
   }
 
-
-  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-
-  public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
-
-  private Map<String, SalesforceParser> parsers = new HashMap<>();
-
-  @Autowired
-  private List<SalesforceParser> salesforceParserBeans;
-
-  @PostConstruct
-  public void init() {
-    for (SalesforceParser parser : salesforceParserBeans) {
-      List<String> events = parser.getEvents();
-      for (String eventType : events) {
-        this.parsers.put(eventType, parser);
-      }
-    }
+  @Override
+  public Message parse(WebHookPayload input) throws WebHookParseException {
+    WebHookParser parser = salesforceResolver.getFactory().getParser(input);
+    return parser.parse(input);
   }
 
 
+//  private Map<String, SalesforceParser> parsers = new HashMap<>();
 
-  @Override
-  public Message parse(WebHookPayload input) throws WebHookParseException {
+//  @Autowired
+//  private List<SalesforceParser> salesforceParserBeans;
+//
+//  @PostConstruct
+//  public void init() {
+//    for (SalesforceParser parser : salesforceParserBeans) {
+//      List<String> events = parser.getEvents();
+//      for (String eventType : events) {
+//        this.parsers.put(eventType, parser);
+//      }
+//    }
+//  }
+
+//  @Override
+//  public Message parse(WebHookPayload input) throws WebHookParseException {
 //    if (isContentTypeJSON(input)) {
 //      return parseJSONPayload(input);
 //    }
@@ -107,31 +107,11 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 //
 //    String messageML = parser.parse(mainEntity);
 //    return super.buildMessageML(messageML, type);
-    return null;
-    // TODO cassiano
-  }
+//  }
 
-  private SalesforceParser getParser(String type) {
-    return parsers.get(type);
-  }
-
-  /**
-   * Returns true when the payload content is JSON
-   * @param payload the webhook payload
-   * @return true when payload is JSON
-   */
-  private boolean isContentTypeJSON(WebHookPayload payload) {
-    return MediaType.APPLICATION_JSON.equals(getContentType(payload));
-  }
-
-  /**
-   * Rerieves the Content-Type header from the webhook payload.
-   * @param payload the webhook payload
-   * @return value of Content-Type header
-   */
-  private String getContentType(WebHookPayload payload) {
-    return payload.getHeaders().get("content-type");
-  }
+//  private SalesforceParser getParser(String type) {
+//    return parsers.get(type);
+//  }
 
   /**
    * Parses the webhook payload (received in JSON format)

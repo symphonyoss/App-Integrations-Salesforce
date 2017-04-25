@@ -29,7 +29,6 @@ import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.exception.EntityXMLGeneratorException;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
-import org.symphonyoss.integration.webhook.salesforce.parser.BaseSalesforceParser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +40,7 @@ import java.util.Map;
  * Created by cmarcondes on 11/3/16.
  */
 @Component
-public class AccountStatusParser extends BaseSalesforceParser {
+public class AccountStatusParser extends CommonSalesforceParser {
 
   @Override
   public String parse(Entity entity) throws SalesforceParseException {

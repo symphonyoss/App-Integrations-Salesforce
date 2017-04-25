@@ -3,7 +3,6 @@ package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
-import org.symphonyoss.integration.webhook.salesforce.parser.BaseSalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
@@ -17,7 +16,7 @@ import java.util.List;
 public class V1ParserFactory extends SalesforceFactory {
 
   @Autowired
-  private List<BaseSalesforceParser> beans;
+  private List<CommonSalesforceParser> beans;
 
   @Override
   public boolean accept(MessageMLVersion version) {
