@@ -19,6 +19,7 @@ import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
+import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
@@ -30,6 +31,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.xml.bind.JAXBException;
 
 /**
  * Abstract class that contains the commons methods required by all the MessageML v1 parsers.
@@ -99,7 +102,7 @@ public class CommonSalesforceParser implements SalesforceParser {
   }
 
   @Override
-  public String parse(Entity entity) throws SalesforceParseException {
+  public Message parse(WebHookPayload payload) throws SalesforceParseException, JAXBException {
     return null;
   }
 

@@ -2,26 +2,30 @@ package org.symphonyoss.integration.webhook.salesforce.parser.v2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.media.sound.MidiUtils;
+import org.springframework.stereotype.Component;
+import org.symphonyoss.integration.entity.Entity;
+import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.parser.metadata.EntityObject;
 import org.symphonyoss.integration.webhook.parser.metadata.MetadataParser;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by crepache on 19/04/17.
  */
-public class OpportunityNotificationJSONParser extends MetadataParser {
+@Component
+public class OpportunityNotificationJSONParser extends SalesforceMetadataParser {
 
   private static final String METADATA_FILE = "metadataOpportunityNotificationJSON.xml";
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotificationJSON.xml";
 
-  @Override
-  protected void preProcessInputData(JsonNode input) {
-    // TODO implements method
-  }
-
-  @Override
-  protected void postProcessOutputData(EntityObject output, JsonNode input) {
-    // TODO implements method
+  public OpportunityNotificationJSONParser(UserService userService) {
+    super(userService);
   }
 
   @Override
@@ -32,5 +36,10 @@ public class OpportunityNotificationJSONParser extends MetadataParser {
   @Override
   protected String getMetadataFile() {
     return METADATA_FILE;
+  }
+
+  @Override
+  public List<String> getEvents() {
+    return Arrays.asList("opportunityNotificationJSON");
   }
 }

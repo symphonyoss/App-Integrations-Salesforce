@@ -28,6 +28,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.entity.model.User;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
@@ -73,11 +74,11 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
 
-    String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());
+    Message result = salesforceParser.parse(payload);
 
     String expected = readFile("parser/opportunityNotification_withMentionTags_expected.xml");
 
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -89,11 +90,11 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
 
-    String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());
+    Message result = salesforceParser.parse(payload);
 
     String expected = readFile(
         "parser/opportunityNotification_without_OpportunityOwner_expected.xml");
 
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 }

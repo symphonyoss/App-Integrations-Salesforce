@@ -1,19 +1,18 @@
 package org.symphonyoss.integration.webhook.salesforce.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageML;
 import org.symphonyoss.integration.entity.MessageMLParser;
-import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
-import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.parser.WebHookParserFactory;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,9 @@ public abstract class SalesforceFactory implements WebHookParserFactory {
   public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 
   private Map<String, SalesforceParser> parsers = new HashMap<>();
+
+  @Autowired
+  private NullSalesforceParser defaultSalesforceParser;
 
   /**
    * Map the event type to the parser.
@@ -67,6 +69,10 @@ public abstract class SalesforceFactory implements WebHookParserFactory {
     Entity mainEntity = parsePayloadToEntity(payload);
     String type = mainEntity.getType();
     SalesforceParser parser = getParser(type);
+
+    if (parser == null) {
+      parser = defaultSalesforceParser;
+    }
 
     return new SalesforceWebHookParserAdapter(parser);
   }

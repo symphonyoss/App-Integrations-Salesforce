@@ -16,13 +16,8 @@
 
 package org.symphonyoss.integration.webhook.salesforce;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.symphonyoss.integration.entity.Entity;
-import org.symphonyoss.integration.entity.MessageML;
-import org.symphonyoss.integration.entity.MessageMLParser;
-import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
@@ -31,17 +26,12 @@ import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceResolver;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.ws.rs.core.MediaType;
 
 /**
  * Created by rsanchez on 31/08/16.
@@ -69,7 +59,6 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     WebHookParser parser = salesforceResolver.getFactory().getParser(input);
     return parser.parse(input);
   }
-
 
 //  private Map<String, SalesforceParser> parsers = new HashMap<>();
 
