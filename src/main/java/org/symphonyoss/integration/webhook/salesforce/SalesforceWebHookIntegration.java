@@ -34,14 +34,14 @@ import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceResolver;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rsanchez on 31/08/16.
@@ -135,4 +135,13 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
 //    return super.buildMessageML(messageML, OPPORTUNITY_NOTIFICATION_JSON);
 //  }
 
+  /**
+   * @see WebHookIntegration#getSupportedContentTypes()
+   */
+  @Override
+  public List<MediaType> getSupportedContentTypes() {
+    List<MediaType> supportedContentTypes = new ArrayList<>();
+    supportedContentTypes.add(MediaType.WILDCARD_TYPE);
+    return supportedContentTypes;
+  }
 }
