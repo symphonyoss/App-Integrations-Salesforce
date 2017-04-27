@@ -157,10 +157,4 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_TAGS_ACCOUNT_AND_OWNER);
     assertEquals(expected, result.getMessage());
   }
-
-  protected JsonNode readJsonFromFile(String filename) throws IOException {
-    ClassLoader classLoader = getClass().getClassLoader();
-
-    return JsonUtils.readTree(classLoader.getResourceAsStream(filename));
-  }
 }

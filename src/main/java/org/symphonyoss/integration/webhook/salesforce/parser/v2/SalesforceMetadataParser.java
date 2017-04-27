@@ -13,6 +13,7 @@ import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,8 @@ import java.util.Map;
 public abstract class SalesforceMetadataParser extends MetadataParser implements SalesforceParser {
 
   private static final String LABELS_TYPE = "com.symphony.integration.salesforce.label";
+
+  public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 
   private UserService userService;
 

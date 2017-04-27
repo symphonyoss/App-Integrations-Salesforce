@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
+import org.symphonyoss.integration.webhook.WebHookPayload;
+import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
@@ -40,11 +42,11 @@ public class V2ParserFactory extends SalesforceFactory {
   }
 
   @Override
-  public SalesforceParser getParser(JsonNode node) {
-    SalesforceParser result = super.getParser(node);
+  public WebHookParser getParser(WebHookPayload payload) {
+    WebHookParser result = super.getParser(payload);
 
     if (result == null) {
-      return fallbackFactory.getParser(node);
+      return fallbackFactory.getParser(payload);
     }
 
     return result;
