@@ -18,13 +18,13 @@ import java.util.Map;
  * Created by crepache on 19/04/17.
  */
 @Component
-public class OpportunityNotificationJSONParser extends SalesforceMetadataParser {
+public class OpportunityNotificationJSONMetadataParser extends SalesforceMetadataParser {
 
   private static final String METADATA_FILE = "metadataOpportunityNotificationJSON.xml";
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotificationJSON.xml";
 
-  public OpportunityNotificationJSONParser(UserService userService) {
+  public OpportunityNotificationJSONMetadataParser(UserService userService) {
     super(userService);
   }
 
