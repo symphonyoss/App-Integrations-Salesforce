@@ -2,52 +2,51 @@
     <div class="entity">
         <card class="barStyle">
             <header>
-                <img src="${entity['jiraIssueCreated'].issue.priority.iconUrl}" class="icon" />
-                <a href="${entity['jiraIssueCreated'].issue.url}">${entity['jiraIssueCreated'].issue.key}</a>
-                <span>${entity['jiraIssueCreated'].issue.subject} - </span>
-                <#if (entity['jiraIssueCreated'].user.id)??>
-                    <mention email="${entity['jiraIssueCreated'].user.emailAddress}" />
-                <#else>
-                    <span>${entity['jiraIssueCreated'].user.displayName}</span>
-                </#if>
-                <span class="action">Created</span>
+                <span class="label">Opportunity: </span>
+                <span>Burlington Textiles Corp of America - </span>
+                <a href="${entity['OpportunityNotification'].current.Link}">Link</a>
+                <span> - Created </span>
             </header>
             <body>
-                <div class="entity" data-entity-id="jiraIssueCreated">
-                    <br/>
+                <div class="entity" data-entity-id="OpportunityNotification">
                     <div>
-                        <span class="label">Description:</span>
-                        <span>${entity['jiraIssueCreated'].issue.description}</span>
+                        <span>Account Name:</span>
+                        <span>${entity['OpportunityNotification'].current.current.opportunity.Name} - ${entity['OpportunityNotification'].current.opportunity.Email}</span>
                     </div>
                     <br/>
                     <div>
-                        <span class="label">Assignee:</span>
-                        <#if (entity['jiraIssueCreated'].issue.assignee.id)??>
-                            <mention email="${entity['jiraIssueCreated'].issue.assignee.emailAddress}" />
-                        <#else>
-                            <span>${entity['jiraIssueCreated'].issue.assignee.displayName}</span>
-                        </#if>
+                        <span>Opportunity Owner:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Name} - ${entity['OpportunityNotification'].current.opportunity.Email}</span>
                     </div>
-                    <hr/>
-                    <div class="labelBackground badge">
-                            <span class="label">Type:</span>
-                            <img src="${entity['jiraIssueCreated'].issue.issueType.iconUrl}" class="icon" />
-                            <span>${entity['jiraIssueCreated'].issue.issueType.name}</span>
-                            <span class="label">Priority:</span>
-                            <img src="${entity['jiraIssueCreated'].issue.priority.iconUrl}" class="icon" />
-                            <span>${entity['jiraIssueCreated'].issue.priority.name}</span>
-                            <#if (entity['jiraIssueCreated'].issue.epic)??>
-                                <span class="label">Epic:</span>
-                                <a href="${entity['jiraIssueCreated'].issue.epic.link}">${entity['jiraIssueCreated'].issue.epic.name}</a>
-                            </#if>
-                            <span class="label">Status:</span>
-                            <span class="infoBackground badge">${entity['jiraIssueCreated'].issue.status}</span>
-                            <#if (entity['jiraIssueCreated'].issue.labels)??>
-                                <span class="label">Labels:</span>
-                                <#list entity['jiraIssueCreated'].issue.labels as label>
-                                    <a class="hashTag">#${label.text}</a>
-                                </#list>
-                            </#if>
+                    <br/>
+                    <div>
+                        <span>Amount:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Amount} - ${entity['OpportunityNotification'].current.opportunity.CurrencyIsoCode}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span>Close Date:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span>Next Step:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.NextStep}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span>Type:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Type}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span>Stage:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.StageName}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span>Probability:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Probability}</span>
                     </div>
                 </div>
             </body>

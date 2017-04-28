@@ -61,7 +61,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
   @Override
   protected void postProcessOutputData(EntityObject output, JsonNode input) {
-    includeLabels(output, input);
+//    includeLabels(output, input);
   }
 
   /**
@@ -70,28 +70,28 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
    * @param output Output Entity JSON
    * @param input JSON input data
    */
-  private void includeLabels(EntityObject output, JsonNode input) {
-    EntityObject outputOpportunityNotification = (EntityObject) output.getContent().get(SalesforceConstants.CURRENT_DATA_PATH);
-
-    JsonNode labelsNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
-
-    if (labelsNode.size() == 0) {
-      return;
-    }
-
-    List<EntityObject> list = new ArrayList<>();
-
-    for (int i = 0; i < labelsNode.size(); i++) {
-      String name = labelsNode.get(i).asText();
-      String label = name.replace("#", "");
-
-      EntityObject nestedObject = new EntityObject(LABELS_TYPE, getVersion());
-      nestedObject.addContent(SalesforceConstants.TEXT_ENTITY_FIELD, label);
-
-      list.add(nestedObject);
-    }
-
-    outputOpportunityNotification.addContent(SalesforceConstants.LABELS_ENTITY_FIELD, list);
-  }
+//  private void includeLabels(EntityObject output, JsonNode input) {
+//    EntityObject outputOpportunityNotification = (EntityObject) output.getContent().get(SalesforceConstants.CURRENT_DATA_PATH);
+//
+//    JsonNode labelsNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+//
+//    if (labelsNode.size() == 0) {
+//      return;
+//    }
+//
+//    List<EntityObject> list = new ArrayList<>();
+//
+//    for (int i = 0; i < labelsNode.size(); i++) {
+//      String name = labelsNode.get(i).asText();
+//      String label = name.replace("#", "");
+//
+//      EntityObject nestedObject = new EntityObject(LABELS_TYPE, getVersion());
+//      nestedObject.addContent(SalesforceConstants.TEXT_ENTITY_FIELD, label);
+//
+//      list.add(nestedObject);
+//    }
+//
+//    outputOpportunityNotification.addContent(SalesforceConstants.LABELS_ENTITY_FIELD, list);
+//  }
 
 }

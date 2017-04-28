@@ -1,16 +1,12 @@
 package org.symphonyoss.integration.webhook.salesforce.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.symphonyoss.integration.entity.Entity;
-import org.symphonyoss.integration.entity.MessageML;
-import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
 
 import java.io.IOException;
 import java.util.List;

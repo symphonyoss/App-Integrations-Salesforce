@@ -7,30 +7,30 @@
     </object>
     <object id="current" type="com.symphony.integration.salesforce.current" version="1.0">
         <object id="opportunity" type="opportunity" version="1.0">
-            <field key="Name" value="curret.opportunity.Name" />
-            <field key="Type" value="curret.opportunity.Type" />
-            <field key="Link" value="curret.opportunity.Link" />
-            <field key="NextStep" value="curret.opportunity.NextStep" />
-            <field key="StageName" value="curret.opportunity.StageName" />
-            <field key="CloseDate" value="curret.opportunity.CloseDate" />
-            <field key="Probability" value="curret.opportunity.Probability" />
-            <field key="Amount" value="curret.opportunity.Amount" />
-            <field key="CurrencyIsoCode" value="curret.opportunity.CurrencyIsoCode" />
-            <field key="TotalOpportunityQuantity" value="curret.opportunity.TotalOpportunityQuantity" />
+            <field key="Name" value="current.opportunity.Name" />
+            <field key="Type" value="current.opportunity.Type" />
+            <field key="Link" value="current.opportunity.Link" />
+            <field key="NextStep" value="current.opportunity.NextStep" />
+            <field key="StageName" value="current.opportunity.StageName" />
+            <field key="CloseDate" value="current.opportunity.CloseDate" />
+            <field key="Probability" value="current.opportunity.Probability" />
+            <field key="Amount" value="current.opportunity.Amount" />
+            <field key="CurrencyIsoCode" value="current.opportunity.CurrencyIsoCode" />
+            <field key="TotalOpportunityQuantity" value="current.opportunity.TotalOpportunityQuantity" />
 
             <object id="LastModifiedBy" type="com.symphony.integration.salesforce.LastModifiedBy" version="1.0">
-                <field key="Name" value="curret.opportunity.Name" />
-                <field key="Email" value="curret.opportunity.Email" />
+                <field key="Name" value="current.opportunity.LastModifiedBy.Name" />
+                <field key="Email" value="current.opportunity.LastModifiedBy.Email" />
             </object>
 
             <object id="Account" type="com.symphony.integration.salesforce.Account" version="1.0">
-                <field key="Name" value="curret.opportunity.Name" />
-                <field key="Email" value="curret.opportunity.Email" />
+                <field key="Name" value="current.opportunity.Account.Name" />
+                <field key="Link" value="current.opportunity.Account.Link" />
             </object>
 
             <object id="Owner" type="com.symphony.integration.salesforce.Owner" version="1.0">
-                <field key="Name" value="curret.opportunity.Name" />
-                <field key="Email" value="curret.opportunity.Email" />
+                <field key="Name" value="current.opportunity.Owner.Name" />
+                <field key="Email" value="current.opportunity.Owner.Email" />
             </object>
         </object>
     </object>
