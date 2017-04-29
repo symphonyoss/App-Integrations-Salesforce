@@ -5,5 +5,3 @@ applications:
     description: "Salesforce is a customer relationship management tool that allows sales teams to manage contacts and track opportunities. This integration will allow you to receive notifications in Symphony when a Salesforce opportunity changes state."
     publisher: Symphony
     context: salesforce
-    enabled: true
-    visible: true
