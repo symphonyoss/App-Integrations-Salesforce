@@ -63,6 +63,10 @@ public class SalesforceConstants {
   public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
   public static final String UPDATED = "updated";
   public static final String CREATED = "created";
+  public static final String UPDATED_FIELDS_NODE = "updatedFieldsNode";
+  public static final String CREATED_OR_UPDATED = "createdOrUpdated";
+  public static final String UPDATED_NOTIFICATION = "Updated";
+  public static final String CREATED_NOTIFICATION = "Created";
 
   public static final String TEXT_ENTITY_FIELD = "text";
   public static final String LABELS_ENTITY_FIELD = "labels";
