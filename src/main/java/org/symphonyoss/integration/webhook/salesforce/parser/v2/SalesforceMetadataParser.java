@@ -1,5 +1,6 @@
 package org.symphonyoss.integration.webhook.salesforce.parser.v2;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +26,7 @@ import java.util.Map;
  */
 public abstract class SalesforceMetadataParser extends MetadataParser implements SalesforceParser {
 
-  private static final String LABELS_TYPE = "com.symphony.integration.salesforce.label";
-
-  public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
+  public static final String DEFAULT_VALUE_NULL = "-";
 
   private UserService userService;
 
@@ -55,6 +54,11 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
   @Override
   protected void preProcessInputData(JsonNode input) {
+    processName(input);
+    processLink(input);
+    proccessEmailLastModifiedBy(input);
+    proccessAccountName(input);
+    proccessAccountLink(input);
     processCloseDate(input);
     processAmount(input);
     processUpdatedFields(input);
@@ -63,6 +67,56 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
   @Override
   protected void postProcessOutputData(EntityObject output, JsonNode input) {
     // Do nothing
+  }
+
+  private void processName(JsonNode input) {
+    JsonNode nameNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    String nameFormat = nameNode.path(SalesforceConstants.NAME).asText(EMPTY);
+
+    if (StringUtils.isEmpty(nameFormat)) {
+      ((ObjectNode) nameNode).put(SalesforceConstants.NAME, DEFAULT_VALUE_NULL);
+    }
+  }
+
+  private void processLink(JsonNode input) {
+    JsonNode linkNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    String linkFormat = linkNode.path(SalesforceConstants.LINK).asText(EMPTY);
+
+    if (StringUtils.isEmpty(linkFormat)) {
+      ((ObjectNode) linkNode).put(SalesforceConstants.LINK, EMPTY);
+    }
+  }
+
+  private void proccessEmailLastModifiedBy(JsonNode input) {
+    JsonNode emailLastModifiedByNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    String emailLastModifiedByFormat = emailLastModifiedByNode.path(SalesforceConstants.EMAIL).asText(EMPTY);
+
+    if (StringUtils.isEmpty(emailLastModifiedByFormat)) {
+      ((ObjectNode) emailLastModifiedByNode).put(SalesforceConstants.EMAIL, EMPTY);
+    }
+  }
+
+  private void proccessAccountName(JsonNode input) {
+    JsonNode accountNameNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY).path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
+
+    String accountNameFormat = accountNameNode.path(SalesforceConstants.NAME).asText(EMPTY);
+
+    if (StringUtils.isEmpty(accountNameFormat)) {
+      ((ObjectNode) accountNameNode).put(SalesforceConstants.NAME, EMPTY);
+    }
+  }
+
+  private void proccessAccountLink(JsonNode input) {
+    JsonNode accountLinkNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY).path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
+
+    String accountLinkFormat = accountLinkNode.path(SalesforceConstants.LINK).asText(EMPTY);
+
+    if (StringUtils.isEmpty(accountLinkFormat)) {
+      ((ObjectNode) accountLinkNode).put(SalesforceConstants.LINK, EMPTY);
+    }
   }
 
   /**
@@ -91,7 +145,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
   private void processAmount(JsonNode input) {
     JsonNode amountNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
-    String amount = amountNode.path(SalesforceConstants.AMOUNT).asText(null);
+    String amount = amountNode.path(SalesforceConstants.AMOUNT).asText(DEFAULT_VALUE_NULL);
 
     if (!StringUtils.isEmpty(amount)) {
       amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
