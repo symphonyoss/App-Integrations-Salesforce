@@ -1,12 +1,55 @@
-<div class="presentationML-V2">
-    <p>
-        Hey <span class="entity" data-entity-id="OpportunityNotification">@Łukasz Dróżdż</span>,
-        <br />
-        Did you see how
-        <span class="entity" data-entity-id="OpportunityNotification">$IBM</span>
-        trended yesterday? The high point is certainly
-        <span class="entity" data-entity-id="OpportunityNotification">#unexpected</span>
-        . Have a look at our
-        <a href="https://www.analysis.com/report123456789">full analysis</a>.
-    </p>
-</div>
+<messageML>
+    <div class="entity">
+        <card class="barStyle">
+            <header>
+                <span class="label">Opportunity: </span>
+                <span>Burlington Textiles Corp of America - </span>
+                <a href="${entity['OpportunityNotification'].current.opportunity.Link}">Link</a>
+                <span> - Created </span>
+            </header>
+            <body>
+                <div class="entity" data-entity-id="OpportunityNotification">
+                    <div>
+                        <span class="label">Account Name:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Account.Name} - ${entity['OpportunityNotification'].current.opportunity.Account.Link}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Opportunity Owner:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Amount:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Amount} - ${entity['OpportunityNotification'].current.opportunity.CurrencyIsoCode}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Close Date:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Next Step:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.NextStep}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Type:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Type}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Stage:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.StageName}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Probability:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Probability}</span>
+                    </div>
+                </div>
+            </body>
+        </card>
+    </div>
+</messageML>
