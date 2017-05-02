@@ -5,8 +5,8 @@
                 <span class="label">Opportunity: </span>
                 <span>Burlington Textiles Corp of America - </span>
                 <a href="${entity['OpportunityNotification'].current.opportunity.Link}">Link</a>
-                <span> - ${entity['OpportunityNotification'].current.opportunity.Account.updatedFieldsNode} </span>
-                <span> - ${entity['OpportunityNotification'].current.opportunity.Account.createdOrUpdated} </span>
+                <span> - ${entity['OpportunityNotification'].current.opportunity.Account.updatedFieldsNode}</span>
+                <span>${entity['OpportunityNotification'].current.opportunity.Account.createdOrUpdated}</span>
             </header>
             <body>
                 <div class="entity" data-entity-id="OpportunityNotification">

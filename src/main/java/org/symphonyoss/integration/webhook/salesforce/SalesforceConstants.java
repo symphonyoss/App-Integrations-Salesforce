@@ -68,9 +68,6 @@ public class SalesforceConstants {
   public static final String UPDATED_NOTIFICATION = "Updated";
   public static final String CREATED_NOTIFICATION = "Created";
 
-  public static final String TEXT_ENTITY_FIELD = "text";
-  public static final String LABELS_ENTITY_FIELD = "labels";
-
   private static Map<String, String> createMap() {
     Map<String, String> result = new HashMap<String, String>();
     result.put("Id", "id");
