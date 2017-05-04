@@ -91,7 +91,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     String linkFormat = linkNode.path(SalesforceConstants.LINK).asText(EMPTY);
 
     if (StringUtils.isEmpty(linkFormat)) {
-      ((ObjectNode) linkNode).put(SalesforceConstants.LINK, EMPTY);
+      ((ObjectNode) linkNode).put(SalesforceConstants.LINK, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -101,7 +101,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     String emailLastModifiedByFormat = emailLastModifiedByNode.path(SalesforceConstants.EMAIL).asText(EMPTY);
 
     if (StringUtils.isEmpty(emailLastModifiedByFormat)) {
-      ((ObjectNode) emailLastModifiedByNode).put(SalesforceConstants.EMAIL, EMPTY);
+      ((ObjectNode) emailLastModifiedByNode).put(SalesforceConstants.EMAIL, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -111,7 +111,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     String accountNameFormat = accountNameNode.path(SalesforceConstants.NAME).asText(EMPTY);
 
     if (StringUtils.isEmpty(accountNameFormat)) {
-      ((ObjectNode) accountNameNode).put(SalesforceConstants.NAME, EMPTY);
+      ((ObjectNode) accountNameNode).put(SalesforceConstants.NAME, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -121,7 +121,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     String accountLinkFormat = accountLinkNode.path(SalesforceConstants.LINK).asText(EMPTY);
 
     if (StringUtils.isEmpty(accountLinkFormat)) {
-      ((ObjectNode) accountLinkNode).put(SalesforceConstants.LINK, EMPTY);
+      ((ObjectNode) accountLinkNode).put(SalesforceConstants.LINK, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -147,12 +147,14 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
   private void processAmount(JsonNode input) {
     JsonNode amountNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
-    String amount = amountNode.path(SalesforceConstants.AMOUNT).asText(DEFAULT_VALUE_NULL);
+    String amount = amountNode.path(SalesforceConstants.AMOUNT).asText(EMPTY);
 
     if (!StringUtils.isEmpty(amount)) {
       amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
 
       ((ObjectNode) amountNode).put(SalesforceConstants.AMOUNT, amount);
+    } else {
+      ((ObjectNode) amountNode).put(SalesforceConstants.AMOUNT, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -163,6 +165,8 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
     if (StringUtils.isEmpty(currencyIsoCode)) {
       ((ObjectNode) currencyIsoCodeNode).put(SalesforceConstants.CURRENCY_ISO_CODE, EMPTY);
+    } else {
+      ((ObjectNode) currencyIsoCodeNode).put(SalesforceConstants.CURRENCY_ISO_CODE, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -186,6 +190,8 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
       }
 
       ((ObjectNode) closeDataNode).put(SalesforceConstants.CLOSE_DATE, closeDateFormat);
+    } else {
+      ((ObjectNode) closeDataNode).put(SalesforceConstants.CLOSE_DATE, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -195,7 +201,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     String nextStep = nextStepNode.path(SalesforceConstants.NEXT_STEP).asText(EMPTY);
 
     if (StringUtils.isEmpty(nextStep)) {
-      ((ObjectNode) nextStepNode).put(SalesforceConstants.NEXT_STEP, EMPTY);
+      ((ObjectNode) nextStepNode).put(SalesforceConstants.NEXT_STEP, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -205,7 +211,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     String stageName = stageNameNode.path(SalesforceConstants.STAGE_NAME).asText(EMPTY);
 
     if (StringUtils.isEmpty(stageName)) {
-      ((ObjectNode) stageNameNode).put(SalesforceConstants.STAGE_NAME, EMPTY);
+      ((ObjectNode) stageNameNode).put(SalesforceConstants.STAGE_NAME, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -215,7 +221,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     String probability = probabilityNode.path(SalesforceConstants.PROBABILITY).asText(EMPTY);
 
     if (StringUtils.isEmpty(probability)) {
-      ((ObjectNode) probabilityNode).put(SalesforceConstants.PROBABILITY, EMPTY);
+      ((ObjectNode) probabilityNode).put(SalesforceConstants.PROBABILITY, DEFAULT_VALUE_NULL);
     }
   }
 

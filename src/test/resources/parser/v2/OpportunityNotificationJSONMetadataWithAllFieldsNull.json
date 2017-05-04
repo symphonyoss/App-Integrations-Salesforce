@@ -1,0 +1,29 @@
+{
+  "OpportunityNotification": {
+    "type": "com.symphony.integration.salesforce.event.v2.OpportunityNotification",
+    "version": "1.0",
+    "current": {
+      "type": "com.symphony.integration.salesforce.current",
+      "version": "1.0",
+      "opportunity": {
+        "type": "opportunity",
+        "version": "1.0",
+        "Name": "-",
+        "Link": "-",
+        "NextStep": "-",
+        "StageName": "-",
+        "CloseDate": "-",
+        "Probability": "-",
+        "Amount": "-",
+        "UpdatedFields": "account, owner, amount, probability, next step, stage, type, currency, close date, link, name, id",
+        "CreatedOrUpdated": "Updated",
+        "Account": {
+          "type": "com.symphony.integration.salesforce.Account",
+          "version": "1.0",
+          "Name": "-",
+          "Link": "-"
+        }
+      }
+    }
+  }
+}
