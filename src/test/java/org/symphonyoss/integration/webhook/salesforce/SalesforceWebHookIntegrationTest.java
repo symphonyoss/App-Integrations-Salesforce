@@ -66,13 +66,13 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   private V1ParserFactory factory;
 
   @Spy
-  private NullSalesforceParser defaultJiraParser;
+  private NullSalesforceParser defaultSalesforceParser;
 
   @Before
   public void setup() {
 
     beans.add(accountStatusParser);
-    beans.add(defaultJiraParser);
+    beans.add(defaultSalesforceParser);
 
     factory.init();
 
