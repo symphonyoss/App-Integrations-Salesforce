@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.entity.model.User;
@@ -18,10 +17,8 @@ import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +39,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
   private static final String OPPORTUNITY_NOTIFICATION_CREATED = "SFDCCallbackSampleOpportunityCreated.json";
   private static final String OPPORTUNITY_NOTIFICATION_JSON_METADATA_CREATED = "parser/v2/OpportunityNotificationJSONMetadataCreated.json";
+  private static final String OPPORTUNITY_NOTIFICATION_JSON_TEMPLATE_CREATED = "parser/v2/OpportunityNotificationJSONTemplateCreated";
 
   @Mock
   private UserService userService;
@@ -66,14 +64,14 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
     Message result = parser.parse(headerParams, node);
 
     assertNotNull(result);
-//    String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED);
-//    assertEquals(expected, result.getMessage());
 
     JsonNode expectedNode = readJsonFromFile(OPPORTUNITY_NOTIFICATION_JSON_METADATA_CREATED);
     String expected = JsonUtils.writeValueAsString(expectedNode);
 
     assertEquals(expected, result.getData());
-//    assertEquals(expectedTemplateFile, result.getMessage());
+
+    String expectedTemplate = readFile(OPPORTUNITY_NOTIFICATION_JSON_TEMPLATE_CREATED);
+    assertEquals(expectedTemplate, result.getMessage().replace("\n", ""));
   }
 
   private void mockUserInfo() {

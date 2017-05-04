@@ -1,0 +1,57 @@
+<messageML>
+    <div class="entity">
+        <card class="barStyle">
+            <header>
+                <span class="label">Opportunity: </span>
+                <a href="${entity['OpportunityNotification'].current.opportunity.Link}">${entity['OpportunityNotification'].current.opportunity.Name}</a>
+                <span> - ${entity['OpportunityNotification'].current.opportunity.CreatedOrUpdated}</span>
+                <span>${entity['OpportunityNotification'].current.opportunity.UpdatedFields}</span>
+            </header>
+            <body>
+                <div class="entity" data-entity-id="OpportunityNotification">
+                    <div>
+                        <span class="label">Account Name:</span>
+                        <#if (entity['OpportunityNotification'].current.opportunity.Account.Link)??>
+                            <a href="${entity['OpportunityNotification'].current.opportunity.Account.Link}">${entity['OpportunityNotification'].current.opportunity.Account.Name}</a>
+                        <#else>
+                            <span>${entity['OpportunityNotification'].current.opportunity.Account.Name}</span>
+                        </#if>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Opportunity Owner:</span>
+                        <#if (entity['OpportunityNotification'].current.opportunity.Owner.hasOwnerAtSymphony)??>
+                            <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
+                        <#else>
+                            <span class="entity" data-entity-id="8933531976066">@${entity['OpportunityNotification'].current.opportunity.Owner.Name}</span>
+                        </#if>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Amount:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Amount} - ${entity['OpportunityNotification'].current.opportunity.CurrencyIsoCode}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Next Step:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Type:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Type}</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <span class="label">Close Date:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
+                        <span class="label">Probability:</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Probability}</span>
+                        <span class="label">Stage:</span>
+                        <span class="tempo-text-color--white tempo-bg-color--yellow tempo-token">${entity['OpportunityNotification'].current.opportunity.StageName}</span>
+                    </div>
+                </div>
+            </body>
+        </card>
+    </div>
+</messageML>
