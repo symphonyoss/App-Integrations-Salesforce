@@ -48,7 +48,7 @@
                         <span class="label">Probability:</span>
                         <span>${entity['OpportunityNotification'].current.opportunity.Probability}</span>
                         <span class="label">Stage:</span>
-                        <span class="alertBackground">${entity['OpportunityNotification'].current.opportunity.StageName}</span>
+                        <span class="tempo-text-color--white tempo-bg-color--yellow tempo-token">${entity['OpportunityNotification'].current.opportunity.StageName}</span>
                     </div>
                 </div>
             </body>
