@@ -97,7 +97,7 @@ public abstract class SalesforceFactory implements WebHookParserFactory {
   }
 
   /**
-   * Returns true when the payload content is JSON
+   * Returns true when the payload content-type is JSON
    * @param payload the webhook payload
    * @return true when payload is JSON
    */

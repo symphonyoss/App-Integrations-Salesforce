@@ -19,7 +19,7 @@ import javax.xml.bind.JAXBException;
  * Adapt the interface {@link WebHookParser} to {@link SalesforceParser}.
  *
  * {@link WebHookParser} is the common interface implemented by all the parsers that support MessageML v2.
- * {@link SalesforceParser} is the interface implemented by all the JIRA parsers.
+ * {@link SalesforceParser} is the interface implemented by all the SALESFORCE parsers.
  *
  * Created by crepache on 24/04/17.
  */

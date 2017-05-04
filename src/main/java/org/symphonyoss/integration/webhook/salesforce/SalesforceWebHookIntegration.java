@@ -34,6 +34,14 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 /**
+ *
+ * Implementation of a WebHook to integrate with SALESFORCE, rendering it's messages.
+ *
+ * This integration class should support MessageML v1 and MessageML v2 according to the Agent Version.
+ *
+ * There is a component {@link SalesforceResolver} responsible to identify the correct factory should
+ * be used to build the parsers according to the MessageML supported.
+ *
  * Created by rsanchez on 31/08/16.
  */
 @Component
@@ -45,6 +53,10 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
   @Autowired
   private List<SalesforceFactory> factories;
 
+  /**
+   * Callback to update the integration settings in the parser classes.
+   * @param settings Integration settings
+   */
   @Override
   public void onConfigChange(IntegrationSettings settings) {
     super.onConfigChange(settings);
@@ -54,6 +66,12 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
     }
   }
 
+  /**
+   * Parse message received from SALESFORCE according to the event type and MessageML version supported.
+   * @param input Message received from SALESFORCE
+   * @return Message to be posted
+   * @throws WebHookParseException Failure to parse the incoming payload
+   */
   @Override
   public Message parse(WebHookPayload input) throws WebHookParseException {
     WebHookParser parser = salesforceResolver.getFactory().getParser(input);

@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
+ * Parser factory for the MessageML v1.
+ *
  * Created by crepache on 19/04/17.
  */
 @Component
