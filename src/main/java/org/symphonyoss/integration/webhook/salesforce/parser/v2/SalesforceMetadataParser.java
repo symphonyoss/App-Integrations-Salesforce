@@ -23,6 +23,10 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
+ *
+ * Abstract SALESFORCE parser responsible to augment the JIRA input data querying the user API and
+ * pre-processing the input data.
+ *
  * Created by crepache on 19/04/17.
  */
 public abstract class SalesforceMetadataParser extends MetadataParser implements SalesforceParser {
@@ -146,11 +150,6 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     formatOptionalField(node, SalesforceConstants.CURRENCY_ISO_CODE, currencyIsoCode);
   }
 
-  /**
-   * This method change the issue status to uppercase.
-   *
-   * @param input JSON input payload
-   */
   private void processCloseDate(JsonNode node) {
     String closeDateFormat = node.path(SalesforceConstants.CLOSE_DATE).asText(null);
     SimpleDateFormat formatter = new SimpleDateFormat(SalesforceConstants.TIMESTAMP_FORMAT);
