@@ -17,7 +17,7 @@
         "Probability": "90%",
         "Amount": "312,321.00",
         "CurrencyIsoCode": "EUR",
-        "UpdatedFields": "account, owner, amount, probability, next step, stage, type, currency, close date, link, name, id",
+        "UpdatedFields": "type, stage, probability, name, close date, account, amount, currency, next step",
         "CreatedOrUpdated": "Updated",
         "LastModifiedBy": {
           "type": "com.symphony.integration.salesforce.LastModifiedBy",
