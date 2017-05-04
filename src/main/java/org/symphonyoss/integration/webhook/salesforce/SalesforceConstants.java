@@ -63,10 +63,11 @@ public class SalesforceConstants {
   public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd";
   public static final String UPDATED = "updated";
   public static final String CREATED = "created";
-  public static final String UPDATED_FIELDS_NODE = "updatedFieldsNode";
-  public static final String CREATED_OR_UPDATED = "createdOrUpdated";
+  public static final String UPDATED_FIELDS = "UpdatedFields";
+  public static final String CREATED_OR_UPDATED = "CreatedOrUpdated";
   public static final String UPDATED_NOTIFICATION = "Updated";
   public static final String CREATED_NOTIFICATION = "Created";
+  public static final String HAS_OWNER_AT_SYMPHONY = "hasOwnerAtSymphony";
 
   private static Map<String, String> createMap() {
     Map<String, String> result = new HashMap<String, String>();

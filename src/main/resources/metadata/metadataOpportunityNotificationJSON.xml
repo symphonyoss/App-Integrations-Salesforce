@@ -13,8 +13,8 @@
             <field key="Amount" value="current.opportunity.Amount" />
             <field key="CurrencyIsoCode" value="current.opportunity.CurrencyIsoCode" />
             <field key="TotalOpportunityQuantity" value="current.opportunity.TotalOpportunityQuantity" />
-            <field key="updatedFieldsNode" value="current.opportunity.updatedFieldsNode" />
-            <field key="createdOrUpdated" value="current.opportunity.createdOrUpdated" />
+            <field key="UpdatedFields" value="current.opportunity.UpdatedFields" />
+            <field key="CreatedOrUpdated" value="current.opportunity.CreatedOrUpdated" />
 
             <object id="LastModifiedBy" type="com.symphony.integration.salesforce.LastModifiedBy" version="1.0">
                 <field key="Name" value="current.opportunity.LastModifiedBy.Name" />
@@ -27,7 +27,7 @@
             </object>
 
             <object id="Owner" type="com.symphony.integration.salesforce.Owner" version="1.0">
-                <field key="IdSymphony" value="current.opportunity.Owner.IdSymphony" />
+                <field key="hasOwnerAtSymphony" value="current.opportunity.Owner.hasOwnerAtSymphony" />
                 <field key="Name" value="current.opportunity.Owner.Name" />
                 <field key="Email" value="current.opportunity.Owner.Email" />
             </object>

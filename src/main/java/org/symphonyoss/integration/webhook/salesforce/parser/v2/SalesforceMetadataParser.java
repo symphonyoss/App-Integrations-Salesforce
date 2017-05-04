@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
@@ -59,8 +60,13 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     proccessEmailLastModifiedBy(input);
     proccessAccountName(input);
     proccessAccountLink(input);
-    processCloseDate(input);
+    processOwner(input);
     processAmount(input);
+    processCurrencyIsoCode(input);
+    processCloseDate(input);
+    processNextStep(input);
+    processStageName(input);
+    processProbability(input);
     processUpdatedFields(input);
   }
 
@@ -119,6 +125,47 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     }
   }
 
+  private void processOwner(JsonNode input) {
+    JsonNode ownerNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY).path(SalesforceConstants.OPPORTUNITY_OWNER);
+
+    String ownerEmail = ownerNode.path(SalesforceConstants.EMAIL).asText(EMPTY);
+
+    if (!StringUtils.isEmpty(ownerEmail) && emailExistsAtSymphony(ownerEmail)) {
+      ((ObjectNode) ownerNode).put(SalesforceConstants.HAS_OWNER_AT_SYMPHONY, Boolean.TRUE);
+    }
+  }
+
+  private boolean emailExistsAtSymphony(String emailAddress) {
+    if (StringUtils.isBlank(emailAddress)) {
+      return false;
+    }
+
+    User user = userService.getUserByEmail(integrationUser, emailAddress);
+    return user.getId() != null;
+  }
+
+  private void processAmount(JsonNode input) {
+    JsonNode amountNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    String amount = amountNode.path(SalesforceConstants.AMOUNT).asText(DEFAULT_VALUE_NULL);
+
+    if (!StringUtils.isEmpty(amount)) {
+      amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
+
+      ((ObjectNode) amountNode).put(SalesforceConstants.AMOUNT, amount);
+    }
+  }
+
+  private void processCurrencyIsoCode(JsonNode input) {
+    JsonNode currencyIsoCodeNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    String currencyIsoCode = currencyIsoCodeNode.path(SalesforceConstants.CURRENCY_ISO_CODE).asText(EMPTY);
+
+    if (StringUtils.isEmpty(currencyIsoCode)) {
+      ((ObjectNode) currencyIsoCodeNode).put(SalesforceConstants.CURRENCY_ISO_CODE, EMPTY);
+    }
+  }
+
   /**
    * This method change the issue status to uppercase.
    *
@@ -142,15 +189,33 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     }
   }
 
-  private void processAmount(JsonNode input) {
-    JsonNode amountNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+  private void processNextStep(JsonNode input) {
+    JsonNode nextStepNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
-    String amount = amountNode.path(SalesforceConstants.AMOUNT).asText(DEFAULT_VALUE_NULL);
+    String nextStep = nextStepNode.path(SalesforceConstants.NEXT_STEP).asText(EMPTY);
 
-    if (!StringUtils.isEmpty(amount)) {
-      amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
+    if (StringUtils.isEmpty(nextStep)) {
+      ((ObjectNode) nextStepNode).put(SalesforceConstants.NEXT_STEP, EMPTY);
+    }
+  }
 
-      ((ObjectNode) amountNode).put(SalesforceConstants.AMOUNT, amount);
+  private void processStageName(JsonNode input) {
+    JsonNode stageNameNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    String stageName = stageNameNode.path(SalesforceConstants.STAGE_NAME).asText(EMPTY);
+
+    if (StringUtils.isEmpty(stageName)) {
+      ((ObjectNode) stageNameNode).put(SalesforceConstants.STAGE_NAME, EMPTY);
+    }
+  }
+
+  private void processProbability(JsonNode input) {
+    JsonNode probabilityNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    String probability = probabilityNode.path(SalesforceConstants.PROBABILITY).asText(EMPTY);
+
+    if (StringUtils.isEmpty(probability)) {
+      ((ObjectNode) probabilityNode).put(SalesforceConstants.PROBABILITY, EMPTY);
     }
   }
 
@@ -174,7 +239,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     }
 
     if (!StringUtils.isEmpty(updatedFields)) {
-      ((ObjectNode) updatedFieldsNode).put(SalesforceConstants.UPDATED_FIELDS_NODE, updatedFields);
+      ((ObjectNode) updatedFieldsNode).put(SalesforceConstants.UPDATED_FIELDS, updatedFields);
       ((ObjectNode) updatedFieldsNode).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.UPDATED_NOTIFICATION);
     } else {
       ((ObjectNode) updatedFieldsNode).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.CREATED_NOTIFICATION);
