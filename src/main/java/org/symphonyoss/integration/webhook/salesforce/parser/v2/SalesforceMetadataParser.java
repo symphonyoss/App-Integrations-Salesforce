@@ -78,41 +78,33 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
   private void processName(JsonNode input) {
     JsonNode nameNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
-    String nameFormat = nameNode.path(SalesforceConstants.NAME).asText(EMPTY);
+    String name = nameNode.path(SalesforceConstants.NAME).asText(EMPTY);
 
-    if (StringUtils.isEmpty(nameFormat)) {
-      ((ObjectNode) nameNode).put(SalesforceConstants.NAME, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(nameNode, SalesforceConstants.NAME, name);
   }
 
   private void processLink(JsonNode input) {
     JsonNode linkNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
-    String linkFormat = linkNode.path(SalesforceConstants.LINK).asText(EMPTY);
+    String link = linkNode.path(SalesforceConstants.LINK).asText(EMPTY);
 
-    if (StringUtils.isEmpty(linkFormat)) {
-      ((ObjectNode) linkNode).put(SalesforceConstants.LINK, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(linkNode, SalesforceConstants.LINK, link);
   }
 
   private void proccessEmailLastModifiedBy(JsonNode input) {
     JsonNode emailLastModifiedByNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
-    String emailLastModifiedByFormat = emailLastModifiedByNode.path(SalesforceConstants.EMAIL).asText(EMPTY);
+    String emailLastModifiedBy = emailLastModifiedByNode.path(SalesforceConstants.EMAIL).asText(EMPTY);
 
-    if (StringUtils.isEmpty(emailLastModifiedByFormat)) {
-      ((ObjectNode) emailLastModifiedByNode).put(SalesforceConstants.EMAIL, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(emailLastModifiedByNode, SalesforceConstants.EMAIL, emailLastModifiedBy);
   }
 
   private void proccessAccountName(JsonNode input) {
     JsonNode accountNameNode = input.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY).path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
 
-    String accountNameFormat = accountNameNode.path(SalesforceConstants.NAME).asText(EMPTY);
+    String accountName = accountNameNode.path(SalesforceConstants.NAME).asText(EMPTY);
 
-    if (StringUtils.isEmpty(accountNameFormat)) {
-      ((ObjectNode) accountNameNode).put(SalesforceConstants.NAME, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(accountNameNode, SalesforceConstants.NAME, accountName);
   }
 
   private void proccessAccountLink(JsonNode input) {
@@ -120,9 +112,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
     String accountLinkFormat = accountLinkNode.path(SalesforceConstants.LINK).asText(EMPTY);
 
-    if (StringUtils.isEmpty(accountLinkFormat)) {
-      ((ObjectNode) accountLinkNode).put(SalesforceConstants.LINK, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(accountLinkNode, SalesforceConstants.LINK, accountLinkFormat);
   }
 
   private void processOwner(JsonNode input) {
@@ -163,11 +153,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
     String currencyIsoCode = currencyIsoCodeNode.path(SalesforceConstants.CURRENCY_ISO_CODE).asText(EMPTY);
 
-    if (StringUtils.isEmpty(currencyIsoCode)) {
-      ((ObjectNode) currencyIsoCodeNode).put(SalesforceConstants.CURRENCY_ISO_CODE, EMPTY);
-    } else {
-      ((ObjectNode) currencyIsoCodeNode).put(SalesforceConstants.CURRENCY_ISO_CODE, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(currencyIsoCodeNode, SalesforceConstants.CURRENCY_ISO_CODE, currencyIsoCode);
   }
 
   /**
@@ -200,9 +186,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
     String nextStep = nextStepNode.path(SalesforceConstants.NEXT_STEP).asText(EMPTY);
 
-    if (StringUtils.isEmpty(nextStep)) {
-      ((ObjectNode) nextStepNode).put(SalesforceConstants.NEXT_STEP, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(nextStepNode, SalesforceConstants.NEXT_STEP, nextStep);
   }
 
   private void processStageName(JsonNode input) {
@@ -210,9 +194,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
     String stageName = stageNameNode.path(SalesforceConstants.STAGE_NAME).asText(EMPTY);
 
-    if (StringUtils.isEmpty(stageName)) {
-      ((ObjectNode) stageNameNode).put(SalesforceConstants.STAGE_NAME, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(stageNameNode, SalesforceConstants.STAGE_NAME, stageName);
   }
 
   private void processProbability(JsonNode input) {
@@ -220,9 +202,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
     String probability = probabilityNode.path(SalesforceConstants.PROBABILITY).asText(EMPTY);
 
-    if (StringUtils.isEmpty(probability)) {
-      ((ObjectNode) probabilityNode).put(SalesforceConstants.PROBABILITY, DEFAULT_VALUE_NULL);
-    }
+    formatOptionalField(probabilityNode, SalesforceConstants.PROBABILITY, probability);
   }
 
   private void processUpdatedFields(JsonNode input) {
@@ -249,6 +229,12 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
       ((ObjectNode) updatedFieldsNode).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.UPDATED_NOTIFICATION);
     } else {
       ((ObjectNode) updatedFieldsNode).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.CREATED_NOTIFICATION);
+    }
+  }
+
+  private void formatOptionalField(JsonNode node, String nameNode, String valueNode) {
+    if (StringUtils.isEmpty(valueNode)) {
+      ((ObjectNode) node).put(nameNode, DEFAULT_VALUE_NULL);
     }
   }
 

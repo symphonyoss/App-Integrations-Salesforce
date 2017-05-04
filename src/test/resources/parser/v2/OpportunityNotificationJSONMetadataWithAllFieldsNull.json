@@ -15,6 +15,7 @@
         "CloseDate": "-",
         "Probability": "-",
         "Amount": "-",
+        "CurrencyIsoCode": "-",
         "UpdatedFields": "account, owner, amount, probability, next step, stage, type, currency, close date, link, name, id",
         "CreatedOrUpdated": "Updated",
         "Account": {
