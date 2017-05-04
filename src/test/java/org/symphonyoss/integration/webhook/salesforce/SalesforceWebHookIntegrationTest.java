@@ -99,7 +99,7 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
     String xml = readFile("accountStatus.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
 
-    String expected = readFile("parser/accountStatus_withMentionTags_expected.xml");
+    String expected = readFile("parser/v1/accountStatus_withMentionTags_expected.xml");
     Message message = new Message();
     message.setVersion(MessageMLVersion.V1);
     message.setMessage(expected);

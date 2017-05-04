@@ -100,7 +100,7 @@ public class V1ParserFactoryTest extends BaseSalesforceTest {
   @Test
   public void testOpportunityNotificationParser() throws IOException {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(),
-        Collections.<String, String>emptyMap(), readFile("parser/opportunityNotification.xml"));
+        Collections.<String, String>emptyMap(), readFile("parser/v1/opportunityNotification.xml"));
 
     assertEquals(opportunityNotificationParser.getEvents(), factory.getParser(payload).getEvents());
   }

@@ -43,12 +43,12 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
   private static final String OPPORTUNITY_NOTIFICATION_WITH_ALL_FIELDS_NULL = "SFDCCallbackSampleOpportunity_WithAllFieldsNull.json";
   private static final String OPPORTUNITY_NOTIFICATION_WITHOUT_TAGS_ACCOUNT_AND_OWNER = "SFDCCallbackSampleOpportunity_WithoutTagsAccountAndOwner.json";
 
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED = "parser/opportunityNotificationJSONCreated";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED = "parser/opportunityNotificationJSONUpdated";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP = "parser/opportunityNotificationJSON_WithoutNextStep";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT = "parser/opportunityNotificationJSON_WithoutAmount";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL = "parser/opportunityNotificationJSON_WithoutAllFieldsNull";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_TAGS_ACCOUNT_AND_OWNER = "parser/opportunityNotificationJSON_WithoutTagsAccountAndOwner";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED = "parser/v1/opportunityNotificationJSONCreated";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED = "parser/v1/opportunityNotificationJSONUpdated";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP = "parser/v1/opportunityNotificationJSON_WithoutNextStep";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT = "parser/v1/opportunityNotificationJSON_WithoutAmount";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL = "parser/v1/opportunityNotificationJSON_WithoutAllFieldsNull";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_TAGS_ACCOUNT_AND_OWNER = "parser/v1/opportunityNotificationJSON_WithoutTagsAccountAndOwner";
 
   @Mock
   private UserService userService;

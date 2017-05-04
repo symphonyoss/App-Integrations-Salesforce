@@ -68,7 +68,7 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
   @Test
   public void testAddingMentionTag() throws WebHookParseException, IOException,
       JAXBException {
-    String messageML = readFile("parser/opportunityNotification.xml");
+    String messageML = readFile("parser/v1/opportunityNotification.xml");
 
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
@@ -76,7 +76,7 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
 
     Message result = salesforceParser.parse(payload);
 
-    String expected = readFile("parser/opportunityNotification_withMentionTags_expected.xml");
+    String expected = readFile("parser/v1/opportunityNotification_withMentionTags_expected.xml");
 
     assertEquals(expected, result.getMessage());
   }
@@ -84,7 +84,7 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
   @Test
   public void testWithoutOpportunityOwner() throws WebHookParseException, IOException,
       JAXBException {
-    String messageML = readFile("parser/opportunityNotification_without_OpportunityOwner.xml");
+    String messageML = readFile("parser/v1/opportunityNotification_without_OpportunityOwner.xml");
 
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
@@ -93,7 +93,7 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
     Message result = salesforceParser.parse(payload);
 
     String expected = readFile(
-        "parser/opportunityNotification_without_OpportunityOwner_expected.xml");
+        "parser/v1/opportunityNotification_without_OpportunityOwner_expected.xml");
 
     assertEquals(expected, result.getMessage());
   }

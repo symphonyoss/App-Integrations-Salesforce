@@ -68,7 +68,7 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), messageML);
     Message result = salesforceParser.parse(payload);
 
-    String expected = readFile("parser/accountStatus_withMentionTags_expected.xml");
+    String expected = readFile("parser/v1/accountStatus_withMentionTags_expected.xml");
 
     assertEquals(expected, result.getMessage());
   }
@@ -84,7 +84,7 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), messageML);
     Message result = salesforceParser.parse(payload);
 
-    String expected = readFile("parser/accountStatus_withoutMentionTags_expected.xml");
+    String expected = readFile("parser/v1/accountStatus_withoutMentionTags_expected.xml");
 
     assertEquals(expected, result.getMessage());
   }
@@ -93,11 +93,11 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
   public void testWithoutAccountOwner()
       throws WebHookParseException, IOException,
       JAXBException {
-    String messageML = readFile("parser/accountStatus_without_AccountOwner.xml");
+    String messageML = readFile("parser/v1/accountStatus_without_AccountOwner.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), messageML);
     Message result = salesforceParser.parse(payload);
 
-    String expected = readFile("parser/accountStatus_without_AccountOwner_expected.xml");
+    String expected = readFile("parser/v1/accountStatus_without_AccountOwner_expected.xml");
 
     assertEquals(expected, result.getMessage());
   }
@@ -106,11 +106,11 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
   public void testWithoutOpportunityOwner()
       throws WebHookParseException, IOException,
       JAXBException {
-    String messageML = readFile("parser/accountStatus_without_OpportunityOwner.xml");
+    String messageML = readFile("parser/v1/accountStatus_without_OpportunityOwner.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), messageML);
     Message result = salesforceParser.parse(payload);
 
-    String expected = readFile("parser/accountStatus_without_OpportunityOwner_expected.xml");
+    String expected = readFile("parser/v1/accountStatus_without_OpportunityOwner_expected.xml");
 
     assertEquals(expected, result.getMessage());
   }
@@ -119,11 +119,11 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
   public void testWithoutOwnerEmail()
       throws WebHookParseException, IOException,
       JAXBException {
-    String messageML = readFile("parser/accountStatus_without_ownerEmail.xml");
+    String messageML = readFile("parser/v1/accountStatus_without_ownerEmail.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), messageML);
     Message result = salesforceParser.parse(payload);
 
-    String expected = readFile("parser/accountStatus_without_ownerEmail_expected.xml");
+    String expected = readFile("parser/v1/accountStatus_without_ownerEmail_expected.xml");
 
     assertEquals(expected, result.getMessage());
   }
