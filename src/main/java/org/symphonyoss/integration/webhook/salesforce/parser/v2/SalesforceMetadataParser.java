@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  *
- * Abstract SALESFORCE parser responsible to augment the JIRA input data querying the user API and
+ * Abstract SALESFORCE parser responsible to augment the SALESFORCE input data querying the user API and
  * pre-processing the input data.
  *
  * Created by crepache on 19/04/17.
