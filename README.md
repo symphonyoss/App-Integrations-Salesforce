@@ -261,6 +261,10 @@ Following an example:
 }
 ```
 
+##### Message rendered on Symphony
+
+
+
 # Build instructions for the Java developer
 
 ### What you’ll build
