@@ -154,7 +154,6 @@ More information about MessageML V2 specification can be accessed [here](https:/
 
 Following an example:
 
-Template
 ```xml
 <messageML>
     <div class="entity">
@@ -215,7 +214,6 @@ Template
 </messageML>
 ```
 
-Data
 ```json
 {
    "OpportunityNotification":{
