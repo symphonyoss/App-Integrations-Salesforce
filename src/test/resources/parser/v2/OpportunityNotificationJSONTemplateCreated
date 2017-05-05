@@ -21,9 +21,9 @@
                     <div>
                         <span class="tempo-text-color--secondary">Opportunity Owner:</span>
                         <#if (entity['OpportunityNotification'].current.opportunity.Owner.hasOwnerAtSymphony)??>
-                            <span class="tempo-text-color--link">${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
+                            <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
                         <#else>
-                            <span class="entity" data-entity-id="8933531976066">@${entity['OpportunityNotification'].current.opportunity.Owner.Name}</span>
+                            <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
                         </#if>
                     </div>
                     <br/>
