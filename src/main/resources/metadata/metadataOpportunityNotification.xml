@@ -15,6 +15,8 @@
             <field key="TotalOpportunityQuantity" value="current.opportunity.TotalOpportunityQuantity" />
             <field key="UpdatedFields" value="current.opportunity.UpdatedFields" />
             <field key="CreatedOrUpdated" value="current.opportunity.CreatedOrUpdated" />
+            <field key="URLIconIntegration" value="current.opportunity.URLIconIntegration" />
+            <field key="IconCrown" value="current.opportunity.IconCrown" />
 
             <object id="LastModifiedBy" type="com.symphony.integration.salesforce.LastModifiedBy" version="1.0">
                 <field key="Name" value="current.opportunity.LastModifiedBy.Name" />

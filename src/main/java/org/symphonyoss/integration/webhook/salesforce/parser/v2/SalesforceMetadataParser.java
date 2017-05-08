@@ -158,6 +158,24 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     formatOptionalField(node, SalesforceConstants.PROBABILITY, probability);
   }
 
+  protected void proccessURLIconIntegration(JsonNode node) {
+    // get uri to Icon of integration
+
+    if (1 == 2) {
+      ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION,
+          "http://localhost:8186/apps/salesforce/img/salesforce_no_background.png");
+    }
+  }
+
+  protected void proccessIconCrown(JsonNode node) {
+    // get uri to Icon Crown
+
+    if (1 == 2) {
+      ((ObjectNode) node).put(SalesforceConstants.ICON_CROWN,
+          "http://localhost:8186/apps/salesforce/img/salesforce_no_background.png");
+    }
+  }
+
   protected void processUpdatedFields(JsonNode currentNode, JsonNode previousNode) {
     String updatedFields = null;
 

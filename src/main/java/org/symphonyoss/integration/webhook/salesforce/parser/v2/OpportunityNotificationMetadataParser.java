@@ -64,6 +64,8 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     processNextStep(currentOpportunityNode);
     processStageName(currentOpportunityNode);
     processProbability(currentOpportunityNode);
+    proccessURLIconIntegration(currentOpportunityNode);
+    proccessIconCrown(currentOpportunityNode);
     processUpdatedFields(currentOpportunityNode, previousOpportunityNode);
   }
 
