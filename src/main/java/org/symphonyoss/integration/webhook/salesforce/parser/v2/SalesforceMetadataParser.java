@@ -170,17 +170,29 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
   }
 
   protected void proccessURLIconIntegration(JsonNode node) {
-    ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION, getURLFromIcon("salesforce.svg"));
+    String urlIconIntegration = getURLFromIcon("salesforce.svg");
+
+    if (!urlIconIntegration.isEmpty()) {
+      ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION, urlIconIntegration);
+    }
   }
 
   protected void proccessIconCrown(JsonNode node) {
-    ((ObjectNode) node).put(SalesforceConstants.ICON_CROWN, getURLFromIcon("new_opportunity.svg"));
+    String iconCrown = getURLFromIcon("new_opportunity.svg");
+
+    if (!iconCrown.isEmpty()) {
+      ((ObjectNode) node).put(SalesforceConstants.ICON_CROWN, iconCrown);
+    }
   }
 
   protected String getURLFromIcon(String iconName) {
     String urlBase = integrationProperties.getApplicationUrl(INTEGRATION_NAME);
 
-    return String.format("%s/%s/%s", urlBase, PATH_IMG, iconName);
+    if (!urlBase.isEmpty()) {
+      return String.format("%s/%s/%s", urlBase, PATH_IMG, iconName);
+    } else {
+      return StringUtils.EMPTY;
+    }
   }
 
   protected void processUpdatedFields(JsonNode currentNode, JsonNode previousNode) {
