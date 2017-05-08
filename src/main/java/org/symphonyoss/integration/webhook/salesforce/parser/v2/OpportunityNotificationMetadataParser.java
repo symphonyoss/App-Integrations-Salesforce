@@ -21,9 +21,9 @@ import java.util.Map;
 @Component
 public class OpportunityNotificationMetadataParser extends SalesforceMetadataParser {
 
-  private static final String METADATA_FILE = "metadataOpportunityNotificationJSON.xml";
+  private static final String METADATA_FILE = "metadataOpportunityNotification.xml";
 
-  private static final String TEMPLATE_FILE = "templateOpportunityNotificationJSON.xml";
+  private static final String TEMPLATE_FILE = "templateOpportunityNotification.xml";
 
   public OpportunityNotificationMetadataParser(UserService userService) {
     super(userService);

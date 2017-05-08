@@ -42,11 +42,11 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
   private static final String OPPORTUNITY_NOTIFICATION_UPDATED = "SFDCCallbackSampleOpportunityUpdated.json";
   private static final String OPPORTUNITY_NOTIFICATION_WITH_ALL_FIELDS_NULL = "SFDCCallbackSampleOpportunity_WithAllFieldsNull.json";
 
-  private static final String OPPORTUNITY_NOTIFICATION_JSON_METADATA_CREATED = "parser/v2/OpportunityNotificationJSONMetadataCreated.json";
-  private static final String OPPORTUNITY_NOTIFICATION_JSON_METADATA_UPDATED = "parser/v2/OpportunityNotificationJSONMetadataUpdated.json";
-  private static final String OPPORTUNITY_NOTIFICATION_JSON_METADATA_WITH_ALL_FIELDS_NULL = "parser/v2/OpportunityNotificationJSONMetadataWithAllFieldsNull.json";
+  private static final String OPPORTUNITY_NOTIFICATION_METADATA_CREATED = "parser/v2/OpportunityNotificationMetadataCreated.json";
+  private static final String OPPORTUNITY_NOTIFICATION_METADATA_UPDATED = "parser/v2/OpportunityNotificationMetadataUpdated.json";
+  private static final String OPPORTUNITY_NOTIFICATION_METADATA_WITH_ALL_FIELDS_NULL = "parser/v2/OpportunityNotificationMetadataWithAllFieldsNull.json";
 
-  private static final String OPPORTUNITY_NOTIFICATION_JSON_TEMPLATE_CREATED = "parser/v2/OpportunityNotificationJSONTemplateCreated";
+  private static final String OPPORTUNITY_NOTIFICATION_TEMPLATE_CREATED = "parser/v2/OpportunityNotificationTemplateCreated";
 
   @Mock
   private UserService userService;
@@ -72,12 +72,12 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
 
     assertNotNull(result);
 
-    JsonNode expectedNode = readJsonFromFile(OPPORTUNITY_NOTIFICATION_JSON_METADATA_CREATED);
+    JsonNode expectedNode = readJsonFromFile(OPPORTUNITY_NOTIFICATION_METADATA_CREATED);
     String expected = JsonUtils.writeValueAsString(expectedNode);
 
     assertEquals(expected, result.getData());
 
-    String expectedTemplate = readFile(OPPORTUNITY_NOTIFICATION_JSON_TEMPLATE_CREATED);
+    String expectedTemplate = readFile(OPPORTUNITY_NOTIFICATION_TEMPLATE_CREATED);
     assertEquals(expectedTemplate, result.getMessage().replace("\n", ""));
   }
 
@@ -92,7 +92,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
 
     assertNotNull(result);
 
-    JsonNode expectedNode = readJsonFromFile(OPPORTUNITY_NOTIFICATION_JSON_METADATA_UPDATED);
+    JsonNode expectedNode = readJsonFromFile(OPPORTUNITY_NOTIFICATION_METADATA_UPDATED);
     String expected = JsonUtils.writeValueAsString(expectedNode);
 
     assertEquals(expected, result.getData());
@@ -109,7 +109,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
 
     assertNotNull(result);
 
-    JsonNode expectedNode = readJsonFromFile(OPPORTUNITY_NOTIFICATION_JSON_METADATA_WITH_ALL_FIELDS_NULL);
+    JsonNode expectedNode = readJsonFromFile(OPPORTUNITY_NOTIFICATION_METADATA_WITH_ALL_FIELDS_NULL);
     String expected = JsonUtils.writeValueAsString(expectedNode);
 
     assertEquals(expected, result.getData());

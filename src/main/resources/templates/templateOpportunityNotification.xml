@@ -1,6 +1,6 @@
 <messageML>
     <div class="entity" data-entity-id="OpportunityNotification">
-        <card class="barStyle">
+        <card class="barStyle" accent="green" iconSrc="">
             <header>
                 <span class="tempo-text-color--secondary">Opportunity: </span>
                 <a class="tempo-text-color--link" href="${entity['OpportunityNotification'].current.opportunity.Link}">${entity['OpportunityNotification'].current.opportunity.Name}</a>
