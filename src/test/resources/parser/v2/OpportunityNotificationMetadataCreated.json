@@ -18,8 +18,8 @@
         "Amount": "312,321.00",
         "CurrencyIsoCode": "EUR",
         "CreatedOrUpdated": "Created",
-        "URLIconIntegration": "https://symphony.com/img/salesforce_no_background.png",
-        "IconCrown": "https://symphony.com/img/crown.png",
+        "URLIconIntegration": "symphony.com/img/salesforce.svgre",
+        "IconCrown": "symphony.com/img/new_opportunity.svg",
         "LastModifiedBy": {
           "type": "com.symphony.integration.salesforce.LastModifiedBy",
           "version": "1.0",

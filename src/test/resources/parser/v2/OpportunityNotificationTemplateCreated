@@ -41,7 +41,7 @@
                     <span class="tempo-text-color--secondary">Type:</span>
                     <span>${entity['OpportunityNotification'].current.opportunity.Type}</span>
                 </div>
-                <br/>
+                <hr/>
                 <div>
                     <span class="tempo-text-color--secondary">Close Date:</span>
                     <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
