@@ -16,7 +16,6 @@ import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
-import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
@@ -29,7 +28,7 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Unit test for {@link V1ParserFactory}
+ * Unit test for {@link V1ParserParserFactory}
  * Created by crepache on 25/04/17.
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -52,7 +51,7 @@ public class V1ParserFactoryTest extends BaseSalesforceTest {
   private AccountStatusParser accountStatusParser;
 
   @InjectMocks
-  private V1ParserFactory factory;
+  private V1ParserParserFactory factory;
 
   @Before
   public void init() {

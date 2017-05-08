@@ -1,21 +1,16 @@
 package org.symphonyoss.integration.webhook.salesforce.parser.v2;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.symphonyoss.integration.entity.Entity;
-import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
-import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserParserFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Parser factory for the MessageML v2.
@@ -23,13 +18,13 @@ import java.util.Map;
  * Created by crepache on 19/04/17.
  */
 @Component
-public class V2ParserFactory extends SalesforceFactory {
+public class V2ParserParserFactory extends SalesforceParserFactory {
 
   @Autowired
   private List<SalesforceMetadataParser> beans;
 
   @Autowired
-  private V1ParserFactory fallbackFactory;
+  private V1ParserParserFactory fallbackFactory;
 
   @Override
   public boolean accept(MessageMLVersion version) {

@@ -24,7 +24,7 @@ import javax.xml.bind.JAXBException;
 /**
  * Created by crepache on 19/04/17.
  */
-public abstract class SalesforceFactory implements WebHookParserFactory {
+public abstract class SalesforceParserFactory implements WebHookParserFactory {
 
   public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 

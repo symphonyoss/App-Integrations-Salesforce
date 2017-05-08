@@ -186,10 +186,10 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     formatOptionalField(node, SalesforceConstants.PROBABILITY, probability);
   }
 
-  private void processUpdatedFields(JsonNode nodeCurrent, JsonNode nodePrevious) {
+  private void processUpdatedFields(JsonNode currentNode, JsonNode previousNode) {
     String updatedFields = null;
 
-    Iterator<Map.Entry<String, JsonNode>> fields = nodePrevious.fields();
+    Iterator<Map.Entry<String, JsonNode>> fields = previousNode.fields();
     while (fields.hasNext()) {
 
       String fieldKey = fields.next().getKey();
@@ -204,16 +204,16 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     }
 
     if (!StringUtils.isEmpty(updatedFields)) {
-      ((ObjectNode) nodeCurrent).put(SalesforceConstants.UPDATED_FIELDS, updatedFields);
-      ((ObjectNode) nodeCurrent).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.UPDATED_NOTIFICATION);
+      ((ObjectNode) currentNode).put(SalesforceConstants.UPDATED_FIELDS, updatedFields);
+      ((ObjectNode) currentNode).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.UPDATED_NOTIFICATION);
     } else {
-      ((ObjectNode) nodeCurrent).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.CREATED_NOTIFICATION);
+      ((ObjectNode) currentNode).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.CREATED_NOTIFICATION);
     }
   }
 
-  private void formatOptionalField(JsonNode node, String nameNode, String valueNode) {
-    if (StringUtils.isEmpty(valueNode)) {
-      ((ObjectNode) node).put(nameNode, DEFAULT_VALUE_NULL);
+  private void formatOptionalField(JsonNode node, String nodeName, String nodeValue) {
+    if (StringUtils.isEmpty(nodeValue)) {
+      ((ObjectNode) node).put(nodeName, DEFAULT_VALUE_NULL);
     }
   }
 

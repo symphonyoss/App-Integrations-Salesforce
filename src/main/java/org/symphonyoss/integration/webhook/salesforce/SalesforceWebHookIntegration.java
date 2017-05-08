@@ -20,13 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.Message;
-import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceFactory;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceResolver;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ import javax.ws.rs.core.MediaType;
  *
  * This integration class should support MessageML v1 and MessageML v2 according to the Agent Version.
  *
- * There is a component {@link SalesforceResolver} responsible to identify the correct factory should
+ * There is a component {@link SalesforceParserResolver} responsible to identify the correct factory should
  * be used to build the parsers according to the MessageML supported.
  *
  * Created by rsanchez on 31/08/16.
@@ -48,10 +47,10 @@ import javax.ws.rs.core.MediaType;
 public class SalesforceWebHookIntegration extends WebHookIntegration {
 
   @Autowired
-  private SalesforceResolver salesforceResolver;
+  private SalesforceParserResolver salesforceParserResolver;
 
   @Autowired
-  private List<SalesforceFactory> factories;
+  private List<SalesforceParserFactory> factories;
 
   /**
    * Callback to update the integration settings in the parser classes.
@@ -61,7 +60,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
   public void onConfigChange(IntegrationSettings settings) {
     super.onConfigChange(settings);
 
-    for (SalesforceFactory factory : factories) {
+    for (SalesforceParserFactory factory : factories) {
       factory.onConfigChange(settings);
     }
   }
@@ -74,7 +73,7 @@ public class SalesforceWebHookIntegration extends WebHookIntegration {
    */
   @Override
   public Message parse(WebHookPayload input) throws WebHookParseException {
-    WebHookParser parser = salesforceResolver.getFactory().getParser(input);
+    WebHookParser parser = salesforceParserResolver.getFactory().getParser(input);
     return parser.parse(input);
   }
 

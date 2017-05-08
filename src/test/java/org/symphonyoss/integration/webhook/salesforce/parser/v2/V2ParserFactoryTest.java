@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,14 +16,13 @@ import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
-import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Unit test for {@link V2ParserFactory}
+ * Unit test for {@link V2ParserParserFactory}
  * Created by crepache on 25/04/17.
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -37,15 +34,15 @@ public class V2ParserFactoryTest {
   private List<SalesforceParser> beans = new ArrayList<>();
 
   @InjectMocks
-  private V2ParserFactory factory;
+  private V2ParserParserFactory factory;
 
   @Mock
-  private OpportunityNotificationJSONMetadataParser opportunityNotificationJSONMetadataParser;
+  private OpportunityNotificationMetadataParser opportunityNotificationMetadataParser;
 
 
   @Before
   public void init() {
-    beans.add(opportunityNotificationJSONMetadataParser);
+    beans.add(opportunityNotificationMetadataParser);
 
     factory.init();
   }
@@ -67,6 +64,6 @@ public class V2ParserFactoryTest {
 
     factory.onConfigChange(settings);
 
-    verify(opportunityNotificationJSONMetadataParser, times(1)).setSalesforceUser(MOCK_INTEGRATION_TYPE);
+    verify(opportunityNotificationMetadataParser, times(1)).setSalesforceUser(MOCK_INTEGRATION_TYPE);
   }
 }

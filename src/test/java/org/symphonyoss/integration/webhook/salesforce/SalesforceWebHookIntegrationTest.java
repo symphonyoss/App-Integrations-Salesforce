@@ -18,24 +18,22 @@ package org.symphonyoss.integration.webhook.salesforce;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceResolver;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserParserFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,10 +58,10 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   private AccountStatusParser accountStatusParser = new AccountStatusParser();
 
   @Spy
-  private SalesforceResolver salesforceResolver;
+  private SalesforceParserResolver salesforceParserResolver;
 
   @InjectMocks
-  private V1ParserFactory factory;
+  private V1ParserParserFactory factory;
 
   @Spy
   private NullSalesforceParser defaultSalesforceParser;
@@ -76,7 +74,7 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
     factory.init();
 
-    doReturn(factory).when(salesforceResolver).getFactory();
+    doReturn(factory).when(salesforceParserResolver).getFactory();
   }
 
   @Test(expected = SalesforceParseException.class)

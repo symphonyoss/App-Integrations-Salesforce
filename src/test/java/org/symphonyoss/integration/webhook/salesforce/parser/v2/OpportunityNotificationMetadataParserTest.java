@@ -55,7 +55,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
 
   @Before
   public void init() {
-    parser = new OpportunityNotificationJSONMetadataParser(userService);
+    parser = new OpportunityNotificationMetadataParser(userService);
 
     parser.init();
     parser.setSalesforceUser(MOCK_INTEGRATION_USER);

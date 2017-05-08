@@ -14,10 +14,10 @@ import java.util.List;
  * Created by crepache on 19/04/17.
  */
 @Component
-public class SalesforceResolver extends WebHookParserResolver {
+public class SalesforceParserResolver extends WebHookParserResolver {
 
   @Autowired
-  private List<SalesforceFactory> factories;
+  private List<SalesforceParserFactory> factories;
 
   /**
    * Retrieve all parser factories of SALESFORCE integration for all MessageML versions.
