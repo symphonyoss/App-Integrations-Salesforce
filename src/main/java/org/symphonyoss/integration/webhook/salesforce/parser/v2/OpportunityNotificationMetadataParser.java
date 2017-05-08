@@ -5,6 +5,7 @@ import com.sun.media.sound.MidiUtils;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.yaml.IntegrationProperties;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.parser.metadata.EntityObject;
 import org.symphonyoss.integration.webhook.parser.metadata.MetadataParser;
@@ -25,8 +26,8 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotification.xml";
 
-  public OpportunityNotificationMetadataParser(UserService userService) {
-    super(userService);
+  public OpportunityNotificationMetadataParser(UserService userService, IntegrationProperties integrationProperties) {
+    super(userService, integrationProperties);
   }
 
   @Override

@@ -41,11 +41,6 @@ public class NullSalesforceParser implements SalesforceParser {
   @Override
   public Message parse(Map<String, String> parameters, JsonNode node)
       throws SalesforceParseException {
-    Message message = new Message();
-    message.setMessage(node.toString());
-    message.setFormat(Message.FormatEnum.MESSAGEML);
-    message.setVersion(MessageMLVersion.V1);
-
-    return message;
+    return null;
   }
 }

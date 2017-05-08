@@ -4,9 +4,12 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.yaml.Application;
+import org.symphonyoss.integration.model.yaml.IntegrationProperties;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
 import org.symphonyoss.integration.webhook.WebHookPayload;
@@ -14,6 +17,7 @@ import org.symphonyoss.integration.webhook.parser.metadata.EntityObject;
 import org.symphonyoss.integration.webhook.parser.metadata.MetadataParser;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceWebHookIntegration;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.text.ParseException;
@@ -33,13 +37,20 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
   public static final String DEFAULT_VALUE_NULL = "-";
 
+  private static final String PATH_IMG = "img";
+
+  private static final String INTEGRATION_NAME = "salesforce";
+
+  private IntegrationProperties integrationProperties;
+
   private UserService userService;
 
   private String integrationUser;
 
   @Autowired
-  public SalesforceMetadataParser(UserService userService) {
+  public SalesforceMetadataParser(UserService userService, IntegrationProperties integrationProperties) {
     this.userService = userService;
+    this.integrationProperties = integrationProperties;
   }
 
   @Override
@@ -159,21 +170,17 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
   }
 
   protected void proccessURLIconIntegration(JsonNode node) {
-    // get uri to Icon of integration
-
-    if (1 == 2) {
-      ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION,
-          "http://localhost:8186/apps/salesforce/img/salesforce_no_background.png");
-    }
+    ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION, getURLFromIcon("salesforce_no_background.png"));
   }
 
   protected void proccessIconCrown(JsonNode node) {
-    // get uri to Icon Crown
+    ((ObjectNode) node).put(SalesforceConstants.ICON_CROWN, getURLFromIcon("crown.png"));
+  }
 
-    if (1 == 2) {
-      ((ObjectNode) node).put(SalesforceConstants.ICON_CROWN,
-          "http://localhost:8186/apps/salesforce/img/salesforce_no_background.png");
-    }
+  protected String getURLFromIcon(String iconName) {
+    String urlBase = integrationProperties.getApplicationUrl(INTEGRATION_NAME);
+
+    return String.format("https://%s/%s/%s", urlBase, PATH_IMG, iconName);
   }
 
   protected void processUpdatedFields(JsonNode currentNode, JsonNode previousNode) {

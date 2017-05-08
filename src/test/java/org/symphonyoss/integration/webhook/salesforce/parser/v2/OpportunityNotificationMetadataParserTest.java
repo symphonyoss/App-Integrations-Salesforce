@@ -5,16 +5,22 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.yaml.IntegrationBridge;
+import org.symphonyoss.integration.model.yaml.IntegrationProperties;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 
@@ -48,14 +54,19 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
 
   private static final String OPPORTUNITY_NOTIFICATION_TEMPLATE_CREATED = "parser/v2/OpportunityNotificationTemplateCreated";
 
+  private static final String INTEGRATION_NAME = "salesforce";
+
   @Mock
   private UserService userService;
+
+  @Mock
+  private IntegrationProperties integrationProperties;
 
   private SalesforceMetadataParser parser;
 
   @Before
   public void init() {
-    parser = new OpportunityNotificationMetadataParser(userService);
+    parser = new OpportunityNotificationMetadataParser(userService, integrationProperties);
 
     parser.init();
     parser.setSalesforceUser(MOCK_INTEGRATION_USER);
@@ -68,6 +79,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
+    mockIntegrationProperties();
     Message result = parser.parse(headerParams, node);
 
     assertNotNull(result);
@@ -84,6 +96,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
   @Test
   public void testOpportunityNotificationUpdated() throws JAXBException, IOException {
     mockUserInfo();
+    mockIntegrationProperties();
     JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_UPDATED);
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
@@ -101,6 +114,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
   @Test
   public void testOpportunityNotificationWithAllFieldsNull() throws JAXBException, IOException {
     mockUserInfo();
+    mockIntegrationProperties();
     JsonNode node = readJsonFromFile(OPPORTUNITY_NOTIFICATION_WITH_ALL_FIELDS_NULL);
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
@@ -125,4 +139,7 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
     doReturn(user).when(userService).getUserByEmail(eq(MOCK_INTEGRATION_USER), anyString());
   }
 
+  private void mockIntegrationProperties() {
+    doReturn("symphony.com").when(integrationProperties).getApplicationUrl(INTEGRATION_NAME);
+  }
 }
