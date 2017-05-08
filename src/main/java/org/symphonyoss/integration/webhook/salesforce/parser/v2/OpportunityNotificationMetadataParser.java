@@ -8,6 +8,7 @@ import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.parser.metadata.EntityObject;
 import org.symphonyoss.integration.webhook.parser.metadata.MetadataParser;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.util.Arrays;
@@ -42,4 +43,33 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   public List<String> getEvents() {
     return Arrays.asList("opportunityNotificationJSON");
   }
+
+  @Override
+  protected void preProcessInputData(JsonNode node) {
+    JsonNode currentOpportunityNode = node.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+    JsonNode currentOpportunityAccountNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
+    JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
+    JsonNode currentOpportunityLastModifyByNode = currentOpportunityNode.path(SalesforceConstants.LAST_MODIFY_BY);
+    JsonNode previousOpportunityNode = node.path(SalesforceConstants.PREVIOUS_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
+
+    processName(currentOpportunityNode);
+    processLink(currentOpportunityNode);
+    proccessEmailLastModifiedBy(currentOpportunityLastModifyByNode);
+    proccessAccountName(currentOpportunityAccountNode);
+    proccessAccountLink(currentOpportunityAccountNode);
+    processOwner(currentOpportunityOwnerNode);
+    processAmount(currentOpportunityNode);
+    processCurrencyIsoCode(currentOpportunityNode);
+    processCloseDate(currentOpportunityNode);
+    processNextStep(currentOpportunityNode);
+    processStageName(currentOpportunityNode);
+    processProbability(currentOpportunityNode);
+    processUpdatedFields(currentOpportunityNode, previousOpportunityNode);
+  }
+
+  @Override
+  protected void postProcessOutputData(EntityObject output, JsonNode input) {
+    // Do nothing
+  }
+
 }
