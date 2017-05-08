@@ -162,57 +162,56 @@ Following an example:
 
 ```xml
 <messageML>
-    <div class="entity">
-        <card class="barStyle">
+    <div class="entity" data-entity-id="OpportunityNotification">
+        <card class="barStyle" accent="green" iconSrc="${entity['OpportunityNotification'].current.opportunity.URLIconIntegration}">
             <header>
+                <img src="${entity['OpportunityNotification'].current.opportunity.IconCrown}" class="icon" />
                 <span class="tempo-text-color--secondary">Opportunity: </span>
                 <a class="tempo-text-color--link" href="${entity['OpportunityNotification'].current.opportunity.Link}">${entity['OpportunityNotification'].current.opportunity.Name}</a>
-                <span class="tempo-text-color--orange"> - ${entity['OpportunityNotification'].current.opportunity.CreatedOrUpdated}</span>
+                <span class="tempo-text-color--green"> - ${entity['OpportunityNotification'].current.opportunity.CreatedOrUpdated}</span>
                 <span>${entity['OpportunityNotification'].current.opportunity.UpdatedFields}</span>
             </header>
             <body>
-                <div class="entity" data-entity-id="OpportunityNotification">
-                    <div>
-                        <span class="tempo-text-color--secondary">Account Name:</span>
-                        <#if (entity['OpportunityNotification'].current.opportunity.Account.Link)??>
-                            <a class="tempo-text-color--link" href="${entity['OpportunityNotification'].current.opportunity.Account.Link}">${entity['OpportunityNotification'].current.opportunity.Account.Name}</a>
-                        <#else>
-                            <span>${entity['OpportunityNotification'].current.opportunity.Account.Name}</span>
-                        </#if>
-                    </div>
-                    <br/>
-                    <div>
-                        <span class="tempo-text-color--secondary">Opportunity Owner:</span>
-                        <#if (entity['OpportunityNotification'].current.opportunity.Owner.hasOwnerAtSymphony)??>
-                            <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
-                        <#else>
-                            <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
-                        </#if>
-                    </div>
-                    <br/>
-                    <div>
-                        <span class="tempo-text-color--secondary">Amount:</span>
-                        <span>${entity['OpportunityNotification'].current.opportunity.Amount} - ${entity['OpportunityNotification'].current.opportunity.CurrencyIsoCode}</span>
-                    </div>
-                    <br/>
-                    <div>
-                        <span class="tempo-text-color--secondary">Next Step:</span>
-                        <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
-                    </div>
-                    <br/>
-                    <div>
-                        <span class="tempo-text-color--secondary">Type:</span>
-                        <span>${entity['OpportunityNotification'].current.opportunity.Type}</span>
-                    </div>
-                    <br/>
-                    <div>
-                        <span class="tempo-text-color--secondary">Close Date:</span>
-                        <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
-                        <span class="tempo-text-color--secondary">Probability:</span>
-                        <span>${entity['OpportunityNotification'].current.opportunity.Probability}</span>
-                        <span class="tempo-text-color--secondary">Stage:</span>
-                        <span class="tempo-text-color--white tempo-bg-color--yellow tempo-token">${entity['OpportunityNotification'].current.opportunity.StageName}</span>
-                    </div>
+                <div>
+                    <span class="tempo-text-color--secondary">Account Name:</span>
+                    <#if (entity['OpportunityNotification'].current.opportunity.Account.Link)??>
+                        <a class="tempo-text-color--link" href="${entity['OpportunityNotification'].current.opportunity.Account.Link}">${entity['OpportunityNotification'].current.opportunity.Account.Name}</a>
+                    <#else>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Account.Name}</span>
+                    </#if>
+                </div>
+                <br/>
+                <div>
+                    <span class="tempo-text-color--secondary">Opportunity Owner:</span>
+                    <#if (entity['OpportunityNotification'].current.opportunity.Owner.hasOwnerAtSymphony)??>
+                        <mention email="${entity['OpportunityNotification'].current.opportunity.Owner.Email}" />
+                    <#else>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
+                    </#if>
+                </div>
+                <br/>
+                <div>
+                    <span class="tempo-text-color--secondary">Amount:</span>
+                    <span>${entity['OpportunityNotification'].current.opportunity.Amount} - ${entity['OpportunityNotification'].current.opportunity.CurrencyIsoCode}</span>
+                </div>
+                <br/>
+                <div>
+                    <span class="tempo-text-color--secondary">Next Step:</span>
+                    <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
+                </div>
+                <br/>
+                <div>
+                    <span class="tempo-text-color--secondary">Type:</span>
+                    <span>${entity['OpportunityNotification'].current.opportunity.Type}</span>
+                </div>
+                <hr/>
+                <div>
+                    <span class="tempo-text-color--secondary">Close Date:</span>
+                    <span>${entity['OpportunityNotification'].current.opportunity.CloseDate}</span>
+                    <span class="tempo-text-color--secondary">Probability:</span>
+                    <span>${entity['OpportunityNotification'].current.opportunity.Probability}</span>
+                    <span class="tempo-text-color--secondary">Stage:</span>
+                    <span class="tempo-text-color--white tempo-bg-color--yellow tempo-token">${entity['OpportunityNotification'].current.opportunity.StageName}</span>
                 </div>
             </body>
         </card>
@@ -221,11 +220,11 @@ Following an example:
 ```
 
 ```json
-{
-   "OpportunityNotification":{
+{  
+   "OpportunityNotification":{  
       "type":"com.symphony.integration.salesforce.event.v2.OpportunityNotification",
       "version":"1.0",
-      "current":{
+      "current":{  
          "type":"com.symphony.integration.salesforce.current",
          "version":"1.0",
          "opportunity":{  
@@ -242,6 +241,8 @@ Following an example:
             "CurrencyIsoCode":"EUR",
             "UpdatedFields":"type, stage, probability, name, close date, account",
             "CreatedOrUpdated":"Updated",
+            "URLIconIntegration":"https://nexus2.symphony.com/apps/salesforce/img/salesforce.svg",
+            "IconCrown":"https://nexus2.symphony.com/apps/salesforce/img/new_opportunity.svg",
             "LastModifiedBy":{  
                "type":"com.symphony.integration.salesforce.LastModifiedBy",
                "version":"1.0",
