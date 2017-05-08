@@ -19,7 +19,7 @@
         "CurrencyIsoCode": "EUR",
         "UpdatedFields": "type, stage, probability, name, close date, account, amount, currency, next step",
         "CreatedOrUpdated": "Updated",
-        "URLIconIntegration": "symphony.com/img/salesforce.svgre",
+        "URLIconIntegration": "symphony.com/img/salesforce.svg",
         "IconCrown": "symphony.com/img/new_opportunity.svg",
         "LastModifiedBy": {
           "type": "com.symphony.integration.salesforce.LastModifiedBy",

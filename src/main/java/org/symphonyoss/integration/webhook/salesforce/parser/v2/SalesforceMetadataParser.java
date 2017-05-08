@@ -170,7 +170,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
   }
 
   protected void proccessURLIconIntegration(JsonNode node) {
-    ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION, getURLFromIcon("salesforce.svgre"));
+    ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION, getURLFromIcon("salesforce.svg"));
   }
 
   protected void proccessIconCrown(JsonNode node) {
