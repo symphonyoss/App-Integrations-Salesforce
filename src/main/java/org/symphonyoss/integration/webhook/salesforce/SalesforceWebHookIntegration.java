@@ -16,139 +16,65 @@
 
 package org.symphonyoss.integration.webhook.salesforce;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.symphonyoss.integration.entity.Entity;
-import org.symphonyoss.integration.entity.MessageML;
-import org.symphonyoss.integration.entity.MessageMLParser;
-import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.Message;
-import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookIntegration;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
+import org.symphonyoss.integration.webhook.parser.WebHookParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.ws.rs.core.MediaType;
 
 /**
+ *
+ * Implementation of a WebHook to integrate with SALESFORCE, rendering it's messages.
+ *
+ * This integration class should support MessageML v1 and MessageML v2 according to the Agent Version.
+ *
+ * There is a component {@link SalesforceParserResolver} responsible to identify the correct factory should
+ * be used to build the parsers according to the MessageML supported.
+ *
  * Created by rsanchez on 31/08/16.
  */
 @Component
 public class SalesforceWebHookIntegration extends WebHookIntegration {
 
-  public static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
-
-  private Map<String, SalesforceParser> parsers = new HashMap<>();
+  @Autowired
+  private SalesforceParserResolver salesforceParserResolver;
 
   @Autowired
-  private List<SalesforceParser> salesforceParserBeans;
+  private List<SalesforceParserFactory> factories;
 
-  @PostConstruct
-  public void init() {
-    for (SalesforceParser parser : salesforceParserBeans) {
-      List<String> events = parser.getEvents();
-      for (String eventType : events) {
-        this.parsers.put(eventType, parser);
-      }
-    }
-  }
-
+  /**
+   * Callback to update the integration settings in the parser classes.
+   * @param settings Integration settings
+   */
   @Override
   public void onConfigChange(IntegrationSettings settings) {
     super.onConfigChange(settings);
 
-    for (SalesforceParser parsers : salesforceParserBeans) {
-      parsers.setSalesforceUser(settings.getType());
+    for (SalesforceParserFactory factory : factories) {
+      factory.onConfigChange(settings);
     }
   }
 
+  /**
+   * Parse message received from SALESFORCE according to the event type and MessageML version supported.
+   * @param input Message received from SALESFORCE
+   * @return Message to be posted
+   * @throws WebHookParseException Failure to parse the incoming payload
+   */
   @Override
   public Message parse(WebHookPayload input) throws WebHookParseException {
-    if (isContentTypeJSON(input)) {
-      return parseJSONPayload(input);
-    }
-
-    Entity mainEntity = parsePayloadToEntity(input);
-
-    String type = mainEntity.getType();
-
-    SalesforceParser parser = getParser(type);
-
-    if (parser == null) {
-      Message message = new Message();
-      message.setMessage(input.getBody());
-      message.setFormat(Message.FormatEnum.MESSAGEML);
-      message.setVersion(MessageMLVersion.V1);
-
-      return message;
-    }
-
-    String messageML = parser.parse(mainEntity);
-    return super.buildMessageML(messageML, type);
-  }
-
-  private SalesforceParser getParser(String type) {
-    return parsers.get(type);
-  }
-
-  private Entity parsePayloadToEntity(WebHookPayload payload) {
-    try {
-      MessageML messageML = MessageMLParser.parse(payload.getBody());
-      return messageML.getEntity();
-    } catch (JAXBException e) {
-      throw new SalesforceParseException(
-          "Something went wrong when trying parse the MessageML payload received by the webhook.", e);
-    }
-  }
-
-  /**
-   * Returns true when the payload content is JSON
-   * @param payload the webhook payload
-   * @return true when payload is JSON
-   */
-  private boolean isContentTypeJSON(WebHookPayload payload) {
-    return MediaType.APPLICATION_JSON.equals(getContentType(payload));
-  }
-
-  /**
-   * Rerieves the Content-Type header from the webhook payload.
-   * @param payload the webhook payload
-   * @return value of Content-Type header
-   */
-  private String getContentType(WebHookPayload payload) {
-    return payload.getHeaders().get("content-type");
-  }
-
-  /**
-   * Parses the webhook payload (received in JSON format)
-   * @param input the webhook payload
-   * @return parsed content formatted as MessageML
-   */
-  private Message parseJSONPayload(WebHookPayload input) {
-    JsonNode rootNode = null;
-
-    try {
-      rootNode = JsonUtils.readTree(input.getBody());
-    } catch (IOException e) {
-      throw new SalesforceParseException(
-          "Something went wrong when trying parse the JSON payload received by the webhook.", e);
-    }
-
-    SalesforceParser parser = getParser(OPPORTUNITY_NOTIFICATION_JSON);
-
-    String messageML = parser.parse(input.getHeaders(), rootNode);
-
-    return super.buildMessageML(messageML, OPPORTUNITY_NOTIFICATION_JSON);
+    WebHookParser parser = salesforceParserResolver.getFactory().getParser(input);
+    return parser.parse(input);
   }
 
   /**

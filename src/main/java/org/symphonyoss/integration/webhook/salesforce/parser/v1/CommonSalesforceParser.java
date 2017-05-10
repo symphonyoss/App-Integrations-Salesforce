@@ -1,21 +1,7 @@
-/**
- * Copyright 2016-2017 Symphony Integrations - Symphony LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
-package org.symphonyoss.integration.webhook.salesforce.parser;
-
+import static org.symphonyoss.integration.messageml.MessageMLFormatConstants.MESSAGEML_END;
+import static org.symphonyoss.integration.messageml.MessageMLFormatConstants.MESSAGEML_START;
 import static org.symphonyoss.integration.parser.ParserUtils.presentationFormat;
 import static org.symphonyoss.integration.parser.SafeString.EMPTY_SAFE_STRING;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.EMAIL_ADDRESS;
@@ -24,28 +10,36 @@ import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.messageml.MessageMLFormatConstants;
+import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.parser.SafeString;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
+import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.xml.bind.JAXBException;
+
 /**
- * Utility methods for Salesforce Parsers
- * Created by cmarcondes on 11/3/16.
+ * Abstract class that contains the commons methods required by all the MessageML v1 parsers.
+ *
+ * Created by crepache on 24/04/17.
  */
-@Component
-public abstract class BaseSalesforceParser implements SalesforceParser{
+public class CommonSalesforceParser implements SalesforceParser {
 
   private static final String FORMATTED_STRING_WITH_PARENTHESIS = "(%s)";
   private static final String FORMATTED_STRING = "%s";
@@ -60,17 +54,12 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
   private static final String OPPORTUNITY_PROBABILITY = "<b>Probability:</b> %s";
   private static final String DEFAULT_CONTENT_FOR_MISSING_FIELD = "-";
   private static final String DEFAULT_VALUE_NULL = "";
-  public static final String STRING_NULL = "null";
+  private static final String STRING_NULL = "null";
 
   @Autowired
   private UserService userService;
 
   private String salesforceUser;
-
-  @Override
-  public void setSalesforceUser(String user) {
-    this.salesforceUser = user;
-  }
 
   /**
    * Searches a matching Symphony user for the given Salesforce user email.
@@ -110,6 +99,44 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
   private String getEmail(Entity entity) {
     return entity.getAttributeValue(EMAIL_ADDRESS);
+  }
+
+  @Override
+  public Message parse(WebHookPayload payload) throws SalesforceParseException, JAXBException {
+    return null;
+  }
+
+  @Override
+  public void setSalesforceUser(String user) {
+    this.salesforceUser = user;
+  }
+
+  @Override
+  public List<String> getEvents() {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public Message parse(Map<String, String> parameters, JsonNode node)
+      throws SalesforceParseException {
+    String formattedMessage = getMessage(parameters, node);
+
+    if (StringUtils.isNotEmpty(formattedMessage)) {
+      String messageML = MESSAGEML_START + formattedMessage + MESSAGEML_END;
+
+      Message message = new Message();
+      message.setFormat(Message.FormatEnum.MESSAGEML);
+      message.setMessage(messageML);
+      message.setVersion(MessageMLVersion.V1);
+
+      return message;
+    }
+
+    return null;
+  }
+
+  protected String getMessage(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
+    return null;
   }
 
   private String getName(JsonNode node) {
@@ -320,5 +347,4 @@ public abstract class BaseSalesforceParser implements SalesforceParser{
 
     return presentationFormat(FORMATTED_STRING, updatedFields);
   }
-
 }

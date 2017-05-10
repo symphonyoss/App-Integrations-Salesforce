@@ -17,27 +17,26 @@
 package org.symphonyoss.integration.webhook.salesforce;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.symphonyoss.integration.entity.Entity;
-import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookPayload;
-import org.symphonyoss.integration.webhook.salesforce.parser.AccountStatusParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserParserFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,35 +48,40 @@ import javax.xml.bind.JAXBException;
 @RunWith(MockitoJUnitRunner.class)
 public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
-  private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
-  private static final String OPPORTUNITY_NOTIFICATION =
-      "SFDCCallbackSampleOpportunityCreated.json";
-
   @Spy
-  private List<SalesforceParser> salesforceParserBeans = new ArrayList<>();
-
-  @Mock
-  private AccountStatusParser accountStatusParser = new AccountStatusParser();
+  private List<SalesforceParser> beans = new ArrayList<>();
 
   @InjectMocks
   private SalesforceWebHookIntegration salesforceWebHookIntegration = new SalesforceWebHookIntegration();
 
-  private MessageMLParser messageMLParser = new MessageMLParser();
+  @Spy
+  private AccountStatusParser accountStatusParser = new AccountStatusParser();
+
+  @Spy
+  private SalesforceParserResolver salesforceParserResolver;
+
+  @InjectMocks
+  private V1ParserParserFactory factory;
+
+  @Spy
+  private NullSalesforceParser defaultSalesforceParser;
 
   @Before
   public void setup() {
-    when(accountStatusParser.getEvents()).thenReturn(Arrays.asList("com.symphony.integration.sfdc.event.accountStatus"));
 
-    salesforceParserBeans.add(accountStatusParser);
+    beans.add(accountStatusParser);
+    beans.add(defaultSalesforceParser);
 
+    factory.init();
 
-    salesforceWebHookIntegration.init();
+    doReturn(factory).when(salesforceParserResolver).getFactory();
   }
 
   @Test(expected = SalesforceParseException.class)
-  public void testInvalidPayload(){
+  public void testInvalidPayload() throws IOException {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
-    salesforceWebHookIntegration.parse(payload);
+
+    factory.getParser(payload).getEvents();
   }
 
   @Test
@@ -93,11 +97,14 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
     String xml = readFile("accountStatus.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
 
-    String expected = readFile("parser/accountStatus_withMentionTags_expected.xml");
-    when(accountStatusParser.parse(any(Entity.class))).thenReturn(expected);
+    String expected = readFile("parser/v1/accountStatus_withMentionTags_expected.xml");
+    Message message = new Message();
+    message.setVersion(MessageMLVersion.V1);
+    message.setMessage(expected);
+    doReturn(message).when(accountStatusParser).parse(payload);
 
     Message result = salesforceWebHookIntegration.parse(payload);
-    assertEquals("<messageML>" + expected + "</messageML>", result.getMessage());
+    assertEquals(expected, result.getMessage());
   }
 
 }

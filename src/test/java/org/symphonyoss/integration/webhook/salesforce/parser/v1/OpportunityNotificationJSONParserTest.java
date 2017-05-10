@@ -1,4 +1,4 @@
-package org.symphonyoss.integration.webhook.salesforce.parser;
+package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
@@ -6,20 +6,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.test.context.ContextConfiguration;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.logging.LogMessageSource;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.OpportunityNotificationJSONParser;
 
-import javax.annotation.Resource;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
@@ -47,12 +43,12 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
   private static final String OPPORTUNITY_NOTIFICATION_WITH_ALL_FIELDS_NULL = "SFDCCallbackSampleOpportunity_WithAllFieldsNull.json";
   private static final String OPPORTUNITY_NOTIFICATION_WITHOUT_TAGS_ACCOUNT_AND_OWNER = "SFDCCallbackSampleOpportunity_WithoutTagsAccountAndOwner.json";
 
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED = "parser/opportunityNotificationJSONCreated";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED = "parser/opportunityNotificationJSONUpdated";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP = "parser/opportunityNotificationJSON_WithoutNextStep";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT = "parser/opportunityNotificationJSON_WithoutAmount";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL = "parser/opportunityNotificationJSON_WithoutAllFieldsNull";
-  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_TAGS_ACCOUNT_AND_OWNER = "parser/opportunityNotificationJSON_WithoutTagsAccountAndOwner";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED = "parser/v1/opportunityNotificationJSONCreated";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED = "parser/v1/opportunityNotificationJSONUpdated";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP = "parser/v1/opportunityNotificationJSON_WithoutNextStep";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT = "parser/v1/opportunityNotificationJSON_WithoutAmount";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL = "parser/v1/opportunityNotificationJSON_WithoutAllFieldsNull";
+  public static final String PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_TAGS_ACCOUNT_AND_OWNER = "parser/v1/opportunityNotificationJSON_WithoutTagsAccountAndOwner";
 
   @Mock
   private UserService userService;
@@ -90,11 +86,11 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
-    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+    Message result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_CREATED);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -103,11 +99,11 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
-    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+    Message result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_UPDATED);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -116,11 +112,11 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
-    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+    Message result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_NEXT_STEP);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -129,11 +125,11 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
-    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+    Message result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_ALL_FIELDS_NULL);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -142,11 +138,11 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
-    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+    Message result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_AMOUNT);
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
@@ -155,16 +151,10 @@ public class OpportunityNotificationJSONParserTest extends BaseSalesforceTest {
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
 
-    String result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
+    Message result = salesforceParser.parse(Collections.<String, String>emptyMap(), node);
 
     assertNotNull(result);
     String expected = readFile(PARSER_OPPORTUNITY_NOTIFICATION_JSON_WITHOUT_TAGS_ACCOUNT_AND_OWNER);
-    assertEquals(expected, result);
-  }
-
-  protected JsonNode readJsonFromFile(String filename) throws IOException {
-    ClassLoader classLoader = getClass().getClassLoader();
-
-    return JsonUtils.readTree(classLoader.getResourceAsStream(filename));
+    assertEquals(expected, result.getMessage());
   }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<metadata name="OpportunityNotification" type="com.symphony.integration.salesforce.event.v2.OpportunityNotification" version="1.0">
+    <object id="current" type="com.symphony.integration.salesforce.current" version="1.0">
+        <object id="opportunity" type="opportunity" version="1.0">
+            <field key="IdSymphony" value="current.opportunity.IdSymphony" />
+            <field key="Name" value="current.opportunity.Name" />
+            <field key="Type" value="current.opportunity.Type" />
+            <field key="Link" value="current.opportunity.Link" />
+            <field key="NextStep" value="current.opportunity.NextStep" />
+            <field key="StageName" value="current.opportunity.StageName" />
+            <field key="CloseDate" value="current.opportunity.CloseDate" />
+            <field key="Probability" value="current.opportunity.Probability" />
+            <field key="Amount" value="current.opportunity.Amount" />
+            <field key="CurrencyIsoCode" value="current.opportunity.CurrencyIsoCode" />
+            <field key="TotalOpportunityQuantity" value="current.opportunity.TotalOpportunityQuantity" />
+            <field key="UpdatedFields" value="current.opportunity.UpdatedFields" />
+            <field key="CreatedOrUpdated" value="current.opportunity.CreatedOrUpdated" />
+            <field key="URLIconIntegration" value="current.opportunity.URLIconIntegration" />
+            <field key="IconCrown" value="current.opportunity.IconCrown" />
+
+            <object id="LastModifiedBy" type="com.symphony.integration.salesforce.LastModifiedBy" version="1.0">
+                <field key="Name" value="current.opportunity.LastModifiedBy.Name" />
+                <field key="Email" value="current.opportunity.LastModifiedBy.Email" />
+            </object>
+
+            <object id="Account" type="com.symphony.integration.salesforce.Account" version="1.0">
+                <field key="Name" value="current.opportunity.Account.Name" />
+                <field key="Link" value="current.opportunity.Account.Link" />
+            </object>
+
+            <object id="Owner" type="com.symphony.integration.salesforce.Owner" version="1.0">
+                <field key="hasOwnerAtSymphony" value="current.opportunity.Owner.hasOwnerAtSymphony" />
+                <field key="Name" value="current.opportunity.Owner.Name" />
+                <field key="Email" value="current.opportunity.Owner.Email" />
+            </object>
+        </object>
+    </object>
+</metadata>

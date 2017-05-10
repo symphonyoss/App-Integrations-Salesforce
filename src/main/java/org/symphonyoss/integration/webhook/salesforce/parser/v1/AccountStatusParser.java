@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.symphonyoss.integration.webhook.salesforce.parser;
+package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.ACCOUNT;
 import static org.symphonyoss.integration.webhook.salesforce.SalesforceConstants.ACTIVITIES;
@@ -26,12 +26,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.EntityBuilder;
+import org.symphonyoss.integration.entity.MessageML;
+import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.exception.EntityXMLGeneratorException;
+import org.symphonyoss.integration.model.message.Message;
+import org.symphonyoss.integration.model.message.MessageMLVersion;
+import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.bind.JAXBException;
 
 /**
  * Class responsible to handle the Account Status event of Salesforce
@@ -39,17 +46,24 @@ import java.util.Map;
  * Created by cmarcondes on 11/3/16.
  */
 @Component
-public class AccountStatusParser extends BaseSalesforceParser {
+public class AccountStatusParser extends CommonSalesforceParser {
 
   @Override
-  public String parse(Entity entity) throws SalesforceParseException {
+  public Message parse(WebHookPayload payload) throws SalesforceParseException, JAXBException {
+    MessageML messageML = MessageMLParser.parse(payload.getBody());
+    Entity entity = messageML.getEntity();
 
     createMentionTagFor(entity.getEntityByType(ACCOUNT), OWNER);
     createListOfMentionsFor(entity, OPPORTUNITIES, OWNER);
     createListOfMentionsFor(entity, ACTIVITIES, ASSIGNEE);
 
     try {
-      return EntityBuilder.forEntity(entity).generateXML();
+      Message message = new Message();
+      message.setFormat(Message.FormatEnum.MESSAGEML);
+      message.setMessage(EntityBuilder.forEntity(entity).generateXML());
+      message.setVersion(MessageMLVersion.V1);
+
+      return message;
     } catch (EntityXMLGeneratorException e) {
       throw new SalesforceParseException("Something went wrong while building the message for Salesforce Account Status event.", e);
     }
@@ -61,7 +75,7 @@ public class AccountStatusParser extends BaseSalesforceParser {
   }
 
   @Override
-  public String parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
+  public Message parse(Map<String, String> parameters, JsonNode node) throws SalesforceParseException {
     throw new SalesforceParseException("XML payload expected by received a JSON Payload.");
   }
 }

@@ -16,8 +16,10 @@
 
 package org.symphonyoss.integration.webhook.salesforce;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.io.FileUtils;
 import org.symphonyoss.integration.entity.model.User;
+import org.symphonyoss.integration.json.JsonUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,4 +45,11 @@ public class BaseSalesforceTest {
         FileUtils.readFileToString(new File(classLoader.getResource(fileName).getPath()));
     return expected = expected.replaceAll("\n", "");
   }
+
+  protected JsonNode readJsonFromFile(String filename) throws IOException {
+    ClassLoader classLoader = getClass().getClassLoader();
+
+    return JsonUtils.readTree(classLoader.getResourceAsStream(filename));
+  }
+
 }

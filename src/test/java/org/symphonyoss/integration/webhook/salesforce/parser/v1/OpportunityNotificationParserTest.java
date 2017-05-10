@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.symphonyoss.integration.webhook.salesforce.parser;
+package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
@@ -28,10 +28,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.entity.model.User;
+import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.OpportunityNotificationParser;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -65,33 +68,33 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
   @Test
   public void testAddingMentionTag() throws WebHookParseException, IOException,
       JAXBException {
-    String messageML = readFile("parser/opportunityNotification.xml");
+    String messageML = readFile("parser/v1/opportunityNotification.xml");
 
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
 
-    String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());
+    Message result = salesforceParser.parse(payload);
 
-    String expected = readFile("parser/opportunityNotification_withMentionTags_expected.xml");
+    String expected = readFile("parser/v1/opportunityNotification_withMentionTags_expected.xml");
 
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 
   @Test
   public void testWithoutOpportunityOwner() throws WebHookParseException, IOException,
       JAXBException {
-    String messageML = readFile("parser/opportunityNotification_without_OpportunityOwner.xml");
+    String messageML = readFile("parser/v1/opportunityNotification_without_OpportunityOwner.xml");
 
     Map<String, String> headerParams = new HashMap<>();
     headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_XML);
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), headerParams, messageML);
 
-    String result = salesforceParser.parse(MessageMLParser.parse(payload.getBody()).getEntity());
+    Message result = salesforceParser.parse(payload);
 
     String expected = readFile(
-        "parser/opportunityNotification_without_OpportunityOwner_expected.xml");
+        "parser/v1/opportunityNotification_without_OpportunityOwner_expected.xml");
 
-    assertEquals(expected, result);
+    assertEquals(expected, result.getMessage());
   }
 }

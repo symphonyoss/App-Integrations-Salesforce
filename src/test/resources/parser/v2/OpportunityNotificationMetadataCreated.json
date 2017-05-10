@@ -1,0 +1,45 @@
+{
+  "OpportunityNotification": {
+    "type": "com.symphony.integration.salesforce.event.v2.OpportunityNotification",
+    "version": "1.0",
+    "current": {
+      "type": "com.symphony.integration.salesforce.current",
+      "version": "1.0",
+      "opportunity": {
+        "type": "opportunity",
+        "version": "1.0",
+        "Name": "Burlington Textiles Weaving Plant Generator456",
+        "Type": "Existing Customer - Downgrade",
+        "Link": "https://symdev1-dev-ed.my.salesforce.com/00646000003IyLaAAK",
+        "NextStep": "teste",
+        "StageName": "Negotiation/Review",
+        "CloseDate": "2015-02-05",
+        "Probability": "90%",
+        "Amount": "312,321.00",
+        "CurrencyIsoCode": "EUR",
+        "CreatedOrUpdated": "Created",
+        "URLIconIntegration": "symphony.com/img/salesforce.svg",
+        "IconCrown": "symphony.com/img/new_opportunity.svg",
+        "LastModifiedBy": {
+          "type": "com.symphony.integration.salesforce.LastModifiedBy",
+          "version": "1.0",
+          "Name": "Stanley Symph Dev",
+          "Email": "stanley@appiphony.com"
+        },
+        "Account": {
+          "type": "com.symphony.integration.salesforce.Account",
+          "version": "1.0",
+          "Name": "Burlington Textiles Corp of America",
+          "Link": "https://symdev1-dev-ed.my.salesforce.com/00146000004oPCcAAM"
+        },
+        "Owner": {
+          "type": "com.symphony.integration.salesforce.Owner",
+          "version": "1.0",
+          "hasOwnerAtSymphony": "true",
+          "Name": "Stanley Symph Dev",
+          "Email": "stanley@appiphony.com"
+        }
+      }
+    }
+  }
+}
