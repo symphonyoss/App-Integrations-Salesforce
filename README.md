@@ -104,8 +104,8 @@ The opportunity notification may have two different formats: XML or JSON
         "Id": "00146000344oPCcAAM"
       },
       "Owner": {
-        "Email": "Cassiano.Repache@symphony.com",
-        "Name": "Cassiano Cesar Repache",
+        "Email": "rsanchez@symphony.com",
+        "Name": "Robson Sanchez",
         "Id": "00546000000ZJrdAAG"
       },
       "TotalOpportunityQuantity": null,
@@ -133,7 +133,7 @@ The opportunity notification may have two different formats: XML or JSON
    <br />
    <b>Account Name:</b>Test Account (<a href="https://link.to.the.opportunity.at.salesforce/path/to/the/opportunity/at/salesforce" />)
    <br />
-   <b>Opportunity Owner:</b>Cassiano Cesar Repache (Cassiano.Repache@symphony.com)
+   <b>Opportunity Owner:</b>Robson Sanchez (rsanchez@symphony.com)
    <br />
    <b>Amount:</b>1,000.00 EUR
    <br />
@@ -260,8 +260,8 @@ Following an example:
             "Owner":{  
                "type":"com.symphony.integration.salesforce.Owner",
                "version":"1.0",
-               "Name":"Cassiano Cesar Repache",
-               "Email":"Cassiano.Repache@symphony.com"
+               "Name":"Robson Sanchez",
+               "Email":"rsanchez@symphony.com"
             }
          }
       }
