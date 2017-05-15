@@ -185,7 +185,7 @@ Following an example:
                 <br/>
                 <div>
                     <span class="tempo-text-color--secondary">Opportunity Owner:</span>
-                    <#if (entity['OpportunityNotification'].current.opportunity.Owner.hasOwnerAtSymphony)??>
+		    <#if (entity['OpportunityNotification'].current.opportunity.Owner.hasOwnerAtSymphony == "true")>
                         <mention email="${entity['OpportunityNotification'].current.opportunity.Owner.Email}" />
                     <#else>
                         <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email}</span>
@@ -261,7 +261,8 @@ Following an example:
                "type":"com.symphony.integration.salesforce.Owner",
                "version":"1.0",
                "Name":"Robson Sanchez",
-               "Email":"rsanchez@symphony.com"
+               "Email":"rsanchez@symphony.com",
+	       "hasOwnerAtSymphony": "true"
             }
          }
       }
