@@ -103,6 +103,8 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
 
     if (!StringUtils.isEmpty(ownerEmail) && emailExistsAtSymphony(ownerEmail)) {
       ((ObjectNode) node).put(SalesforceConstants.HAS_OWNER_AT_SYMPHONY, Boolean.TRUE);
+    } else {
+      ((ObjectNode) node).put(SalesforceConstants.HAS_OWNER_AT_SYMPHONY, Boolean.FALSE);
     }
   }
 

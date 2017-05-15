@@ -30,6 +30,11 @@
           "version": "1.0",
           "Name": "-",
           "Link": "-"
+        },
+        "Owner": {
+          "type": "com.symphony.integration.salesforce.Owner",
+          "version": "1.0",
+          "hasOwnerAtSymphony": "false"
         }
       }
     }
