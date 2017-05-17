@@ -124,35 +124,6 @@ The opportunity notification may have two different formats: XML or JSON
 }
 ```
 
-##### Generated Symphony entity (MessageML V1)
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<messageML>
-   <b>Opportunity:</b>New Opportunity Test (<a href="https://link.to.the.opportunity.at.salesforce/path/to/the/opportunity/at/salesforce" />) - <b>updated</b>type, stage, probability, name, close date, account
-   <br />
-   <b>Account Name:</b>Test Account (<a href="https://link.to.the.opportunity.at.salesforce/path/to/the/opportunity/at/salesforce" />)
-   <br />
-   <b>Opportunity Owner:</b>Robson Sanchez (rsanchez@symphony.com)
-   <br />
-   <b>Amount:</b>1,000.00 EUR
-   <br />
-   <b>Close Date:</b>2015-02-05
-   <br />
-   <b>Next Step:</b> -
-   <br />
-   <b>Type:</b>Existing Customer - Downgrade
-   <br />
-   <b>Stage:</b>Negotiation/Review
-   <br />
-   <b>Probability:</b>90%
-</messageML>
-```
-
-##### Message rendered on Symphony
-
-![Opportunity](src/docs/sample/MessageMLv1.png)
-
 ##### Generated Symphony Message and Json entity (MessageML V2)
 
 When the Integration Bridge posts messages through the Agent that has version equal or greater than '1.46.0' the
