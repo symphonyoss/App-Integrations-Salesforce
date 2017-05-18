@@ -58,23 +58,12 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   @Override
   protected void preProcessInputData(JsonNode node) {
     JsonNode currentOpportunityNode = node.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
-    JsonNode currentOpportunityAccountNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
-    JsonNode currentOpportunityLastModifyByNode = currentOpportunityNode.path(SalesforceConstants.LAST_MODIFY_BY);
     JsonNode previousOpportunityNode = node.path(SalesforceConstants.PREVIOUS_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
 
-    processName(currentOpportunityNode);
-    processLink(currentOpportunityNode);
-    proccessEmailLastModifiedBy(currentOpportunityLastModifyByNode);
-    proccessAccountName(currentOpportunityAccountNode);
-    proccessAccountLink(currentOpportunityAccountNode);
     processOwner(currentOpportunityOwnerNode);
     processAmount(currentOpportunityNode);
-    processCurrencyIsoCode(currentOpportunityNode);
     processCloseDate(currentOpportunityNode);
-    processNextStep(currentOpportunityNode);
-    processStageName(currentOpportunityNode);
-    processProbability(currentOpportunityNode);
     proccessURLIconIntegration(currentOpportunityNode);
     proccessIconCrown(currentOpportunityNode);
     processUpdatedFields(currentOpportunityNode, previousOpportunityNode);
@@ -83,36 +72,6 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   @Override
   protected void postProcessOutputData(EntityObject output, JsonNode input) {
     // Do nothing
-  }
-
-  private void processName(JsonNode node) {
-    String name = node.path(SalesforceConstants.NAME).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.NAME, name);
-  }
-
-  private void processLink(JsonNode node) {
-    String link = node.path(SalesforceConstants.LINK).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.LINK, link);
-  }
-
-  private void proccessEmailLastModifiedBy(JsonNode node) {
-    String emailLastModifiedBy = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.EMAIL, emailLastModifiedBy);
-  }
-
-  private void proccessAccountName(JsonNode node) {
-    String accountName = node.path(SalesforceConstants.NAME).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.NAME, accountName);
-  }
-
-  private void proccessAccountLink(JsonNode node) {
-    String accountLinkFormat = node.path(SalesforceConstants.LINK).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.LINK, accountLinkFormat);
   }
 
   private void processOwner(JsonNode node) {
@@ -141,21 +100,12 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
       amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
 
       ((ObjectNode) node).put(SalesforceConstants.AMOUNT, amount);
-    } else {
-      ((ObjectNode) node).put(SalesforceConstants.AMOUNT, DEFAULT_VALUE_NULL);
     }
-  }
-
-  private void processCurrencyIsoCode(JsonNode node) {
-    String currencyIsoCode = node.path(SalesforceConstants.CURRENCY_ISO_CODE).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.CURRENCY_ISO_CODE, currencyIsoCode);
   }
 
   private void processCloseDate(JsonNode node) {
     String closeDateFormat = node.path(SalesforceConstants.CLOSE_DATE).asText(null);
     SimpleDateFormat formatter = new SimpleDateFormat(SalesforceConstants.TIMESTAMP_FORMAT);
-
 
     if (!StringUtils.isEmpty(closeDateFormat)) {
       try {
@@ -165,27 +115,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
       }
 
       ((ObjectNode) node).put(SalesforceConstants.CLOSE_DATE, closeDateFormat);
-    } else {
-      ((ObjectNode) node).put(SalesforceConstants.CLOSE_DATE, DEFAULT_VALUE_NULL);
     }
-  }
-
-  private void processNextStep(JsonNode node) {
-    String nextStep = node.path(SalesforceConstants.NEXT_STEP).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.NEXT_STEP, nextStep);
-  }
-
-  private void processStageName(JsonNode node) {
-    String stageName = node.path(SalesforceConstants.STAGE_NAME).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.STAGE_NAME, stageName);
-  }
-
-  private void processProbability(JsonNode node) {
-    String probability = node.path(SalesforceConstants.PROBABILITY).asText(EMPTY);
-
-    formatOptionalField(node, SalesforceConstants.PROBABILITY, probability);
   }
 
   private void proccessURLIconIntegration(JsonNode node) {
