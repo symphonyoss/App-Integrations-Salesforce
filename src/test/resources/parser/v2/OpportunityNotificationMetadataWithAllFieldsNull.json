@@ -8,28 +8,19 @@
       "opportunity": {
         "type": "opportunity",
         "version": "1.0",
-        "Name": "-",
-        "Link": "-",
-        "NextStep": "-",
-        "StageName": "-",
-        "CloseDate": "-",
-        "Probability": "-",
-        "Amount": "-",
-        "CurrencyIsoCode": "-",
         "UpdatedFields": "type, stage, probability, name, close date, account",
         "CreatedOrUpdated": "Updated",
         "URLIconIntegration": "symphony.com/img/salesforce.svg",
         "IconCrown": "symphony.com/img/new_opportunity.svg",
-        "LastModifiedBy": {
-          "type": "com.symphony.integration.salesforce.LastModifiedBy",
-          "version": "1.0",
-          "Email": "-"
-        },
         "Account": {
           "type": "com.symphony.integration.salesforce.Account",
           "version": "1.0",
-          "Name": "-",
-          "Link": "-"
+          "Name": "-"
+        },
+        "Owner": {
+          "type": "com.symphony.integration.salesforce.Owner",
+          "version": "1.0",
+          "hasOwnerAtSymphony": "false"
         }
       }
     }

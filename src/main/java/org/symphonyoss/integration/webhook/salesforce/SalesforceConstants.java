@@ -70,6 +70,8 @@ public class SalesforceConstants {
   public static final String HAS_OWNER_AT_SYMPHONY = "hasOwnerAtSymphony";
   public static final String URL_ICON_INTEGRATION = "URLIconIntegration";
   public static final String ICON_CROWN = "IconCrown";
+  public static final String NAME_AND_EMAIL = "NameAndEmail";
+  public static final String AMOUNT_AND_CURRENCY_ISO_CODE = "AmountAndCurrencyIsoCode";
 
   private static Map<String, String> createMap() {
     Map<String, String> result = new HashMap<String, String>();
