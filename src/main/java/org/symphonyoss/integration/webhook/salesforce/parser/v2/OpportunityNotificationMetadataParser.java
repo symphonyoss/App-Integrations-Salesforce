@@ -3,6 +3,7 @@ package org.symphonyoss.integration.webhook.salesforce.parser.v2;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sun.media.sound.MidiUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   private static final String METADATA_FILE = "metadataOpportunityNotification.xml";
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotification.xml";
+  public static final String DEFAULT_VALUE_NULL = "-";
 
   public OpportunityNotificationMetadataParser(UserService userService, IntegrationProperties integrationProperties) {
     super(userService, integrationProperties);
@@ -58,20 +60,35 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   @Override
   protected void preProcessInputData(JsonNode node) {
     JsonNode currentOpportunityNode = node.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
-    JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
-    JsonNode previousOpportunityNode = node.path(SalesforceConstants.PREVIOUS_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
-
-    processOwner(currentOpportunityOwnerNode);
+    proccessNodesObjects(currentOpportunityNode);
     processAmount(currentOpportunityNode);
     processCloseDate(currentOpportunityNode);
     proccessURLIconIntegration(currentOpportunityNode);
     proccessIconCrown(currentOpportunityNode);
+
+    JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
+    processOwner(currentOpportunityOwnerNode);
+
+    JsonNode currentOpportunityAccountNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
+    processAccountName(currentOpportunityAccountNode);
+
+    JsonNode previousOpportunityNode = node.path(SalesforceConstants.PREVIOUS_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
     processUpdatedFields(currentOpportunityNode, previousOpportunityNode);
   }
 
   @Override
   protected void postProcessOutputData(EntityObject output, JsonNode input) {
     // Do nothing
+  }
+
+  private void proccessNodesObjects(JsonNode node) {
+    if (node.path(SalesforceConstants.OPPORTUNITY_OWNER).getNodeType() == JsonNodeType.MISSING) {
+      ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_OWNER);
+    }
+
+    if (node.path(SalesforceConstants.OPPORTUNITY_ACCOUNT).getNodeType() == JsonNodeType.MISSING) {
+      ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_ACCOUNT);
+    }
   }
 
   private void processOwner(JsonNode node) {
@@ -81,6 +98,14 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
       ((ObjectNode) node).put(SalesforceConstants.HAS_OWNER_AT_SYMPHONY, Boolean.TRUE);
     } else {
       ((ObjectNode) node).put(SalesforceConstants.HAS_OWNER_AT_SYMPHONY, Boolean.FALSE);
+    }
+  }
+
+  private void processAccountName(JsonNode node) {
+    String accountName = node.path(SalesforceConstants.NAME).asText(EMPTY);
+
+    if (StringUtils.isEmpty(accountName)) {
+      ((ObjectNode) node).put(SalesforceConstants.NAME, DEFAULT_VALUE_NULL);
     }
   }
 
