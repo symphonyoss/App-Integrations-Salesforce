@@ -5,19 +5,14 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.sun.media.sound.MidiUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.model.User;
-import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.model.yaml.IntegrationProperties;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.utils.NumberFormatUtils;
 import org.symphonyoss.integration.webhook.parser.metadata.EntityObject;
-import org.symphonyoss.integration.webhook.parser.metadata.MetadataParser;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
-import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +31,10 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   private static final String METADATA_FILE = "metadataOpportunityNotification.xml";
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotification.xml";
+
   public static final String DEFAULT_VALUE_NULL = "-";
+
+  public static final String SEPARATOR = " - ";
 
   public OpportunityNotificationMetadataParser(UserService userService, IntegrationProperties integrationProperties) {
     super(userService, integrationProperties);
@@ -61,13 +59,14 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   protected void preProcessInputData(JsonNode node) {
     JsonNode currentOpportunityNode = node.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
     proccessNodesObjects(currentOpportunityNode);
-    processAmount(currentOpportunityNode);
-    processCloseDate(currentOpportunityNode);
+    proccessAmountAndCurrencyIsoCode(currentOpportunityNode);
+    proccessCloseDate(currentOpportunityNode);
     proccessURLIconIntegration(currentOpportunityNode);
     proccessIconCrown(currentOpportunityNode);
 
     JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
     processOwner(currentOpportunityOwnerNode);
+    proccessOwnerNameAndEmailFormatted(currentOpportunityOwnerNode);
 
     JsonNode currentOpportunityAccountNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     processAccountName(currentOpportunityAccountNode);
@@ -101,6 +100,56 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     }
   }
 
+  private void proccessOwnerNameAndEmailFormatted(JsonNode node) {
+    String ownerNameAndEmailFormatted = EMPTY;
+
+    String ownerName = node.path(SalesforceConstants.NAME).asText(EMPTY);
+    if (!StringUtils.isEmpty(ownerName)) {
+      ownerNameAndEmailFormatted = ownerName;
+    }
+
+    String ownerEmail = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
+    if (!StringUtils.isEmpty(ownerEmail)) {
+      if (!StringUtils.isEmpty(ownerNameAndEmailFormatted)) {
+        ownerNameAndEmailFormatted = ownerNameAndEmailFormatted + SEPARATOR + ownerEmail;
+      } else {
+        ownerNameAndEmailFormatted = ownerEmail;
+      }
+    }
+
+   ((ObjectNode) node).put(SalesforceConstants.NAME_AND_EMAIL, ownerNameAndEmailFormatted);
+  }
+
+  private String getAmountFormatted(JsonNode node) {
+    String amount = node.path(SalesforceConstants.AMOUNT).asText(EMPTY);
+
+    if (!StringUtils.isEmpty(amount)) {
+      amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
+    }
+
+    return amount;
+  }
+
+  private void proccessAmountAndCurrencyIsoCode(JsonNode node) {
+    String amountAndCurrencyIsoCodeFormatted = EMPTY;
+
+    String amount = getAmountFormatted(node);
+    if (!StringUtils.isEmpty(amount)) {
+      amountAndCurrencyIsoCodeFormatted = amount;
+    }
+
+    String currencyIsoCode = node.path(SalesforceConstants.CURRENCY_ISO_CODE).asText(EMPTY);
+    if (!StringUtils.isEmpty(currencyIsoCode)) {
+      if (!StringUtils.isEmpty(amountAndCurrencyIsoCodeFormatted)) {
+        amountAndCurrencyIsoCodeFormatted = amountAndCurrencyIsoCodeFormatted + SEPARATOR + currencyIsoCode;
+      } else {
+        amountAndCurrencyIsoCodeFormatted = currencyIsoCode;
+      }
+    }
+
+    ((ObjectNode) node).put(SalesforceConstants.AMOUNT_AND_CURRENCY_ISO_CODE, amountAndCurrencyIsoCodeFormatted);
+  }
+
   private void processAccountName(JsonNode node) {
     String accountName = node.path(SalesforceConstants.NAME).asText(EMPTY);
 
@@ -118,17 +167,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     return user.getId() != null;
   }
 
-  private void processAmount(JsonNode node) {
-    String amount = node.path(SalesforceConstants.AMOUNT).asText(EMPTY);
-
-    if (!StringUtils.isEmpty(amount)) {
-      amount = NumberFormatUtils.formatValueWithLocale(Locale.US, amount);
-
-      ((ObjectNode) node).put(SalesforceConstants.AMOUNT, amount);
-    }
-  }
-
-  private void processCloseDate(JsonNode node) {
+  private void proccessCloseDate(JsonNode node) {
     String closeDateFormat = node.path(SalesforceConstants.CLOSE_DATE).asText(null);
     SimpleDateFormat formatter = new SimpleDateFormat(SalesforceConstants.TIMESTAMP_FORMAT);
 

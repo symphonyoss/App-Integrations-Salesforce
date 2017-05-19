@@ -30,13 +30,13 @@
                     <#if (entity['OpportunityNotification'].current.opportunity.Owner.hasOwnerAtSymphony == "true")>
                         <mention email="${entity['OpportunityNotification'].current.opportunity.Owner.Email}"/>
                     <#else>
-                        <span>${entity['OpportunityNotification'].current.opportunity.Owner.Name ! ""} - ${entity['OpportunityNotification'].current.opportunity.Owner.Email ! ""}</span>
+                        <span>${entity['OpportunityNotification'].current.opportunity.Owner.NameAndEmail ! "-"}</span>
                     </#if>
                 </div>
                 <br/>
                 <div>
                     <span class="tempo-text-color--secondary">Amount:</span>
-                    <span>${entity['OpportunityNotification'].current.opportunity.Amount ! ""} - ${entity['OpportunityNotification'].current.opportunity.CurrencyIsoCode ! ""}</span>
+                    <span>${entity['OpportunityNotification'].current.opportunity.AmountAndCurrencyIsoCode ! "-"}</span>
                 </div>
                 <br/>
                 <div>
