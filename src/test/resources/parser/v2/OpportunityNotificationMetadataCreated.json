@@ -18,7 +18,7 @@
         "AmountAndCurrencyIsoCode": "312,321.00 - EUR",
         "CreatedOrUpdated": "Created",
         "URLIconIntegration": "symphony.com/img/salesforce.svg",
-        "IconCrown": "symphony.com/img/new_opportunity.svg",
+        "CrownIcon": "symphony.com/img/new_opportunity.svg",
         "Account": {
           "type": "com.symphony.integration.salesforce.Account",
           "version": "1.0",
@@ -28,7 +28,7 @@
         "Owner": {
           "type": "com.symphony.integration.salesforce.Owner",
           "version": "1.0",
-          "hasOwnerAtSymphony": "true",
+          "HasOwnerAtSymphony": true,
           "NameAndEmail": "Stanley Symph Dev - stanley@appiphony.com",
           "Email": "stanley@appiphony.com"
         }

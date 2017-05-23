@@ -24,11 +24,11 @@ import java.util.Map;
  */
 public abstract class SalesforceMetadataParser extends MetadataParser implements SalesforceParser {
 
-  public static final String DEFAULT_VALUE_NULL = "-";
-
   private static final String PATH_IMG = "img";
 
   private static final String INTEGRATION_NAME = "salesforce";
+
+  public static final String SALESFORCE_LOGO = "salesforce.svg";
 
   private IntegrationProperties integrationProperties;
 
@@ -67,17 +67,21 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
     }
   }
 
-  protected void formatOptionalField(JsonNode node, String nodeName, String nodeValue) {
+  protected void formatOptionalField(JsonNode node, String nodeName, String nodeValue, String defaultValue) {
     if (StringUtils.isEmpty(nodeValue)) {
-      ((ObjectNode) node).put(nodeName, DEFAULT_VALUE_NULL);
+      ((ObjectNode) node).put(nodeName, defaultValue);
     }
   }
 
-  protected void proccessIconCrown(JsonNode node) {
-    String iconCrown = getURLFromIcon("new_opportunity.svg");
+  /**
+   * Add an entry for Salesforce icon in the JSON node.
+   * @param node JSON node to have the icon added in.
+   */
+  protected void proccessURLIcon(JsonNode node) {
+    String urlIconIntegration = getURLFromIcon(SALESFORCE_LOGO);
 
-    if (!iconCrown.isEmpty()) {
-      ((ObjectNode) node).put(SalesforceConstants.ICON_CROWN, iconCrown);
+    if (!urlIconIntegration.isEmpty()) {
+      ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION, urlIconIntegration);
     }
   }
 }

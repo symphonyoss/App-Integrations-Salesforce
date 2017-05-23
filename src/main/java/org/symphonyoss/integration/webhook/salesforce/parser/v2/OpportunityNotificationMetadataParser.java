@@ -3,9 +3,10 @@ package org.symphonyoss.integration.webhook.salesforce.parser.v2;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.model.yaml.IntegrationProperties;
@@ -28,13 +29,20 @@ import java.util.Map;
 @Component
 public class OpportunityNotificationMetadataParser extends SalesforceMetadataParser {
 
+  private static final Logger LOG = LoggerFactory.getLogger(SalesforceMetadataParser.class);
+
   private static final String METADATA_FILE = "metadataOpportunityNotification.xml";
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotification.xml";
 
-  public static final String DEFAULT_VALUE_NULL = "-";
+  private static final String SEPARATOR = " - ";
 
-  public static final String SEPARATOR = " - ";
+  private static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
+
+  private static final String DEFAULT_VALUE_NULL = "-";
+
+  public static final String COMMA_SEPARATOR = ", ";
+  public static final String CROWN_ICON = "new_opportunity.svg";
 
   public OpportunityNotificationMetadataParser(UserService userService, IntegrationProperties integrationProperties) {
     super(userService, integrationProperties);
@@ -52,7 +60,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
 
   @Override
   public List<String> getEvents() {
-    return Arrays.asList("opportunityNotificationJSON");
+    return Arrays.asList(OPPORTUNITY_NOTIFICATION_JSON);
   }
 
   @Override
@@ -61,8 +69,8 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     proccessNodesObjects(currentOpportunityNode);
     proccessAmountAndCurrencyIsoCode(currentOpportunityNode);
     proccessCloseDate(currentOpportunityNode);
-    proccessURLIconIntegration(currentOpportunityNode);
-    proccessIconCrown(currentOpportunityNode);
+    proccessURLIcon(currentOpportunityNode);
+    proccessCrownIcon(currentOpportunityNode);
 
     JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
     processOwner(currentOpportunityOwnerNode);
@@ -81,11 +89,11 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   }
 
   private void proccessNodesObjects(JsonNode node) {
-    if (node.path(SalesforceConstants.OPPORTUNITY_OWNER).getNodeType() == JsonNodeType.MISSING) {
+    if (node.path(SalesforceConstants.OPPORTUNITY_OWNER).isMissingNode()) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_OWNER);
     }
 
-    if (node.path(SalesforceConstants.OPPORTUNITY_ACCOUNT).getNodeType() == JsonNodeType.MISSING) {
+    if (node.path(SalesforceConstants.OPPORTUNITY_ACCOUNT).isMissingNode()) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     }
   }
@@ -154,7 +162,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     String accountName = node.path(SalesforceConstants.NAME).asText(EMPTY);
 
     if (StringUtils.isEmpty(accountName)) {
-      ((ObjectNode) node).put(SalesforceConstants.NAME, DEFAULT_VALUE_NULL);
+      formatOptionalField(node, SalesforceConstants.NAME, accountName, DEFAULT_VALUE_NULL);
     }
   }
 
@@ -175,18 +183,10 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
       try {
         closeDateFormat = formatter.format(formatter.parse(closeDateFormat));
       } catch (ParseException e) {
-        // Do nothing
+        LOG.warn("Couldn't parser date.");
       }
 
       ((ObjectNode) node).put(SalesforceConstants.CLOSE_DATE, closeDateFormat);
-    }
-  }
-
-  private void proccessURLIconIntegration(JsonNode node) {
-    String urlIconIntegration = getURLFromIcon("salesforce.svg");
-
-    if (!urlIconIntegration.isEmpty()) {
-      ((ObjectNode) node).put(SalesforceConstants.URL_ICON_INTEGRATION, urlIconIntegration);
     }
   }
 
@@ -202,7 +202,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
         if (StringUtils.isEmpty(updatedFields)) {
           updatedFields = SalesforceConstants.getOpportunityFieldName(fieldKey);
         } else {
-          updatedFields = updatedFields + ", " + SalesforceConstants.getOpportunityFieldName(fieldKey);
+          updatedFields = updatedFields + COMMA_SEPARATOR + SalesforceConstants.getOpportunityFieldName(fieldKey);
         }
       }
     }
@@ -214,4 +214,13 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
       ((ObjectNode) currentNode).put(SalesforceConstants.CREATED_OR_UPDATED, SalesforceConstants.CREATED_NOTIFICATION);
     }
   }
+
+  private void proccessCrownIcon(JsonNode node) {
+    String crownIcon = getURLFromIcon(CROWN_ICON);
+
+    if (!crownIcon.isEmpty()) {
+      ((ObjectNode) node).put(SalesforceConstants.CROWN_ICON, crownIcon);
+    }
+  }
+
 }
