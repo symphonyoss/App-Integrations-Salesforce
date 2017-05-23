@@ -10,18 +10,12 @@
             <field key="StageName" value="current.opportunity.StageName" />
             <field key="CloseDate" value="current.opportunity.CloseDate" />
             <field key="Probability" value="current.opportunity.Probability" />
-            <field key="Amount" value="current.opportunity.Amount" />
-            <field key="CurrencyIsoCode" value="current.opportunity.CurrencyIsoCode" />
+            <field key="AmountAndCurrencyIsoCode" value="current.opportunity.AmountAndCurrencyIsoCode" />
             <field key="TotalOpportunityQuantity" value="current.opportunity.TotalOpportunityQuantity" />
             <field key="UpdatedFields" value="current.opportunity.UpdatedFields" />
             <field key="CreatedOrUpdated" value="current.opportunity.CreatedOrUpdated" />
             <field key="URLIconIntegration" value="current.opportunity.URLIconIntegration" />
-            <field key="IconCrown" value="current.opportunity.IconCrown" />
-
-            <object id="LastModifiedBy" type="com.symphony.integration.salesforce.LastModifiedBy" version="1.0">
-                <field key="Name" value="current.opportunity.LastModifiedBy.Name" />
-                <field key="Email" value="current.opportunity.LastModifiedBy.Email" />
-            </object>
+            <field key="CrownIcon" value="current.opportunity.CrownIcon" />
 
             <object id="Account" type="com.symphony.integration.salesforce.Account" version="1.0">
                 <field key="Name" value="current.opportunity.Account.Name" />
@@ -29,8 +23,8 @@
             </object>
 
             <object id="Owner" type="com.symphony.integration.salesforce.Owner" version="1.0">
-                <field key="hasOwnerAtSymphony" value="current.opportunity.Owner.hasOwnerAtSymphony" />
-                <field key="Name" value="current.opportunity.Owner.Name" />
+                <field key="HasOwnerAtSymphony" type="BOOLEAN" value="current.opportunity.Owner.HasOwnerAtSymphony" />
+                <field key="NameAndEmail" value="current.opportunity.Owner.NameAndEmail" />
                 <field key="Email" value="current.opportunity.Owner.Email" />
             </object>
         </object>

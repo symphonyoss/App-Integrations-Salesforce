@@ -67,9 +67,11 @@ public class SalesforceConstants {
   public static final String CREATED_OR_UPDATED = "CreatedOrUpdated";
   public static final String UPDATED_NOTIFICATION = "Updated";
   public static final String CREATED_NOTIFICATION = "Created";
-  public static final String HAS_OWNER_AT_SYMPHONY = "hasOwnerAtSymphony";
+  public static final String HAS_OWNER_AT_SYMPHONY = "HasOwnerAtSymphony";
   public static final String URL_ICON_INTEGRATION = "URLIconIntegration";
-  public static final String ICON_CROWN = "IconCrown";
+  public static final String CROWN_ICON = "CrownIcon";
+  public static final String NAME_AND_EMAIL = "NameAndEmail";
+  public static final String AMOUNT_AND_CURRENCY_ISO_CODE = "AmountAndCurrencyIsoCode";
 
   private static Map<String, String> createMap() {
     Map<String, String> result = new HashMap<String, String>();
