@@ -1,6 +1,6 @@
 [![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating) [![Build Status](https://travis-ci.org/symphonyoss/App-Integrations-Salesforce.svg?branch=dev)](https://travis-ci.org/symphonyoss/App-Integrations-Salesforce) [![Dependencies](https://www.versioneye.com/user/projects/58d049f66893fd003b3c3dab/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58d049f66893fd003b3c3dab)
 
-*These informations cover only GitHub specific webhook configuration and the rendering pipeline. For more information about Webhook Integration architecture, development environment, application bootstraping and building, please visit https://github.com/symphonyoss/App-Integrations-Zapier.*
+*These informations cover only Salesforce specific webhook configuration and the rendering pipeline. For more information about Webhook Integration architecture, development environment, application bootstraping and building, please visit https://github.com/symphonyoss/App-Integrations-Zapier.*
 
 # Salesforce WebHook Integration
 The Salesforce WebHook Integration will allow you to receive notifications in Symphony when a Salesforce opportunity, account or an executive dashboard changes state.
@@ -75,7 +75,7 @@ generated Symphony Message must follow the MessageML V2 specification.
 
 More information about MessageML V2 specification can be accessed [here](https://symphonyoss.atlassian.net/wiki/display/WGFOS/MessageML+V2+Draft+Proposal+-+For+Discussion)
 
-This is the messageML v2 that the Zapier integration generates after parsing, which defines the layout of the card and how the front end will render it within Symphony:
+This is the messageML v2 that the Salesforce integration generates after parsing, which defines the layout of the card and how the front end will render it within Symphony:
 
 ```xml
 <messageML>
