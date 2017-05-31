@@ -17,6 +17,7 @@ import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -92,11 +93,11 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   }
 
   private void proccessNodesObjects(JsonNode node) {
-    if (node.path(SalesforceConstants.OPPORTUNITY_OWNER).isMissingNode()) {
+    if (!node.has(SalesforceConstants.OPPORTUNITY_OWNER)) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_OWNER);
     }
 
-    if (node.path(SalesforceConstants.OPPORTUNITY_ACCOUNT).isMissingNode()) {
+    if (!node.has(SalesforceConstants.OPPORTUNITY_ACCOUNT)) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     }
   }
