@@ -2,26 +2,22 @@
   "OpportunityNotification": {
     "type": "com.symphony.integration.salesforce.event.v2.OpportunityNotification",
     "version": "1.0",
-    "current": {
-      "type": "com.symphony.integration.salesforce.current",
+    "opportunity": {
+      "type": "opportunity",
       "version": "1.0",
-      "opportunity": {
-        "type": "opportunity",
+      "UpdatedFields": "type, stage, probability, name, close date, account",
+      "CreatedOrUpdated": "Updated",
+      "URLIconIntegration": "symphony.com/img/salesforce.svg",
+      "CrownIcon": "symphony.com/img/new_opportunity.svg",
+      "Account": {
+        "type": "com.symphony.integration.salesforce.Account",
         "version": "1.0",
-        "UpdatedFields": "type, stage, probability, name, close date, account",
-        "CreatedOrUpdated": "Updated",
-        "URLIconIntegration": "symphony.com/img/salesforce.svg",
-        "CrownIcon": "symphony.com/img/new_opportunity.svg",
-        "Account": {
-          "type": "com.symphony.integration.salesforce.Account",
-          "version": "1.0",
-          "Name": "-"
-        },
-        "Owner": {
-          "type": "com.symphony.integration.salesforce.Owner",
-          "version": "1.0",
-          "HasOwnerAtSymphony": false
-        }
+        "Name": "-"
+      },
+      "Owner": {
+        "type": "com.symphony.integration.salesforce.Owner",
+        "version": "1.0",
+        "HasOwnerAtSymphony": false
       }
     }
   }

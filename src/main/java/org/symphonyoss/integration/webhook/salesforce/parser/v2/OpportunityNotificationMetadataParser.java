@@ -17,6 +17,7 @@ import org.symphonyoss.integration.webhook.salesforce.SalesforceConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -35,14 +36,17 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotification.xml";
 
-  private static final String SEPARATOR = " - ";
-
   private static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 
   private static final String DEFAULT_VALUE_NULL = "-";
 
-  public static final String COMMA_SEPARATOR = ", ";
-  public static final String CROWN_ICON = "new_opportunity.svg";
+  private static final String CROWN_ICON = "new_opportunity.svg";
+
+  private static final String SEPARATOR = " ";
+
+  private static final String COMMA_SEPARATOR = ", ";
+
+  private static final String HYPHEN_SEPARATOR = " - ";
 
   public OpportunityNotificationMetadataParser(UserService userService, IntegrationProperties integrationProperties) {
     super(userService, integrationProperties);
@@ -89,11 +93,11 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   }
 
   private void proccessNodesObjects(JsonNode node) {
-    if (node.path(SalesforceConstants.OPPORTUNITY_OWNER).isMissingNode()) {
+    if (!node.has(SalesforceConstants.OPPORTUNITY_OWNER)) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_OWNER);
     }
 
-    if (node.path(SalesforceConstants.OPPORTUNITY_ACCOUNT).isMissingNode()) {
+    if (!node.has(SalesforceConstants.OPPORTUNITY_ACCOUNT)) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     }
   }
@@ -119,7 +123,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     String ownerEmail = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
     if (!StringUtils.isEmpty(ownerEmail)) {
       if (!StringUtils.isEmpty(ownerNameAndEmailFormatted)) {
-        ownerNameAndEmailFormatted = ownerNameAndEmailFormatted + SEPARATOR + ownerEmail;
+        ownerNameAndEmailFormatted = ownerNameAndEmailFormatted + HYPHEN_SEPARATOR + ownerEmail;
       } else {
         ownerNameAndEmailFormatted = ownerEmail;
       }
