@@ -35,14 +35,17 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
 
   private static final String TEMPLATE_FILE = "templateOpportunityNotification.xml";
 
-  private static final String SEPARATOR = " - ";
-
   private static final String OPPORTUNITY_NOTIFICATION_JSON = "opportunityNotificationJSON";
 
   private static final String DEFAULT_VALUE_NULL = "-";
 
-  public static final String COMMA_SEPARATOR = ", ";
-  public static final String CROWN_ICON = "new_opportunity.svg";
+  private static final String CROWN_ICON = "new_opportunity.svg";
+
+  private static final String SEPARATOR = " ";
+
+  private static final String COMMA_SEPARATOR = ", ";
+
+  private static final String HYPHEN_SEPARATOR = " - ";
 
   public OpportunityNotificationMetadataParser(UserService userService, IntegrationProperties integrationProperties) {
     super(userService, integrationProperties);
@@ -119,7 +122,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     String ownerEmail = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
     if (!StringUtils.isEmpty(ownerEmail)) {
       if (!StringUtils.isEmpty(ownerNameAndEmailFormatted)) {
-        ownerNameAndEmailFormatted = ownerNameAndEmailFormatted + SEPARATOR + ownerEmail;
+        ownerNameAndEmailFormatted = ownerNameAndEmailFormatted + HYPHEN_SEPARATOR + ownerEmail;
       } else {
         ownerNameAndEmailFormatted = ownerEmail;
       }

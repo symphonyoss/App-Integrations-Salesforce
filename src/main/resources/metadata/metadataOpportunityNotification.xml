@@ -27,6 +27,10 @@
                 <field key="NameAndEmail" value="current.opportunity.Owner.NameAndEmail" />
                 <field key="Email" value="current.opportunity.Owner.Email" />
             </object>
+
+            <object id="LastModifiedBy" type="com.symphony.integration.salesforce.LastModifiedBy" version="1.0">
+                <field key="Name" value="current.opportunity.LastModifiedBy.Name" />
+            </object>
         </object>
     </object>
 </metadata>
