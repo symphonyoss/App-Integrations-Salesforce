@@ -68,6 +68,7 @@ public class SalesforceConstants {
   public static final String UPDATED_NOTIFICATION = "Updated";
   public static final String CREATED_NOTIFICATION = "Created";
   public static final String HAS_OWNER_AT_SYMPHONY = "HasOwnerAtSymphony";
+  public static final String HAS_LAST_MODIFIED_BY_AT_SYMPHONY = "HasLastModifiedByAtSymphony";
   public static final String URL_ICON_INTEGRATION = "URLIconIntegration";
   public static final String CROWN_ICON = "CrownIcon";
   public static final String NAME_AND_EMAIL = "NameAndEmail";

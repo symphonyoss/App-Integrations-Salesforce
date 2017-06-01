@@ -77,7 +77,7 @@ public abstract class SalesforceMetadataParser extends MetadataParser implements
    * Add an entry for Salesforce icon in the JSON node.
    * @param node JSON node to have the icon added in.
    */
-  protected void proccessURLIcon(JsonNode node) {
+  protected void processURLIcon(JsonNode node) {
     String urlIconIntegration = getURLFromIcon(SALESFORCE_LOGO);
 
     if (!urlIconIntegration.isEmpty()) {

@@ -18,6 +18,11 @@
         "type": "com.symphony.integration.salesforce.Owner",
         "version": "1.0",
         "HasOwnerAtSymphony": false
+      },
+      "LastModifiedBy": {
+        "type": "com.symphony.integration.salesforce.LastModifiedBy",
+        "version": "1.0",
+        "HasLastModifiedByAtSymphony": false
       }
     }
   }

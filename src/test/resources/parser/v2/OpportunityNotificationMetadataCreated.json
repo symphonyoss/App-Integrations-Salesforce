@@ -16,7 +16,13 @@
       "CreatedOrUpdated": "Created",
       "URLIconIntegration": "symphony.com/img/salesforce.svg",
       "CrownIcon": "symphony.com/img/new_opportunity.svg",
-      "LastModifiedBy": "Stanley Symph Dev",
+      "LastModifiedBy": {
+        "type": "com.symphony.integration.salesforce.LastModifiedBy",
+        "version": "1.0",
+        "HasLastModifiedByAtSymphony": true,
+        "Name": "Stanley Symph Dev",
+        "Email": "stanley@appiphony.com"
+      },
       "Account": {
         "type": "com.symphony.integration.salesforce.Account",
         "version": "1.0",
