@@ -77,14 +77,27 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     proccessCrownIcon(currentOpportunityNode);
 
     JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
-    processOwner(currentOpportunityOwnerNode);
+    proccessOwner(currentOpportunityOwnerNode);
     proccessOwnerNameAndEmailFormatted(currentOpportunityOwnerNode);
 
     JsonNode currentOpportunityAccountNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     processAccountName(currentOpportunityAccountNode);
 
+    JsonNode currentOpportunityLastModifiedBy = currentOpportunityNode.path(SalesforceConstants.LAST_MODIFY_BY);
+    proccessLastModifiedBy(currentOpportunityLastModifiedBy);
+
     JsonNode previousOpportunityNode = node.path(SalesforceConstants.PREVIOUS_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
     processUpdatedFields(currentOpportunityNode, previousOpportunityNode);
+  }
+
+  private void proccessLastModifiedBy(JsonNode node) {
+    String lastModifiedByEmail = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
+
+    if (!StringUtils.isEmpty(lastModifiedByEmail) && emailExistsAtSymphony(lastModifiedByEmail)) {
+      ((ObjectNode) node).put(SalesforceConstants.HAS_LAST_MODIFIED_BY_AT_SYMPHONY, Boolean.TRUE);
+    } else {
+      ((ObjectNode) node).put(SalesforceConstants.HAS_LAST_MODIFIED_BY_AT_SYMPHONY, Boolean.FALSE);
+    }
   }
 
   @Override
@@ -100,9 +113,13 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     if (!node.has(SalesforceConstants.OPPORTUNITY_ACCOUNT)) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     }
+
+    if (!node.has(SalesforceConstants.LAST_MODIFY_BY)) {
+      ((ObjectNode) node).putObject(SalesforceConstants.LAST_MODIFY_BY);
+    }
   }
 
-  private void processOwner(JsonNode node) {
+  private void proccessOwner(JsonNode node) {
     String ownerEmail = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
 
     if (!StringUtils.isEmpty(ownerEmail) && emailExistsAtSymphony(ownerEmail)) {
