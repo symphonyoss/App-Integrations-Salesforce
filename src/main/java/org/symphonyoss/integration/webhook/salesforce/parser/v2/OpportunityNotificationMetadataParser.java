@@ -70,27 +70,27 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
   @Override
   protected void preProcessInputData(JsonNode node) {
     JsonNode currentOpportunityNode = node.path(SalesforceConstants.CURRENT_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
-    proccessNodesObjects(currentOpportunityNode);
-    proccessAmountAndCurrencyIsoCode(currentOpportunityNode);
-    proccessCloseDate(currentOpportunityNode);
-    proccessURLIcon(currentOpportunityNode);
-    proccessCrownIcon(currentOpportunityNode);
+    processNodesObjects(currentOpportunityNode);
+    processAmountAndCurrencyIsoCode(currentOpportunityNode);
+    processCloseDate(currentOpportunityNode);
+    processURLIcon(currentOpportunityNode);
+    processCrownIcon(currentOpportunityNode);
 
     JsonNode currentOpportunityOwnerNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_OWNER);
-    proccessOwner(currentOpportunityOwnerNode);
-    proccessOwnerNameAndEmailFormatted(currentOpportunityOwnerNode);
+    processOwner(currentOpportunityOwnerNode);
+    processOwnerNameAndEmailFormatted(currentOpportunityOwnerNode);
 
     JsonNode currentOpportunityAccountNode = currentOpportunityNode.path(SalesforceConstants.OPPORTUNITY_ACCOUNT);
     processAccountName(currentOpportunityAccountNode);
 
     JsonNode currentOpportunityLastModifiedBy = currentOpportunityNode.path(SalesforceConstants.LAST_MODIFY_BY);
-    proccessLastModifiedBy(currentOpportunityLastModifiedBy);
+    processLastModifiedBy(currentOpportunityLastModifiedBy);
 
     JsonNode previousOpportunityNode = node.path(SalesforceConstants.PREVIOUS_DATA_PATH).path(SalesforceConstants.OPPORTUNITY);
     processUpdatedFields(currentOpportunityNode, previousOpportunityNode);
   }
 
-  private void proccessLastModifiedBy(JsonNode node) {
+  private void processLastModifiedBy(JsonNode node) {
     String lastModifiedByEmail = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
 
     if (!StringUtils.isEmpty(lastModifiedByEmail) && emailExistsAtSymphony(lastModifiedByEmail)) {
@@ -105,7 +105,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     // Do nothing
   }
 
-  private void proccessNodesObjects(JsonNode node) {
+  private void processNodesObjects(JsonNode node) {
     if (!node.has(SalesforceConstants.OPPORTUNITY_OWNER)) {
       ((ObjectNode) node).putObject(SalesforceConstants.OPPORTUNITY_OWNER);
     }
@@ -119,7 +119,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     }
   }
 
-  private void proccessOwner(JsonNode node) {
+  private void processOwner(JsonNode node) {
     String ownerEmail = node.path(SalesforceConstants.EMAIL).asText(EMPTY);
 
     if (!StringUtils.isEmpty(ownerEmail) && emailExistsAtSymphony(ownerEmail)) {
@@ -129,7 +129,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     }
   }
 
-  private void proccessOwnerNameAndEmailFormatted(JsonNode node) {
+  private void processOwnerNameAndEmailFormatted(JsonNode node) {
     String ownerNameAndEmailFormatted = EMPTY;
 
     String ownerName = node.path(SalesforceConstants.NAME).asText(EMPTY);
@@ -159,7 +159,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     return amount;
   }
 
-  private void proccessAmountAndCurrencyIsoCode(JsonNode node) {
+  private void processAmountAndCurrencyIsoCode(JsonNode node) {
     String amountAndCurrencyIsoCodeFormatted = EMPTY;
 
     String amount = getAmountFormatted(node);
@@ -196,7 +196,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     return user.getId() != null;
   }
 
-  private void proccessCloseDate(JsonNode node) {
+  private void processCloseDate(JsonNode node) {
     String closeDateFormat = node.path(SalesforceConstants.CLOSE_DATE).asText(null);
     SimpleDateFormat formatter = new SimpleDateFormat(SalesforceConstants.TIMESTAMP_FORMAT);
 
@@ -236,7 +236,7 @@ public class OpportunityNotificationMetadataParser extends SalesforceMetadataPar
     }
   }
 
-  private void proccessCrownIcon(JsonNode node) {
+  private void processCrownIcon(JsonNode node) {
     String crownIcon = getURLFromIcon(CROWN_ICON);
 
     if (!crownIcon.isEmpty()) {
