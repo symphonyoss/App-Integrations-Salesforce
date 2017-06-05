@@ -4,8 +4,7 @@ import React from 'react';
 const Instructions = () => (
   <div>
     <p>
-      Please contact your Symphony administrator to activate and customize your Salesforce.com
-      integration.
+      Refer to the <a href="http://integrations.symphony.com/docs/salesforce-integration" target='blank'>Salesforce Integration</a> document to learn more about how to configure the Salesforce integration.
     </p>
   </div>
 );
