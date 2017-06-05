@@ -2,6 +2,6 @@ applications:
   salesforce:
     component: salesforceWebHookIntegration
     name: Salesforce
-    description: "Salesforce is a customer relationship management tool that allows sales teams to manage contacts and track opportunities. This integration will allow you to receive notifications in Symphony when a Salesforce opportunity changes state."
+    description: "Salesforce is a customer relationship management tool that allows sales teams to manage contacts and track opportunities. This integration will allow you to receive customized notifications when opportunities are created or updated in Salesforce."
     publisher: Symphony
     context: salesforce
