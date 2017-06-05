@@ -83,7 +83,7 @@ This is the messageML v2 that the Salesforce integration generates after parsing
 ```xml
 <messageML>
     <div class="entity" data-entity-id="OpportunityNotification">
-        <card class="barStyle" accent="green" iconSrc="${entity['OpportunityNotification'].current.opportunity.URLIconIntegration}">
+        <card class="barStyle" accent="tempo-bg-color--green" iconSrc="${entity['OpportunityNotification'].current.opportunity.URLIconIntegration}">
             <header>
                 <img src="${entity['OpportunityNotification'].current.opportunity.IconCrown}" class="icon" />
                 <span class="tempo-text-color--secondary">Opportunity: </span>

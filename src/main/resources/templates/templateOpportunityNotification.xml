@@ -1,6 +1,6 @@
 <messageML>
     <div class="entity" data-entity-id="OpportunityNotification">
-        <card class="barStyle" accent="green"
+        <card class="barStyle" accent="tempo-bg-color--green"
               iconSrc="${entity['OpportunityNotification'].opportunity.URLIconIntegration}">
             <header>
                 <img src="${entity['OpportunityNotification'].opportunity.CrownIcon}" class="icon"/>
