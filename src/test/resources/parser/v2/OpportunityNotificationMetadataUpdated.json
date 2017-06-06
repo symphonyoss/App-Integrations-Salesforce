@@ -17,13 +17,6 @@
       "CreatedOrUpdated": "Updated",
       "URLIconIntegration": "symphony.com/img/salesforce.svg",
       "CrownIcon": "symphony.com/img/new_opportunity.svg",
-      "LastModifiedBy": {
-        "type": "com.symphony.integration.salesforce.LastModifiedBy",
-        "version": "1.0",
-        "HasLastModifiedByAtSymphony": true,
-        "Name": "Stanley Symph Dev",
-        "Email": "stanley@appiphony.com"
-      },
       "Account": {
         "type": "com.symphony.integration.salesforce.Account",
         "version": "1.0",
@@ -35,6 +28,13 @@
         "version": "1.0",
         "HasOwnerAtSymphony": true,
         "NameAndEmail": "Stanley Symph Dev - stanley@appiphony.com",
+        "Email": "stanley@appiphony.com"
+      },
+      "LastModifiedBy": {
+        "type": "com.symphony.integration.salesforce.LastModifiedBy",
+        "version": "1.0",
+        "HasLastModifiedByAtSymphony": true,
+        "Name": "Stanley Symph Dev",
         "Email": "stanley@appiphony.com"
       }
     }
