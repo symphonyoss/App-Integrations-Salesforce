@@ -16,7 +16,6 @@
         <field key="CreatedOrUpdated" value="current.opportunity.CreatedOrUpdated"/>
         <field key="URLIconIntegration" value="current.opportunity.URLIconIntegration"/>
         <field key="CrownIcon" value="current.opportunity.CrownIcon"/>
-        <field key="LastModifiedBy" value="current.opportunity.LastModifiedBy.Name"/>
 
         <object id="Account" type="com.symphony.integration.salesforce.Account" version="1.0">
             <field key="Name" value="current.opportunity.Account.Name"/>
