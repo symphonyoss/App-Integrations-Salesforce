@@ -194,3 +194,6 @@ This is the EntityJSON that the Salesforce integration generates after parsing, 
 ##### Message rendered on Symphony
 
 ![Opportunity](src/docs/sample/MessageMLv2.png)
+
+### Messages color mapping
+Salesforce currently only supports opportunity notification. The flair color (vertical bar on the left) will be always **green** for this event. This can change as we support more events.
