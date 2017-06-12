@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,7 @@ import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.OpportunityNotificationParser;
 
@@ -51,6 +53,8 @@ import javax.xml.bind.JAXBException;
 public class OpportunityNotificationParserTest extends BaseSalesforceTest {
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
+
+  private static final String PARSER_V1_NULL_JSON = "parser/v1/null.json";
 
   @Mock
   private UserService userService;
@@ -96,5 +100,14 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
         "parser/v1/opportunityNotification_without_OpportunityOwner_expected.xml");
 
     assertEquals(expected, result.getMessage());
+  }
+
+  @Test(expected = SalesforceParseException.class)
+  public void testParserJson() throws IOException {
+    JsonNode node = readJsonFromFile(PARSER_V1_NULL_JSON);
+    Map<String, String> headerParams = new HashMap<>();
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
+
+    salesforceParser.parse(headerParams, node);
   }
 }
