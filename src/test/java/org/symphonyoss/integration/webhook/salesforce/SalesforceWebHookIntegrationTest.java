@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
@@ -33,6 +34,7 @@ import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 /**
@@ -54,6 +57,9 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   @Spy
   private List<SalesforceParser> beans = new ArrayList<>();
 
+  @Spy
+  private List<SalesforceParserFactory> factories = new ArrayList<>();
+
   @InjectMocks
   private SalesforceWebHookIntegration salesforceWebHookIntegration = new SalesforceWebHookIntegration();
 
@@ -64,13 +70,13 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   private SalesforceParserResolver salesforceParserResolver;
 
   @InjectMocks
-  private V1ParserFactory factory;
+  private V1ParserFactory v1ParserFactory;
 
   @Spy
   private NullSalesforceParser defaultSalesforceParser;
 
-//  @Mock
-//  private SalesforceParserFactory factory;
+  @Mock
+  private SalesforceParserFactory factory;
 
   @Before
   public void setup() {
@@ -78,27 +84,27 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
     beans.add(accountStatusParser);
     beans.add(defaultSalesforceParser);
 
-    factory.init();
+    factories.add(factory);
 
-    doReturn(factory).when(salesforceParserResolver).getFactory();
+    v1ParserFactory.init();
+
+    doReturn(v1ParserFactory).when(salesforceParserResolver).getFactory();
   }
 
-//  @Test
-//  public void testOnConfigChange() {
-//    IntegrationSettings settings = new IntegrationSettings();
-//
-//    doReturn(AccountStatusParser.class).
-//
-//    salesforceWebHookIntegration.onConfigChange(settings);
-//
-//    verify(factory, times(1)).onConfigChange(settings);
-//  }
+  @Test
+  public void testOnConfigChange() {
+    IntegrationSettings settings = new IntegrationSettings();
+
+    salesforceWebHookIntegration.onConfigChange(settings);
+
+    verify(factory, times(1)).onConfigChange(settings);
+  }
 
   @Test(expected = SalesforceParseException.class)
   public void testInvalidPayload() throws IOException {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
 
-    factory.getParser(payload).getEvents();
+    v1ParserFactory.getParser(payload).getEvents();
   }
 
   @Test
@@ -122,5 +128,13 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
     Message result = salesforceWebHookIntegration.parse(payload);
     assertEquals(expected, result.getMessage());
+  }
+
+  @Test
+  public void testSupportedContentTypes() {
+    List<MediaType> supportedContentTypes = new ArrayList<>();
+    supportedContentTypes.add(MediaType.WILDCARD_TYPE);
+
+    Assert.assertEquals(salesforceWebHookIntegration.getSupportedContentTypes(), supportedContentTypes);
   }
 }

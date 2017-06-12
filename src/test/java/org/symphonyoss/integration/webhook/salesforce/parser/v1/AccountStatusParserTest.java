@@ -20,24 +20,28 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 /**
@@ -46,6 +50,8 @@ import javax.xml.bind.JAXBException;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AccountStatusParserTest extends BaseSalesforceTest {
+
+  private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
 
   @Mock
   private UserService userService;
@@ -126,5 +132,14 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
     String expected = readFile("parser/v1/accountStatus_without_ownerEmail_expected.xml");
 
     assertEquals(expected, result.getMessage());
+  }
+
+  @Test(expected = SalesforceParseException.class)
+  public void testParserJson() throws IOException {
+    JsonNode node = readJsonFromFile("parser/v1/null.json");
+    Map<String, String> headerParams = new HashMap<>();
+    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
+
+    Message result = salesforceParser.parse(headerParams, node);
   }
 }
