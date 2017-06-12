@@ -77,10 +77,6 @@ public abstract class SalesforceParserFactory implements WebHookParserFactory {
     return new SalesforceWebHookParserAdapter(parser);
   }
 
-  public SalesforceParser getParser(JsonNode node) {
-    return null;
-  }
-
   /**
    * Get a list of parsers supported by the factory.
    * @return list of parsers supported by the factory.
