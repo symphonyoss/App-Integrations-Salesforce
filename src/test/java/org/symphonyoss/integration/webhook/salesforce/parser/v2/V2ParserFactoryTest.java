@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Unit test for {@link V2ParserParserFactory}
+ * Unit test for {@link V2ParserFactory}
  * Created by crepache on 25/04/17.
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -34,7 +34,7 @@ public class V2ParserFactoryTest {
   private List<SalesforceParser> beans = new ArrayList<>();
 
   @InjectMocks
-  private V2ParserParserFactory factory;
+  private V2ParserFactory factory;
 
   @Mock
   private OpportunityNotificationMetadataParser opportunityNotificationMetadataParser;

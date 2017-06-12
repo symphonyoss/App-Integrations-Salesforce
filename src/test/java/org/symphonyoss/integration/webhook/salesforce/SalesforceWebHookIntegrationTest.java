@@ -18,6 +18,8 @@ package org.symphonyoss.integration.webhook.salesforce;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,6 +28,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookPayload;
@@ -33,7 +36,7 @@ import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserParserFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,10 +64,13 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
   private SalesforceParserResolver salesforceParserResolver;
 
   @InjectMocks
-  private V1ParserParserFactory factory;
+  private V1ParserFactory factory;
 
   @Spy
   private NullSalesforceParser defaultSalesforceParser;
+
+//  @Mock
+//  private SalesforceParserFactory factory;
 
   @Before
   public void setup() {
@@ -76,6 +82,17 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
 
     doReturn(factory).when(salesforceParserResolver).getFactory();
   }
+
+//  @Test
+//  public void testOnConfigChange() {
+//    IntegrationSettings settings = new IntegrationSettings();
+//
+//    doReturn(AccountStatusParser.class).
+//
+//    salesforceWebHookIntegration.onConfigChange(settings);
+//
+//    verify(factory, times(1)).onConfigChange(settings);
+//  }
 
   @Test(expected = SalesforceParseException.class)
   public void testInvalidPayload() throws IOException {
@@ -106,5 +123,4 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest{
     Message result = salesforceWebHookIntegration.parse(payload);
     assertEquals(expected, result.getMessage());
   }
-
 }
