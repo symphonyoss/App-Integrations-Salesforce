@@ -21,6 +21,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,8 +54,6 @@ import javax.xml.bind.JAXBException;
 public class OpportunityNotificationParserTest extends BaseSalesforceTest {
 
   private static final String CONTENT_TYPE_HEADER_PARAM = "content-type";
-
-  private static final String PARSER_V1_NULL_JSON = "parser/v1/null.json";
 
   @Mock
   private UserService userService;
@@ -104,10 +103,6 @@ public class OpportunityNotificationParserTest extends BaseSalesforceTest {
 
   @Test(expected = SalesforceParseException.class)
   public void testParserJson() throws IOException {
-    JsonNode node = readJsonFromFile(PARSER_V1_NULL_JSON);
-    Map<String, String> headerParams = new HashMap<>();
-    headerParams.put(CONTENT_TYPE_HEADER_PARAM, MediaType.APPLICATION_JSON);
-
-    salesforceParser.parse(headerParams, node);
+    salesforceParser.parse(null, JsonNodeFactory.instance.objectNode());
   }
 }
