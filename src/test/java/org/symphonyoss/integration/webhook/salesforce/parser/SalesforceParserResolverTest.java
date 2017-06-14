@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.event.MessageMLVersionUpdatedEventData;
@@ -26,11 +27,9 @@ public class SalesforceParserResolverTest {
   @Spy
   private List<SalesforceParserFactory> factories = new ArrayList<>();
 
-  @Spy
-  private V1ParserFactory v1ParserFactory;
+  private V1ParserFactory v1ParserFactory = new V1ParserFactory();
 
-  @Spy
-  private V2ParserFactory v2ParserFactory;
+  private V2ParserFactory v2ParserFactory = new V2ParserFactory();
 
   @InjectMocks
   private SalesforceParserResolver resolver;

@@ -5,28 +5,21 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.message.Message;
-import org.symphonyoss.integration.model.yaml.IntegrationBridge;
 import org.symphonyoss.integration.model.yaml.IntegrationProperties;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
-import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 
 import java.io.IOException;
 import java.util.Collections;

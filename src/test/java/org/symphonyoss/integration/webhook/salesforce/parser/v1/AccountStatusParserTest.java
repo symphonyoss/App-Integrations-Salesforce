@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,10 +38,7 @@ import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 /**
