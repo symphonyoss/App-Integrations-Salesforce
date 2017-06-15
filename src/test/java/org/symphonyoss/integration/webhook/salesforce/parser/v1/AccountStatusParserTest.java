@@ -20,19 +20,20 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.symphonyoss.integration.entity.MessageMLParser;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
@@ -126,5 +127,10 @@ public class AccountStatusParserTest extends BaseSalesforceTest {
     String expected = readFile("parser/v1/accountStatus_without_ownerEmail_expected.xml");
 
     assertEquals(expected, result.getMessage());
+  }
+
+  @Test(expected = SalesforceParseException.class)
+  public void testParserJson() throws IOException {
+    salesforceParser.parse(null, JsonNodeFactory.instance.objectNode());
   }
 }

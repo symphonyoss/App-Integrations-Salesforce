@@ -1,5 +1,10 @@
 package org.symphonyoss.integration.webhook.salesforce.parser.v1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,26 +13,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.entity.model.User;
-import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.logging.LogMessageSource;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.OpportunityNotificationJSONParser;
-
-import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBException;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBException;
 
 /**
  * Created by crepache on 24/03/17.

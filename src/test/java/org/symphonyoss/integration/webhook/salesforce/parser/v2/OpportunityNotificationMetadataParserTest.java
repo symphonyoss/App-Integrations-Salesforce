@@ -5,26 +5,24 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.symphonyoss.integration.entity.model.User;
 import org.symphonyoss.integration.json.JsonUtils;
 import org.symphonyoss.integration.model.message.Message;
-import org.symphonyoss.integration.model.yaml.IntegrationBridge;
 import org.symphonyoss.integration.model.yaml.IntegrationProperties;
 import org.symphonyoss.integration.service.UserService;
+import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,5 +139,10 @@ public class OpportunityNotificationMetadataParserTest extends BaseSalesforceTes
 
   private void mockIntegrationProperties() {
     doReturn("symphony.com").when(integrationProperties).getApplicationUrl(INTEGRATION_NAME);
+  }
+
+  @Test()
+  public void testParserJson() throws IOException {
+    Assert.assertNull(parser.parse(new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), null)));
   }
 }

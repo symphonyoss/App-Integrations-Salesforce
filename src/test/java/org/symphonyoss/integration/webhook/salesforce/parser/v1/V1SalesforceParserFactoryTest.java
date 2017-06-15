@@ -6,16 +6,20 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
 import org.symphonyoss.integration.webhook.WebHookPayload;
+import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
@@ -28,11 +32,11 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Unit test for {@link V1ParserParserFactory}
+ * Unit test for {@link V1SalesforceParserFactory}
  * Created by crepache on 25/04/17.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class V1ParserFactoryTest extends BaseSalesforceTest {
+public class V1SalesforceParserFactoryTest extends BaseSalesforceTest {
 
   private static final String MOCK_INTEGRATION_TYPE = "mockType";
 
@@ -50,8 +54,11 @@ public class V1ParserFactoryTest extends BaseSalesforceTest {
   @Spy
   private AccountStatusParser accountStatusParser;
 
+  @Mock
+  private NullSalesforceParser defaultSalesforceParser;
+
   @InjectMocks
-  private V1ParserParserFactory factory;
+  private V1SalesforceParserFactory factory;
 
   @Before
   public void init() {
@@ -112,4 +119,19 @@ public class V1ParserFactoryTest extends BaseSalesforceTest {
     assertEquals(accountStatusParser.getEvents(), factory.getParser(payload).getEvents());
   }
 
+  @Test(expected = SalesforceParseException.class)
+  public void testInvalidPayload() throws IOException {
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
+
+    factory.getParser(payload);
+  }
+
+  @Test
+  public void testUnregistredParser() throws IOException{
+    String xml = readFile("executiveReport.xml");
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
+    WebHookParser webHookParser = factory.getParser(payload);
+
+    Assert.assertEquals(0, webHookParser.getEvents().size());
+  }
 }
