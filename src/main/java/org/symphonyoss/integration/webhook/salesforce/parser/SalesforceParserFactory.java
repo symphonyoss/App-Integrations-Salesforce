@@ -46,20 +46,6 @@ public abstract class SalesforceParserFactory implements WebHookParserFactory {
     }
   }
 
-  /**
-   * Update the integration username on each parser class. This process is required to know which user
-   * must be used to query the Symphony API's.
-   * @param settings Integration settings
-   */
-  @Override
-  public void onConfigChange(IntegrationSettings settings) {
-    String salesforceUser = settings.getType();
-
-    for (SalesforceParser parser : getBeans()) {
-      parser.setSalesforceUser(salesforceUser);
-    }
-  }
-
   @Override
   public WebHookParser getParser(WebHookPayload payload)  throws WebHookParseException {
     if (isContentTypeJSON(payload)) {
@@ -75,6 +61,20 @@ public abstract class SalesforceParserFactory implements WebHookParserFactory {
     }
 
     return new SalesforceWebHookParserAdapter(parser);
+  }
+
+  /**
+   * Update the integration username on each parser class. This process is required to know which user
+   * must be used to query the Symphony API's.
+   * @param settings Integration settings
+   */
+  @Override
+  public void onConfigChange(IntegrationSettings settings) {
+    String salesforceUser = settings.getType();
+
+    for (SalesforceParser parser : getBeans()) {
+      parser.setSalesforceUser(salesforceUser);
+    }
   }
 
   /**

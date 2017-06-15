@@ -18,6 +18,7 @@ import java.util.Map;
  */
 @Component
 public class NullSalesforceParser implements SalesforceParser {
+
   @Override
   public void setSalesforceUser(String user) {
     // Do nothing

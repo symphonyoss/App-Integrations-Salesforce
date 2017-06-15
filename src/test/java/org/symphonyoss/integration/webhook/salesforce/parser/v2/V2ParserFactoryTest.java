@@ -16,9 +16,13 @@ import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.MessageMLVersion;
+import org.symphonyoss.integration.webhook.WebHookPayload;
+import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,5 +69,12 @@ public class V2ParserFactoryTest {
     factory.onConfigChange(settings);
 
     verify(opportunityNotificationMetadataParser, times(1)).setSalesforceUser(MOCK_INTEGRATION_TYPE);
+  }
+
+  @Test(expected = SalesforceParseException.class)
+  public void testInvalidPayload() throws IOException {
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
+
+    factory.getParser(payload).getEvents();
   }
 }
