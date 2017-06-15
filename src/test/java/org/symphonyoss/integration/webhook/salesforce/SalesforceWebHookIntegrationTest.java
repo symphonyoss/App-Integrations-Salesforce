@@ -38,7 +38,7 @@ import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserFac
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1SalesforceParserFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest {
   private SalesforceParserResolver salesforceParserResolver;
 
   @Mock
-  private V1ParserFactory v1ParserFactory;
+  private V1SalesforceParserFactory v1SalesforceParserFactory;
 
   @Spy
   private NullSalesforceParser defaultSalesforceParser;
@@ -88,7 +88,7 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest {
 
     factories.add(factory);
 
-    v1ParserFactory.init();
+    v1SalesforceParserFactory.init();
   }
 
   @Test
@@ -113,8 +113,8 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest {
     String xml = readFile("accountStatus.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
 
-    doReturn(v1ParserFactory).when(salesforceParserResolver).getFactory();
-    doReturn(webHookParser).when(v1ParserFactory).getParser(any(WebHookPayload.class));
+    doReturn(v1SalesforceParserFactory).when(salesforceParserResolver).getFactory();
+    doReturn(webHookParser).when(v1SalesforceParserFactory).getParser(any(WebHookPayload.class));
     Message message = new Message();
     doReturn(message).when(webHookParser).parse(any(WebHookPayload.class));
     Message parse = salesforceWebHookIntegration.parse(payload);

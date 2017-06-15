@@ -32,11 +32,11 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Unit test for {@link V1ParserFactory}
+ * Unit test for {@link V1SalesforceParserFactory}
  * Created by crepache on 25/04/17.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class V1ParserFactoryTest extends BaseSalesforceTest {
+public class V1SalesforceParserFactoryTest extends BaseSalesforceTest {
 
   private static final String MOCK_INTEGRATION_TYPE = "mockType";
 
@@ -58,7 +58,7 @@ public class V1ParserFactoryTest extends BaseSalesforceTest {
   private NullSalesforceParser defaultSalesforceParser;
 
   @InjectMocks
-  private V1ParserFactory factory;
+  private V1SalesforceParserFactory factory;
 
   @Before
   public void init() {

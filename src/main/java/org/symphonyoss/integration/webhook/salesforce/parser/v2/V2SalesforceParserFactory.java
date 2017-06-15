@@ -7,7 +7,7 @@ import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1ParserFactory;
+import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1SalesforceParserFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +18,13 @@ import java.util.List;
  * Created by crepache on 19/04/17.
  */
 @Component
-public class V2ParserFactory extends SalesforceParserFactory {
+public class V2SalesforceParserFactory extends SalesforceParserFactory {
 
   @Autowired
   private List<SalesforceMetadataParser> beans;
 
   @Autowired
-  private V1ParserFactory fallbackFactory;
+  private V1SalesforceParserFactory fallbackFactory;
 
   @Override
   public boolean accept(MessageMLVersion version) {

@@ -26,11 +26,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Unit test for {@link V2ParserFactory}
+ * Unit test for {@link V2SalesforceParserFactory}
  * Created by crepache on 25/04/17.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class V2ParserFactoryTest {
+public class V2SalesforceParserFactoryTest {
 
   private static final String MOCK_INTEGRATION_TYPE = "mockType";
 
@@ -38,7 +38,7 @@ public class V2ParserFactoryTest {
   private List<SalesforceParser> beans = new ArrayList<>();
 
   @InjectMocks
-  private V2ParserFactory factory;
+  private V2SalesforceParserFactory factory;
 
   @Mock
   private OpportunityNotificationMetadataParser opportunityNotificationMetadataParser;
