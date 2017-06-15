@@ -45,6 +45,6 @@ public class NullSalesforceParserTest extends BaseSalesforceTest {
 
   @Test()
   public void testParserJson() throws IOException {
-    salesforceParser.parse(null, JsonNodeFactory.instance.objectNode());
+    Assert.assertNull(salesforceParser.parse(null, JsonNodeFactory.instance.objectNode()));
   }
 }

@@ -75,6 +75,6 @@ public class V2SalesforceParserFactoryTest {
   public void testInvalidPayload() throws IOException {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
 
-    factory.getParser(payload).getEvents();
+    factory.getParser(payload);
   }
 }

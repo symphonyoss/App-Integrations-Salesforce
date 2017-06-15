@@ -65,7 +65,6 @@ public class V1SalesforceParserFactoryTest extends BaseSalesforceTest {
     beans.add(opportunityNotificationJSONParser);
     beans.add(opportunityNotificationParser);
     beans.add(accountStatusParser);
-    //beans.add(defaultSalesforceParser);
 
     factory.init();
   }
@@ -124,7 +123,7 @@ public class V1SalesforceParserFactoryTest extends BaseSalesforceTest {
   public void testInvalidPayload() throws IOException {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), "invalid_payload");
 
-    factory.getParser(payload).getEvents();
+    factory.getParser(payload);
   }
 
   @Test
@@ -133,15 +132,6 @@ public class V1SalesforceParserFactoryTest extends BaseSalesforceTest {
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
     WebHookParser webHookParser = factory.getParser(payload);
 
-    Assert.assertEquals(0, factory.getParser(payload).getEvents().size());
-  }
-
-  @Test
-  public void testRegistredParser() throws IOException{
-    String xml = readFile("executiveReport.xml");
-    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
-    WebHookParser webHookParser = factory.getParser(payload);
-
-    Assert.assertEquals(0, factory.getParser(payload).getEvents().size());
+    Assert.assertEquals(0, webHookParser.getEvents().size());
   }
 }
