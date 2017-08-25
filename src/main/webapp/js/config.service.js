@@ -1,4 +1,6 @@
 export default ({
+  appId: 'salesforceWebHookIntegration',
+  appContext: 'apps/salesforce',
   appTitle: 'Salesforce',
   appName: 'Salesforce',
   appSubTitle: 'Salesforce Webhook Integration',
