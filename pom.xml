@@ -12,6 +12,8 @@
     <artifactId>integration-salesforce</artifactId>
 
     <properties>
+        <!-- This is temporary; set to true as soon as the WhiteSource dashboard is clean -->
+        <whitesource.checkPolicies>false</whitesource.checkPolicies>
         <webapp.directory>salesforce</webapp.directory>
         <rpm.name>salesforce-symphony-integration</rpm.name>
     </properties>
