@@ -1,0 +1,6 @@
+{
+  "checkPolicies":true,
+  "productName":"App-Integrations-Salesforce",
+  "projectName":"salesforce-npm-package",
+  "devDep": false
+}
