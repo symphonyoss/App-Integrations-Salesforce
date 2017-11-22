@@ -1,4 +1,4 @@
-package org.symphonyoss.integration.webhook.salesforce.parser.v1;
+package org.symphonyoss.integration.webhook.salesforce.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;

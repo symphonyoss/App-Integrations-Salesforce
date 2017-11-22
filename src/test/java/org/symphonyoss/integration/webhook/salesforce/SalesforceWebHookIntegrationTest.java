@@ -33,12 +33,10 @@ import org.symphonyoss.integration.model.config.IntegrationSettings;
 import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
+import org.symphonyoss.integration.webhook.salesforce.parser.NullSalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserFactory;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParserResolver;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.AccountStatusParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.V1SalesforceParserFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,16 +58,11 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest {
   private List<SalesforceParserFactory> factories = new ArrayList<>();
 
   @InjectMocks
-  private SalesforceWebHookIntegration salesforceWebHookIntegration = new SalesforceWebHookIntegration();
-
-  @Spy
-  private AccountStatusParser accountStatusParser = new AccountStatusParser();
+  private SalesforceWebHookIntegration salesforceWebHookIntegration =
+      new SalesforceWebHookIntegration();
 
   @Mock
   private SalesforceParserResolver salesforceParserResolver;
-
-  @Mock
-  private V1SalesforceParserFactory v1SalesforceParserFactory;
 
   @Spy
   private NullSalesforceParser defaultSalesforceParser;
@@ -83,12 +76,10 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest {
   @Before
   public void setup() {
 
-    beans.add(accountStatusParser);
     beans.add(defaultSalesforceParser);
 
     factories.add(factory);
 
-    v1SalesforceParserFactory.init();
   }
 
   @Test
@@ -105,19 +96,21 @@ public class SalesforceWebHookIntegrationTest extends BaseSalesforceTest {
     List<MediaType> supportedContentTypes = new ArrayList<>();
     supportedContentTypes.add(MediaType.WILDCARD_TYPE);
 
-    Assert.assertEquals(supportedContentTypes, salesforceWebHookIntegration.getSupportedContentTypes());
+    Assert.assertEquals(supportedContentTypes,
+        salesforceWebHookIntegration.getSupportedContentTypes());
   }
 
   @Test
   public void testParser() throws IOException {
     String xml = readFile("accountStatus.xml");
-    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
+    WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(),
+        Collections.<String, String>emptyMap(), xml);
 
-    doReturn(v1SalesforceParserFactory).when(salesforceParserResolver).getFactory();
-    doReturn(webHookParser).when(v1SalesforceParserFactory).getParser(any(WebHookPayload.class));
+    doReturn(factory).when(salesforceParserResolver).getFactory();
+    doReturn(webHookParser).when(factory).getParser(any(WebHookPayload.class));
     Message message = new Message();
     doReturn(message).when(webHookParser).parse(any(WebHookPayload.class));
-    Message parse = salesforceWebHookIntegration.parse(payload);
+    salesforceWebHookIntegration.parse(payload);
     verify(webHookParser, times(1)).parse(payload);
   }
 }

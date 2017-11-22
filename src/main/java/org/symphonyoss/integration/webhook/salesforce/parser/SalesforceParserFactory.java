@@ -1,6 +1,5 @@
 package org.symphonyoss.integration.webhook.salesforce.parser;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.symphonyoss.integration.entity.Entity;
 import org.symphonyoss.integration.entity.MessageML;
@@ -11,7 +10,6 @@ import org.symphonyoss.integration.webhook.exception.WebHookParseException;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.parser.WebHookParserFactory;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
-import org.symphonyoss.integration.webhook.salesforce.parser.v1.NullSalesforceParser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +45,7 @@ public abstract class SalesforceParserFactory implements WebHookParserFactory {
   }
 
   @Override
-  public WebHookParser getParser(WebHookPayload payload)  throws WebHookParseException {
+  public WebHookParser getParser(WebHookPayload payload) throws WebHookParseException {
     if (isContentTypeJSON(payload)) {
       return new SalesforceWebHookParserAdapter(getParserJSON());
     }
@@ -64,8 +62,8 @@ public abstract class SalesforceParserFactory implements WebHookParserFactory {
   }
 
   /**
-   * Update the integration username on each parser class. This process is required to know which user
-   * must be used to query the Symphony API's.
+   * Update the integration username on each parser class. This process is required to know which
+   * user must be used to query the Symphony API's.
    * @param settings Integration settings
    */
   @Override
@@ -106,7 +104,9 @@ public abstract class SalesforceParserFactory implements WebHookParserFactory {
       MessageML messageML = MessageMLParser.parse(payload.getBody());
       return messageML.getEntity();
     } catch (JAXBException e) {
-      throw new SalesforceParseException("Something went wrong when trying parse the MessageML payload received by the webhook.", e);
+      throw new SalesforceParseException(
+          "Something went wrong when trying parse the MessageML payload received by the webhook.",
+          e);
     }
   }
 
