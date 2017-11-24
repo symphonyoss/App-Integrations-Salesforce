@@ -1,6 +1,7 @@
 package org.symphonyoss.integration.webhook.salesforce.parser.v2;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,6 +19,7 @@ import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.parser.WebHookParser;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
 import org.symphonyoss.integration.webhook.salesforce.SalesforceParseException;
+import org.symphonyoss.integration.webhook.salesforce.parser.NullSalesforceParser;
 import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
@@ -44,6 +46,8 @@ public class V2SalesforceParserFactoryTest extends BaseSalesforceTest {
   @Mock
   private OpportunityNotificationMetadataParser opportunityNotificationMetadataParser;
 
+  @Spy
+  private NullSalesforceParser defaultSalesforceParser;
 
   @Before
   public void init() {
@@ -80,6 +84,7 @@ public class V2SalesforceParserFactoryTest extends BaseSalesforceTest {
         Collections.<String, String>emptyMap(), validBody);
 
     WebHookParser parser = factory.getParser(payload);
+    assertNull(parser.parse(payload));
   }
 
   @Test(expected = SalesforceParseException.class)
