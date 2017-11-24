@@ -1,4 +1,6 @@
-package org.symphonyoss.integration.webhook.salesforce.parser.v1;
+package org.symphonyoss.integration.webhook.salesforce.parser;
+
+import static org.junit.Assert.assertNull;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.Assert;
@@ -11,7 +13,6 @@ import org.symphonyoss.integration.model.message.Message;
 import org.symphonyoss.integration.service.UserService;
 import org.symphonyoss.integration.webhook.WebHookPayload;
 import org.symphonyoss.integration.webhook.salesforce.BaseSalesforceTest;
-import org.symphonyoss.integration.webhook.salesforce.parser.SalesforceParser;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -40,11 +41,11 @@ public class NullSalesforceParserTest extends BaseSalesforceTest {
     String xml = readFile("executiveReport.xml");
     WebHookPayload payload = new WebHookPayload(Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap(), xml);
     Message result = salesforceParser.parse(payload);
-    Assert.assertEquals(xml, result.getMessage());
+    assertNull(result);
   }
 
   @Test()
   public void testParserJson() throws IOException {
-    Assert.assertNull(salesforceParser.parse(null, JsonNodeFactory.instance.objectNode()));
+    assertNull(salesforceParser.parse(null, JsonNodeFactory.instance.objectNode()));
   }
 }
